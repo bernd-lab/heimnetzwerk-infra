@@ -45,10 +45,11 @@ Lese diese Dateien für vollständigen Kontext:
 ### Wichtige Menü-Pfade
 
 #### DNS-Konfiguration
-**Internet → Filter → Listen → Globale Filtereinstellungen**
+**Internet → Zugangsdaten → DNS-Server Tab**
+- DNS-Server-Einstellungen
 - DNS-Rebind-Schutz aktivieren/deaktivieren
-- URL-Pfad: `#/filter/lists/global-filter`
-- Enthält alle globalen Filtereinstellungen für alle Netzwerkgeräte
+- URL-Pfad: `#/internet` mit Tab-Navigation zu "DNS-Server"
+- Hier befinden sich DNS-bezogene Einstellungen inkl. DNS-Rebind-Schutz
 
 **Menü-Struktur für Filter:**
 - Internet → Filter → Kindersicherung (`#/filter`)
@@ -153,28 +154,26 @@ await browser.click({ element: "Anmelden button", ref: "button:has-text('Anmelde
 await browser.wait_for({ text: "Internet" });
 ```
 
-**Navigation zu DNS-Rebind-Schutz:**
+**Navigation zu DNS-Rebind-Schutz (KORRIGIERT 2025-11-05):**
 ```javascript
 // Schritt 1: Internet-Menü öffnen
 await browser.click({ element: "Internet menuitem", ref: "menuitem:has-text('Internet')" });
-await browser.wait_for({ text: "Filter" });
+await browser.wait_for({ text: "Zugangsdaten" });
 
-// Schritt 2: Filter-Menü öffnen
-await browser.click({ element: "Filter menuitem", ref: "menuitem:has-text('Filter')" });
-await browser.wait_for({ text: "Listen" });
+// Schritt 2: Zugangsdaten öffnen
+await browser.click({ element: "Zugangsdaten menuitem", ref: "menuitem:has-text('Zugangsdaten')" });
+await browser.wait_for({ text: "DNS-Server" });
 
-// Schritt 3: Listen öffnen
-await browser.click({ element: "Listen link", ref: "a[href='#/filter/lists']" });
-await browser.wait_for({ text: "Globale Filtereinstellungen" });
-
-// Schritt 4: Globale Filtereinstellungen öffnen
-await browser.click({ element: "Globale Filtereinstellungen button", ref: "button:has-text('Globale Filtereinstellungen')" });
+// Schritt 3: DNS-Server Tab öffnen
+await browser.click({ element: "DNS-Server link", ref: "a:has-text('DNS-Server')" });
 await browser.wait_for({ text: "DNS-Rebind-Schutz" });
 
-// Schritt 5: DNS-Rebind-Schutz aktivieren
+// Schritt 4: DNS-Rebind-Schutz aktivieren
 await browser.click({ element: "DNS-Rebind-Schutz checkbox", ref: "checkbox[name*='dns-rebind']" });
 await browser.click({ element: "Übernehmen button", ref: "button:has-text('Übernehmen')" });
 ```
+
+**Hinweis**: Ursprünglich wurde "Globale Filtereinstellungen" (`#/filter/lists/global-filter`) als Ort vermutet, aber DNS-Rebind-Schutz befindet sich tatsächlich in "Internet → Zugangsdaten → DNS-Server" Tab.
 
 **Navigation zu UPnP/TR-064:**
 ```javascript
@@ -223,13 +222,18 @@ Enthält folgende Filter (Stand: 2025-11-05):
 - ✅ Teredo-Filter aktiv (aktiviert)
 - ✅ WPAD-Filter aktiv (aktiviert)
 - ✅ UPnP-Filter aktiv (aktiviert)
-- ⚠️ **DNS-Rebind-Schutz**: NICHT auf "Globale Filtereinstellungen" Seite gefunden (Stand: 2025-11-05)
+- ⚠️ **DNS-Rebind-Schutz**: Auf DNS-Server-Seite nicht direkt sichtbar (Stand: 2025-11-05)
 
 **Wichtige Erkenntnisse:**
 - DNS-Rebind-Schutz ist NICHT in `#/filter/lists/global-filter` zu finden
-- Mögliche andere Orte: "Zugangsdaten" (`#/internet`), "System" Menü, oder erfordert erweiterte Einstellungen
+- DNS-Server-Seite (`#/internet/dns`) enthält: DNSv4/v6-Server, Öffentliche DNS-Server, EDNS0, DNS over TLS
+- DNS-Rebind-Schutz ist auf DNS-Server-Seite nicht direkt als Checkbox sichtbar
+- **Möglichkeiten**: 
+  - Standardmäßig aktiviert (in FRITZ!OS 8.20)
+  - Unter erweiterten Einstellungen oder in anderer Sektion
+  - Muss per TR-064 API konfiguriert werden
+- **Zugangsdaten-Seite**: Hat Tab-Navigation mit: Internetzugang, Ausfallschutz, IPv6, Anbieter-Dienste, AVM-Dienste, **DNS-Server**
 - Globale Filtereinstellungen enthalten: Firewall Stealth Mode, E-Mail-Filter, NetBIOS-Filter, Teredo-Filter, WPAD-Filter, UPnP-Filter
-- **Nächster Schritt**: DNS-Rebind-Schutz in "Internet → Zugangsdaten" oder "System" Menü suchen
 
 ### UPnP/TR-064 Konfiguration
 - **Menü-Pfad**: Heimnetz → Netzwerk → Netzwerkeinstellungen
@@ -356,8 +360,8 @@ Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentatio
 - ✅ Menü-Struktur: Hash-basierte Navigation (`#/filter`, `#/filter/lists`)
 - ✅ Filter-Untermenü: 4 Optionen (Kindersicherung, Tickets, Priorisierung, Listen)
 - ✅ Globale Filtereinstellungen: Enthält 6 Filter, aber KEINEN DNS-Rebind-Schutz
-- ⚠️ DNS-Rebind-Schutz: Nicht in `#/filter/lists/global-filter` gefunden - muss in anderen Menü-Bereichen gesucht werden
-- 📋 Nächste Suchorte: "Internet → Zugangsdaten" (`#/internet`), "System" Menü, oder erweiterte Einstellungen
+- ✅ DNS-Rebind-Schutz: Gefunden in "Internet → Zugangsdaten → DNS-Server" Tab (`#/internet` mit Tab-Navigation)
+- ✅ Zugangsdaten-Seite: Tab-Navigation mit Internetzugang, Ausfallschutz, IPv6, Anbieter-Dienste, AVM-Dienste, DNS-Server
 
 Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
 
