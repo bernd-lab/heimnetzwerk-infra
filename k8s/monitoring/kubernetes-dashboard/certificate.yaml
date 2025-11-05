@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dashboard-k8sops-online-tls
+  namespace: kubernetes-dashboard
+spec:
+  secretName: dashboard-k8sops-online-tls
+  issuerRef:
+    name: letsencrypt-prod-dns01
+    kind: ClusterIssuer
+  dnsNames:
+  - dashboard.k8sops.online
+
