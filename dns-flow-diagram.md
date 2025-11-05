@@ -100,14 +100,14 @@ graph TB
     UD -->|Nameserver| NS
     NS -->|DNS Authority| CF_ZONE
     
-    %% Styling
-    classDef client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef fritzbox fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    classDef pihole fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    classDef kubernetes fill:#bbdefb,stroke:#0277bd,stroke-width:2px
-    classDef certmanager fill:#f8bbd0,stroke:#c2185b,stroke-width:2px
-    classDef cloudflare fill:#ffcc80,stroke:#e65100,stroke-width:2px
-    classDef internet fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    %% Styling - Dunklere Farben für besseren Kontrast
+    classDef client fill:#0277bd,stroke:#01579b,stroke-width:3px,color:#ffffff
+    classDef fritzbox fill:#f57c00,stroke:#e65100,stroke-width:3px,color:#ffffff
+    classDef pihole fill:#2e7d32,stroke:#1b5e20,stroke-width:3px,color:#ffffff
+    classDef kubernetes fill:#1565c0,stroke:#0d47a1,stroke-width:3px,color:#ffffff
+    classDef certmanager fill:#c2185b,stroke:#880e4f,stroke-width:3px,color:#ffffff
+    classDef cloudflare fill:#ff6f00,stroke:#e65100,stroke-width:3px,color:#ffffff
+    classDef internet fill:#6a1b9a,stroke:#4a148c,stroke-width:3px,color:#ffffff
     
     class PC,Phone,Laptop client
     class DHCP,DNS_FW fritzbox
