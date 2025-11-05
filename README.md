@@ -42,6 +42,37 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 - **DNS-Provider**: Cloudflare
 - **Nameserver**: gabriella.ns.cloudflare.com, olof.ns.cloudflare.com
 
+## 🤖 Spezialisierte AI-Agenten
+
+Dieses Repository nutzt spezialisierte AI-Agenten für verschiedene Aufgabenbereiche. Jeder Agent hat tiefes Wissen in seinem Fachgebiet und kann automatisch Tasks ausführen.
+
+### Verfügbare Agenten
+
+- `/dns-expert` - DNS-Konfiguration, Pi-hole, Cloudflare, Domain-Management
+- `/k8s-expert` - Kubernetes Cluster, Pods, Services, Ingress
+- `/gitops-expert` - ArgoCD, CI/CD, Deployment-Strategien
+- `/security-expert` - SSL/TLS, Domain-Sicherheit, 2FA
+- `/gitlab-github-expert` - GitLab/GitHub Sync, Repository-Management
+- `/monitoring-expert` - Grafana, Prometheus, Logging
+- `/secrets-expert` - Kubernetes Secrets, API-Tokens, Rotation
+- `/infrastructure-expert` - Gesamtübersicht, Netzwerk-Topologie
+- `/debian-server-expert` - Debian-Server-Analyse, Docker, KVM
+- `/fritzbox-expert` - FRITZ!Box 7590 AX Konfiguration
+
+### Task-Orchestrierung
+
+- `/auto-task` - Führt automatisch alle "Sofort ausführbaren" Tasks aus
+- `/execute-tasks` - Führt bestimmte Tasks aus
+- `/task-queue` - Zeigt Task-Liste mit manueller Auswahl
+- `/task-status` - Zeigt aktuellen Status aller Tasks
+- `/router` - Intelligente Prompt-Delegation an Spezialisten
+
+### Automatischer Git-Commit
+
+Alle Agenten checken automatisch ihre Änderungen in Git ein. Falls das nicht möglich ist, wird das Problem klar identifiziert und gemeldet.
+
+Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
+
 ## 🚀 Quick Start
 
 ### DNS-Flow visualisieren
