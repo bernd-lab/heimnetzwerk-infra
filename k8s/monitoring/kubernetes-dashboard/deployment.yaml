@@ -22,23 +22,20 @@ spec:
         image: kubernetesui/dashboard:v2.7.0
         imagePullPolicy: Always
         ports:
-        - containerPort: 8443
+        - containerPort: 9090
           protocol: TCP
         args:
-          - --auto-generate-certificates
           - --namespace=kubernetes-dashboard
           - --enable-skip-login
           - --enable-insecure-login
         volumeMounts:
-        - name: kubernetes-dashboard-certs
-          mountPath: /certs
         - name: tmp-volume
           mountPath: /tmp
         livenessProbe:
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /
-            port: 8443
+            port: 9090
           initialDelaySeconds: 30
           timeoutSeconds: 30
         securityContext:
@@ -47,9 +44,6 @@ spec:
           runAsUser: 1001
           runAsGroup: 2001
       volumes:
-      - name: kubernetes-dashboard-certs
-        secret:
-          secretName: kubernetes-dashboard-certs
       - name: tmp-volume
         emptyDir: {}
       nodeSelector:
