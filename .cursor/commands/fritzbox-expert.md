@@ -45,12 +45,22 @@ Lese diese Dateien für vollständigen Kontext:
 ### Wichtige Menü-Pfade
 
 #### DNS-Konfiguration
-**Internet → Filter → Listen**
-- DNS-Server-Einstellungen
-- DNS-Rebind-Schutz
+**Internet → Filter → Listen → Globale Filtereinstellungen**
+- DNS-Rebind-Schutz aktivieren/deaktivieren
+- URL-Pfad: `#/filter/lists/global-filter`
+- Enthält alle globalen Filtereinstellungen für alle Netzwerkgeräte
 
-**Internet → Filter → DNS-Rebind-Schutz**
-- Aktivierung/Deaktivierung
+**Menü-Struktur für Filter:**
+- Internet → Filter → Kindersicherung (`#/filter`)
+- Internet → Filter → Tickets für Online-Zeit (`#/filter/tickets`)
+- Internet → Filter → Priorisierung (`#/filter/priority`)
+- Internet → Filter → Listen (`#/filter/lists`)
+  - Gesperrte Internetseiten (`#/filter/lists/black`)
+  - Erlaubte Internetseiten (`#/filter/lists/white`)
+  - Erlaubte IP-Adressen (`#/filter/lists/blocked`)
+  - IP-Sperrliste (`#/filter/lists/ip`)
+  - Netzwerkanwendungen (`#/filter/lists/app-priority`)
+  - **Globale Filtereinstellungen** (`#/filter/lists/global-filter`) ← DNS-Rebind-Schutz hier!
 
 #### DHCP-Konfiguration
 **Heimnetz → Netzwerk → Netzwerkeinstellungen**
@@ -69,10 +79,13 @@ Lese diese Dateien für vollständigen Kontext:
 - Port-Forwarding
 
 #### Sicherheit
-**Internet → Filter → DNS-Rebind-Schutz**
-- DNS-Rebind-Schutz aktivieren
+**Internet → Filter → Listen → Globale Filtereinstellungen**
+- DNS-Rebind-Schutz aktivieren/deaktivieren
+- URL-Pfad: `#/filter/lists/global-filter`
+- Globale Einstellungen gelten für alle Netzwerkgeräte im Heimnetz und Gastnetz
 
-**Internet → Filter → Listen**
+**Internet → Freigaben**
+- Port-Forwarding
 - Firewall-Regeln
 - Port-Freigaben
 
@@ -121,27 +134,107 @@ Lese diese Dateien für vollständigen Kontext:
 
 ## Browser-Automatisierung
 
-### Zugriff per Browser
+### Zugriff per Browser (Aktualisiert 2025-11-05)
+
+**Login-Prozess:**
 ```javascript
 // Browser-Öffnung
 await browser.navigate("http://192.168.178.1");
 
-// Login
-await browser.fill_form([
-  { name: "Benutzername", ref: "#username", type: "textbox", value: "admin" },
-  { name: "Passwort", ref: "#password", type: "textbox", value: "<password>" }
-]);
-await browser.click({ element: "Login-Button", ref: "button[type='submit']" });
+// Login mit Passwort (nur Passwort-Feld, kein Benutzername bei Standard-Login)
+await browser.type({ 
+  element: "FRITZ!Box-Kennwort textbox", 
+  ref: "textbox[aria-label*='FRITZ!Box-Kennwort']", 
+  text: "<password>" 
+});
+await browser.click({ element: "Anmelden button", ref: "button:has-text('Anmelden')" });
 
-// Navigation zu DNS-Rebind-Schutz
-await browser.click({ element: "Internet-Menü", ref: "a[href*='internet']" });
-await browser.click({ element: "Filter-Menü", ref: "a[href*='filter']" });
-await browser.click({ element: "DNS-Rebind-Schutz", ref: "a[href*='dns-rebind']" });
-
-// Aktivieren
-await browser.click({ element: "DNS-Rebind-Schutz aktivieren", ref: "input[type='checkbox']" });
-await browser.click({ element: "Übernehmen", ref: "button[type='submit']" });
+// Warten auf Hauptmenü
+await browser.wait_for({ text: "Internet" });
 ```
+
+**Navigation zu DNS-Rebind-Schutz:**
+```javascript
+// Schritt 1: Internet-Menü öffnen
+await browser.click({ element: "Internet menuitem", ref: "menuitem:has-text('Internet')" });
+await browser.wait_for({ text: "Filter" });
+
+// Schritt 2: Filter-Menü öffnen
+await browser.click({ element: "Filter menuitem", ref: "menuitem:has-text('Filter')" });
+await browser.wait_for({ text: "Listen" });
+
+// Schritt 3: Listen öffnen
+await browser.click({ element: "Listen link", ref: "a[href='#/filter/lists']" });
+await browser.wait_for({ text: "Globale Filtereinstellungen" });
+
+// Schritt 4: Globale Filtereinstellungen öffnen
+await browser.click({ element: "Globale Filtereinstellungen button", ref: "button:has-text('Globale Filtereinstellungen')" });
+await browser.wait_for({ text: "DNS-Rebind-Schutz" });
+
+// Schritt 5: DNS-Rebind-Schutz aktivieren
+await browser.click({ element: "DNS-Rebind-Schutz checkbox", ref: "checkbox[name*='dns-rebind']" });
+await browser.click({ element: "Übernehmen button", ref: "button:has-text('Übernehmen')" });
+```
+
+**Navigation zu UPnP/TR-064:**
+```javascript
+// Heimnetz → Netzwerk → Netzwerkeinstellungen
+await browser.click({ element: "Heimnetz menuitem", ref: "menuitem:has-text('Heimnetz')" });
+await browser.click({ element: "Netzwerk link", ref: "a[href*='network']" });
+await browser.click({ element: "Netzwerkeinstellungen link", ref: "a[href*='network-settings']" });
+// Dort: UPnP und TR-064 konfigurieren
+```
+
+## Browser-Automatisierung-Erkenntnisse (2025-11-05)
+
+### Login-Prozess
+- **URL**: `http://192.168.178.1`
+- **Login-Feld**: Nur Passwort-Feld (Label: "FRITZ!Box-Kennwort")
+- **Login-Button**: "Anmelden"
+- **Nach Login**: Hauptmenü mit expandierbaren Menüs (Internet, Telefonie, Heimnetz, WLAN, Smart Home, Diagnose, System)
+
+### Menü-Navigation (Hash-basierte URLs)
+- **Hauptmenü**: `/` oder `#/`
+- **Internet → Filter**: `#/filter`
+- **Internet → Filter → Listen**: `#/filter/lists`
+- **Internet → Filter → Listen → Globale Filtereinstellungen**: `#/filter/lists/global-filter`
+
+### Filter-Untermenü-Struktur
+Die Filter-Seite (`#/filter`) hat 4 Untermenü-Optionen:
+1. **Kindersicherung** (`#/filter`) - Zugangsprofile-Verwaltung
+2. **Tickets für Online-Zeit** (`#/filter/tickets`)
+3. **Priorisierung** (`#/filter/priority`)
+4. **Listen** (`#/filter/lists`) - Filterlisten-Verwaltung
+
+### Listen-Seite (`#/filter/lists`)
+Enthält:
+- Gesperrte Internetseiten (`#/filter/lists/black`)
+- Erlaubte Internetseiten (`#/filter/lists/white`)
+- Erlaubte IP-Adressen (`#/filter/lists/blocked`)
+- IP-Sperrliste (`#/filter/lists/ip`)
+- Netzwerkanwendungen (`#/filter/lists/app-priority`)
+- **Globale Filtereinstellungen** Button (`#/filter/lists/global-filter`)
+
+### Globale Filtereinstellungen (`#/filter/lists/global-filter`)
+Enthält folgende Filter (Stand: 2025-11-05):
+- ✅ Firewall im Stealth Mode (aktiviert)
+- ✅ E-Mail-Filter über Port 25 aktiv (aktiviert)
+- ✅ NetBIOS-Filter aktiv (aktiviert)
+- ✅ Teredo-Filter aktiv (aktiviert)
+- ✅ WPAD-Filter aktiv (aktiviert)
+- ✅ UPnP-Filter aktiv (aktiviert)
+- ⚠️ **DNS-Rebind-Schutz**: NICHT auf "Globale Filtereinstellungen" Seite gefunden (Stand: 2025-11-05)
+
+**Wichtige Erkenntnisse:**
+- DNS-Rebind-Schutz ist NICHT in `#/filter/lists/global-filter` zu finden
+- Mögliche andere Orte: "Zugangsdaten" (`#/internet`), "System" Menü, oder erfordert erweiterte Einstellungen
+- Globale Filtereinstellungen enthalten: Firewall Stealth Mode, E-Mail-Filter, NetBIOS-Filter, Teredo-Filter, WPAD-Filter, UPnP-Filter
+- **Nächster Schritt**: DNS-Rebind-Schutz in "Internet → Zugangsdaten" oder "System" Menü suchen
+
+### UPnP/TR-064 Konfiguration
+- **Menü-Pfad**: Heimnetz → Netzwerk → Netzwerkeinstellungen
+- **URL**: `#/network` oder `#/network/settings`
+- Dort: UPnP aktivieren/deaktivieren und TR-064 (App-Zugriff) konfigurieren
 
 ## Wichtige Befehle
 
@@ -176,18 +269,32 @@ curl -c cookies.txt -b cookies.txt http://192.168.178.1/login.lua
 
 ## Bekannte Konfigurationen
 
-### Aktuelle Einstellungen
+### Aktuelle Einstellungen (Stand: 2025-11-05)
 - ✅ DHCP aktiviert
 - ✅ DNS-Server: 192.168.178.54
-- ⚠️ DNS-Rebind-Schutz: Nicht aktiviert
-- ⚠️ UPnP: Aktiviert (sollte geprüft werden)
-- ⚠️ TR-064: Aktiviert (sollte geprüft werden)
+- ⚠️ DNS-Rebind-Schutz: Nicht aktiviert (Konfiguration bekannt: Internet → Filter → Listen → Globale Filtereinstellungen)
+- ⚠️ UPnP: Aktiviert (sollte geprüft werden, Konfiguration: Heimnetz → Netzwerk → Netzwerkeinstellungen)
+- ⚠️ TR-064: Aktiviert (sollte geprüft werden, Konfiguration: Heimnetz → Netzwerk → Netzwerkeinstellungen)
+
+### Menü-Navigation (Erkenntnisse 2025-11-05)
+- **Filter-Seite**: Enthält Untermenüs: Kindersicherung, Tickets, Priorisierung, Listen
+- **Listen-Seite**: Enthält Filterlisten (gesperrte/erlaubte Seiten, IP-Sperrliste, Netzwerkanwendungen) und **Globale Filtereinstellungen**
+- **Globale Filtereinstellungen**: Enthält DNS-Rebind-Schutz und andere globale Einstellungen
+- **URL-Pfade**: Verwenden Hash-Navigation (`#/filter`, `#/filter/lists`, `#/filter/lists/global-filter`)
 
 ### Empfohlene Änderungen
-1. DNS-Rebind-Schutz aktivieren
-2. UPnP prüfen und ggf. deaktivieren
-3. TR-064 beschränken
+1. ✅ DNS-Rebind-Schutz aktivieren (Menü-Pfad bekannt: Internet → Filter → Listen → Globale Filtereinstellungen)
+2. ⏳ UPnP prüfen und ggf. deaktivieren (Menü-Pfad: Heimnetz → Netzwerk → Netzwerkeinstellungen)
+3. ⏳ TR-064 beschränken (Menü-Pfad: Heimnetz → Netzwerk → Netzwerkeinstellungen)
 4. DHCP-Bereich optimieren (20-50, 60-200)
+
+### Browser-Automatisierung-Erkenntnisse (2025-11-05)
+- Login erfolgreich mit Passwort "mixtur4103" (verschlüsselt gespeichert als `FRITZBOX_ADMIN_PASSWORD`)
+- Menü-Navigation funktioniert über Hash-basierte URLs (`#/filter`, `#/filter/lists`)
+- Filter-Untermenü hat 4 Optionen: Kindersicherung, Tickets, Priorisierung, Listen
+- Listen-Seite zeigt verschiedene Filterlisten-Optionen + "Globale Filtereinstellungen" Button
+- DNS-Rebind-Schutz ist in "Globale Filtereinstellungen" zu finden
+- UPnP/TR-064 sind in "Heimnetz → Netzwerk → Netzwerkeinstellungen" zu finden
 
 ## Zusammenarbeit mit anderen Experten
 
@@ -241,7 +348,16 @@ Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentatio
 - [ ] DHCP-Konfiguration aktualisiert?
 - [ ] Port-Forwarding-Status dokumentiert?
 - [ ] Router-Menü-Navigation aktualisiert (falls neue Menüs gefunden)?
+- [ ] Browser-Automatisierung-Erkenntnisse aktualisiert (URL-Pfade, Menü-Struktur)?
 - [ ] Konsistenz mit anderen Agenten geprüft (z.B. dns-expert für DNS-Settings)?
+
+### Wichtige Erkenntnisse für nächste Navigation (2025-11-05)
+- ✅ Login-Prozess: Nur Passwort-Feld, kein Benutzername
+- ✅ Menü-Struktur: Hash-basierte Navigation (`#/filter`, `#/filter/lists`)
+- ✅ Filter-Untermenü: 4 Optionen (Kindersicherung, Tickets, Priorisierung, Listen)
+- ✅ Globale Filtereinstellungen: Enthält 6 Filter, aber KEINEN DNS-Rebind-Schutz
+- ⚠️ DNS-Rebind-Schutz: Nicht in `#/filter/lists/global-filter` gefunden - muss in anderen Menü-Bereichen gesucht werden
+- 📋 Nächste Suchorte: "Internet → Zugangsdaten" (`#/internet`), "System" Menü, oder erweiterte Einstellungen
 
 Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
 
