@@ -177,6 +177,34 @@ scripts/auto-git-commit.sh
 
 Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. DNS-Konfiguration, Pi-hole Settings)
+- ✅ Probleme identifiziert und behoben (z.B. DNS-Auflösung, DNSSEC)
+- ✅ Konfigurationen geändert (z.B. Cloudflare API, Custom DNS Records)
+- ✅ Best Practices identifiziert (z.B. DNS-Caching, Domain-Sicherheit)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. DNS-Flow-Probleme)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Pi-hole, Cloudflare, United Domains Status und Konfigurationen
+2. **"Wichtige Dokumentation"**: Neue DNS-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue DNS-Fehlerquellen und Lösungen
+4. **"Best Practices"**: DNS-Sicherheit, Caching-Strategien
+5. **"Wichtige Hinweise"**: DNS-Flow-Erkenntnisse, Domain-Management
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue DNS-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] DNS-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue DNS-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Pi-hole/Cloudflare-Status aktualisiert?
+- [ ] DNS-Flow-Diagramm aktualisiert (falls nötig)?
+- [ ] Konsistenz mit k8s-expert (CoreDNS) geprüft?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Wichtige Hinweise
 
 - Pi-hole läuft als Kubernetes LoadBalancer Service

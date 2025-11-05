@@ -168,6 +168,35 @@ ssh -i <(echo "$DEBIAN_SERVER_SSH_KEY") bernd@192.168.178.54
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Grafana-Dashboards, Prometheus-Konfiguration)
+- ✅ Probleme identifiziert und behoben (z.B. Metriken-Fehler, Logging-Issues)
+- ✅ Konfigurationen geändert (z.B. Alert-Rules, Dashboard-Layouts, Log-Sammlung)
+- ✅ Best Practices identifiziert (z.B. Metriken-Design, Alerting-Strategien)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Prometheus-Scraping-Fehler, Loki-Query-Probleme)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Grafana-Status, Prometheus-Konfiguration, Loki-Setup
+2. **"Wichtige Dokumentation"**: Neue Monitoring-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Monitoring-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Metriken-Design, Alerting-Strategien, Log-Management
+5. **"Wichtige Hinweise"**: Monitoring-Konfiguration, Dashboard-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Monitoring-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Grafana/Prometheus-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Monitoring-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Dashboard-Status aktualisiert?
+- [ ] Alert-Rules-Status dokumentiert?
+- [ ] Metriken-Status aktualisiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. k8s-expert für Pod-Metriken)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

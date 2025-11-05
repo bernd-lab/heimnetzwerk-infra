@@ -267,6 +267,34 @@ scripts/auto-git-commit.sh
 
 Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Pod-Konfiguration, Ingress-Settings)
+- ✅ Probleme identifiziert und behoben (z.B. Health-Probes, Pod-Restarts, 502-Fehler)
+- ✅ Konfigurationen geändert (z.B. Services, Ingress, Cert-Manager)
+- ✅ Best Practices identifiziert (z.B. Liveness/Readiness Probes, Resource Limits)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Exit Code 137 = SIGKILL)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Services, Ingress, Namespaces Status und Konfigurationen
+2. **"Wichtige Dokumentation"**: Neue Kubernetes-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Cluster-Fehlerquellen und Lösungen (z.B. Health-Probe-Probleme)
+4. **"Best Practices"**: Pod-Konfiguration, Resource Management, Networking
+5. **"Wichtige Hinweise"**: Cluster-Konfiguration, MetalLB, CoreDNS-Integration
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue K8s-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Pod/Service-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue K8s-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Service/Ingress-Status aktualisiert?
+- [ ] Health-Probe-Konfigurationen dokumentiert (z.B. Liveness-Probe-Fix)?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. gitlab-github-expert für GitLab)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Wichtige Hinweise
 
 - Alle externen Services sind über Ingress mit TLS erreichbar

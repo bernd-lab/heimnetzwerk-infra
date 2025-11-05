@@ -221,6 +221,35 @@ FRITZBOX_PASSWORD=$(scripts/decrypt-secret.sh FRITZBOX_ADMIN_PASSWORD password)
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Netzwerk-Topologie, Infrastruktur-Änderungen)
+- ✅ Probleme identifiziert und behoben (z.B. Netzwerk-Probleme, Routing-Issues)
+- ✅ Konfigurationen geändert (z.B. Fritzbox-Settings, Netzwerk-Layout)
+- ✅ Best Practices identifiziert (z.B. Netzwerk-Design, Infrastruktur-Architektur)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Netzwerk-Konflikte, Routing-Probleme)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Netzwerk-Topologie, Infrastruktur-Status, Fritzbox-Konfiguration
+2. **"Wichtige Dokumentation"**: Neue Infrastruktur-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Infrastruktur-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Netzwerk-Design, Infrastruktur-Architektur, Routing-Strategien
+5. **"Wichtige Hinweise"**: Netzwerk-Konfiguration, Infrastruktur-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Infrastruktur-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Netzwerk-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Infrastruktur-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Netzwerk-Topologie-Diagramm aktualisiert (falls nötig)?
+- [ ] Fritzbox-Konfiguration aktualisiert?
+- [ ] Infrastruktur-Übersicht aktualisiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. dns-expert, k8s-expert)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

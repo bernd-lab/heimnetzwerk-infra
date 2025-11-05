@@ -186,6 +186,34 @@ scripts/auto-git-commit.sh
 
 Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. ArgoCD-Konfiguration, CI/CD-Pipelines)
+- ✅ Probleme identifiziert und behoben (z.B. Deployment-Fehler, Sync-Probleme)
+- ✅ Konfigurationen geändert (z.B. ArgoCD-Apps, GitHub Actions, GitLab CI)
+- ✅ Best Practices identifiziert (z.B. GitOps-Workflows, Deployment-Strategien)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. ArgoCD-Sync-Fehler, Pipeline-Fehler)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: ArgoCD-Apps, CI/CD-Pipelines, Sync-Status
+2. **"Wichtige Dokumentation"**: Neue GitOps-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Deployment-Fehlerquellen und Lösungen
+4. **"Best Practices"**: GitOps-Workflows, CI/CD-Strategien, Deployment-Patterns
+5. **"Wichtige Hinweise"**: ArgoCD-Konfiguration, GitHub/GitLab-Sync-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue GitOps-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Deployment-Pipeline-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue GitOps-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] ArgoCD-App-Status aktualisiert?
+- [ ] CI/CD-Pipeline-Status dokumentiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. k8s-expert, gitlab-github-expert)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Wichtige Hinweise
 
 - ArgoCD nutzt Git als Single Source of Truth

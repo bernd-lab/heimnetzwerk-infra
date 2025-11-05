@@ -193,6 +193,35 @@ ROOT_PASSWORD=$(scripts/decrypt-secret.sh ROOT_PASSWORDS password)
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Docker-Konfiguration, KVM-Setup, Kubernetes-Host)
+- ✅ Probleme identifiziert und behoben (z.B. Container-Probleme, VM-Fehler, Node-Issues)
+- ✅ Konfigurationen geändert (z.B. Docker-Compose, KVM-Settings, Node-Konfiguration)
+- ✅ Best Practices identifiziert (z.B. Container-Management, VM-Backup, Node-Wartung)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Docker-Image-Probleme, KVM-Networking)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Docker-Status, KVM-Setup, Kubernetes-Node-Status
+2. **"Wichtige Dokumentation"**: Neue Server-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Server-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Container-Management, VM-Backup, Node-Wartung
+5. **"Wichtige Hinweise"**: Server-Konfiguration, Docker/KVM-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Server-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Docker/KVM-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Server-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Docker-Container-Status aktualisiert?
+- [ ] KVM-VM-Status dokumentiert?
+- [ ] Kubernetes-Node-Status aktualisiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. k8s-expert für Cluster)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

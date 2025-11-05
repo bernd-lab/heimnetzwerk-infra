@@ -196,6 +196,34 @@ scripts/decrypt-secret.sh FRITZBOX_ADMIN_PASSWORD password
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Secret-Management, Encryption)
+- ✅ Probleme identifiziert und behoben (z.B. Secret-Zugriff, Rotation)
+- ✅ Konfigurationen geändert (z.B. Secret-Struktur, Encryption-Methoden)
+- ✅ Best Practices identifiziert (z.B. Secret-Rotation, Sicherheit)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Secret-Leaks, Decryption-Probleme)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Secret-Struktur, Encryption-Methoden, Rotation-Status
+2. **"Wichtige Dokumentation"**: Neue Secret-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Secret-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Secret-Sicherheit, Rotation-Strategien, Zugriffskontrolle
+5. **"Wichtige Hinweise"**: Secret-Management, Encryption-Best-Practices
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Secret-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Secret-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Secret-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Secret-Struktur aktualisiert?
+- [ ] Rotation-Status in `secrets-inventory.yaml` aktualisiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. gitlab-github-expert für Tokens)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

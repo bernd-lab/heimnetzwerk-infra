@@ -216,6 +216,35 @@ FRITZBOX_PASSWORD=$(scripts/decrypt-secret.sh FRITZBOX_ADMIN_PASSWORD password)
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. Fritzbox-Menüs, DHCP-Konfiguration)
+- ✅ Probleme identifiziert und behoben (z.B. DNS-Rebind-Protection, UPnP-Issues)
+- ✅ Konfigurationen geändert (z.B. DHCP-Settings, Port-Forwarding, Firewall)
+- ✅ Best Practices identifiziert (z.B. Router-Konfiguration, Netzwerk-Sicherheit)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Port-Forwarding-Probleme, DNS-Konflikte)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: Fritzbox-Status, DHCP-Konfiguration, Router-Settings
+2. **"Wichtige Dokumentation"**: Neue Fritzbox-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Router-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Router-Konfiguration, Netzwerk-Sicherheit, DHCP-Management
+5. **"Wichtige Hinweise"**: Fritzbox-Konfiguration, Router-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Fritzbox-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Router-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Fritzbox-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] DHCP-Konfiguration aktualisiert?
+- [ ] Port-Forwarding-Status dokumentiert?
+- [ ] Router-Menü-Navigation aktualisiert (falls neue Menüs gefunden)?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. dns-expert für DNS-Settings)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

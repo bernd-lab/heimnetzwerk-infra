@@ -165,6 +165,34 @@ source scripts/load-secrets.sh
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. SSL/TLS-Konfiguration, Domain-Sicherheit)
+- ✅ Probleme identifiziert und behoben (z.B. Zertifikats-Fehler, 2FA-Probleme)
+- ✅ Konfigurationen geändert (z.B. Cert-Manager, Let's Encrypt, Domain-Settings)
+- ✅ Best Practices identifiziert (z.B. SSL/TLS-Sicherheit, Domain-Management)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. Zertifikats-Rotation, Domain-Validierung)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: SSL/TLS-Status, Domain-Sicherheit, Zertifikats-Management
+2. **"Wichtige Dokumentation"**: Neue Sicherheits-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Sicherheits-Fehlerquellen und Lösungen
+4. **"Best Practices"**: SSL/TLS-Sicherheit, Domain-Management, 2FA
+5. **"Wichtige Hinweise"**: Sicherheits-Konfiguration, Zertifikats-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue Sicherheits-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] SSL/TLS-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue Sicherheits-Dokumentation in "Wichtige Dokumentation" verlinkt?
+- [ ] Zertifikats-Status aktualisiert?
+- [ ] Domain-Sicherheits-Status dokumentiert?
+- [ ] Konsistenz mit anderen Agenten geprüft (z.B. k8s-expert für Cert-Manager)?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Git-Commit
 
 **WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!

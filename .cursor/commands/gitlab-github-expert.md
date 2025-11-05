@@ -226,6 +226,34 @@ scripts/auto-git-commit.sh
 
 Siehe auch: `.cursor/context/git-auto-commit-context.md` für vollständige Dokumentation.
 
+## Kontext-Aktualisierung
+
+**WICHTIG**: Nach jeder Aufgabe eigenen Kontext überprüfen und aktualisieren!
+
+### Wann aktualisieren?
+- ✅ Neue Erkenntnisse oder Lösungen gefunden (z.B. GitLab-Konfiguration, API-Integration)
+- ✅ Probleme identifiziert und behoben (z.B. Login-Fehler, 502-Fehler, CSRF-Token)
+- ✅ Konfigurationen geändert (z.B. GitLab-Settings, GitHub/GitLab Sync)
+- ✅ Best Practices identifiziert (z.B. Token-Management, Repository-Struktur)
+- ✅ Fehlerquellen oder Lösungswege gefunden (z.B. GitLab Pod-Restarts, Liveness-Probe)
+
+### Was aktualisieren?
+1. **"Bekannte Konfigurationen"**: GitLab/GitHub Status, API-Tokens, Sync-Konfiguration
+2. **"Wichtige Dokumentation"**: Neue GitLab/GitHub-Analyse-Dokumente verlinken
+3. **"Troubleshooting"**: Neue Repository-Fehlerquellen und Lösungen
+4. **"Best Practices"**: Repository-Management, Token-Sicherheit, Sync-Strategien
+5. **"Wichtige Hinweise"**: GitLab-Konfiguration, GitHub/GitLab-Sync-Status
+
+### Checklist nach jeder Aufgabe:
+- [ ] Neue GitLab/GitHub-Erkenntnisse in "Bekannte Konfigurationen" dokumentiert?
+- [ ] Login/API-Probleme und Lösungen in "Troubleshooting" ergänzt?
+- [ ] Neue GitLab-Analyse-Dokumente in "Wichtige Dokumentation" verlinkt?
+- [ ] GitLab-Pod-Status aktualisiert (z.B. nach Liveness-Probe-Fix)?
+- [ ] API-Token-Status dokumentiert?
+- [ ] Konsistenz mit k8s-expert (GitLab-Cluster) geprüft?
+
+Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
+
 ## Wichtige Hinweise
 
 - GitLab läuft stabil im Kubernetes-Cluster
