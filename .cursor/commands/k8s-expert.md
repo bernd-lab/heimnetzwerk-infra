@@ -108,6 +108,8 @@ Alle Services verwenden Ingress mit Host `*.k8sops.online`:
 - Service-Endpunkte prüfen
 - Ingress-Routing debuggen
 - Zertifikats-Probleme lösen
+- **Health-Probes**: Bei 404-Fehlern mit `httpGet`-Probes → auf `exec` mit `curl` umstellen
+- **Pod-Restarts**: Prüfe Liveness-Probe-Konfiguration, Exit Code 137 = SIGKILL (Pod wurde getötet)
 
 ### Networking
 - Service-Discovery konfigurieren
@@ -202,6 +204,9 @@ kubectl logs -n kube-system -l k8s-app=kube-dns
 - **Ingress**: `gitlab.k8sops.online`
 - **TLS**: Cert-Manager Zertifikat
 - **Status**: Pod läuft stabil (nach Liveness-Probe-Korrektur)
+- **Liveness-Probe**: Verwendet `exec` mit `curl` (nicht `httpGet`), da `httpGet` mit Host-Header 404-Fehler verursacht
+- **502-Fehler-Fix**: Liveness-Probe wurde von `httpGet` auf `exec` umgestellt, um Pod-Restarts zu vermeiden
+- **Wichtig**: GitLab Health-Endpoints funktionieren nur mit `curl` auf `localhost`, nicht mit Kubernetes `httpGet` und Host-Header
 
 ### Ingress-Controller
 - **ConfigMap**: `allow-snippet-annotations: false` (Sicherheit)

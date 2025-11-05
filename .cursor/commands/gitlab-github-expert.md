@@ -17,6 +17,7 @@ Lese diese Dateien für vollständigen Kontext:
 - `gitlab-sync-setup.md` - GitHub/GitLab Sync-Konfiguration
 - `gitlab-web-interface-analyse.md` - GitLab Web-Interface Analyse
 - `github-sicherheitsanalyse.md` - GitHub-Sicherheitsanalyse
+- `gitlab-502-fix-analysis.md` - **WICHTIG**: Analyse des 502-Fehler-Problems nach Login und Fix
 
 ## GitLab Konfiguration
 
@@ -26,6 +27,9 @@ Lese diese Dateien für vollständigen Kontext:
 - **Ingress**: `gitlab.k8sops.online` (Port 80, 443)
 - **TLS**: Cert-Manager Zertifikat
 - **Status**: ✅ Stabil (nach Liveness-Probe-Korrektur)
+- **502-Fehler-Problem**: War durch fehlgeschlagene Liveness-Probe verursacht (Pod wurde getötet)
+- **Fix**: Liveness-Probe von `httpGet` auf `exec` umgestellt (analog zur Readiness-Probe)
+- **Ergebnis**: Pod läuft stabil ohne Restarts, Login funktioniert ohne 502
 
 ### Zugriff
 - **Web-Interface**: https://gitlab.k8sops.online
@@ -149,9 +153,11 @@ curl -H "Authorization: token $GITHUB_TOKEN" \
 ## Bekannte Konfigurationen
 
 ### GitLab
-- **Status**: ✅ Stabil (Pod läuft ohne Restarts)
-- **Liveness Probe**: Korrigiert auf `/-/health` mit 300s initialDelay
-- **Readiness Probe**: Korrigiert mit 120s initialDelay
+- **Status**: ✅ Stabil (Pod läuft ohne Restarts nach Liveness-Probe-Fix)
+- **Liveness Probe**: `exec` mit `curl -sf http://localhost:80/-/health` (initialDelay: 600s, failureThreshold: 12)
+- **Readiness Probe**: `exec` mit `curl -sf http://localhost:80/-/readiness -H "Host: gitlab.k8sops.online"` (initialDelay: 180s, failureThreshold: 20)
+- **Wichtig**: Liveness-Probe muss `exec` verwenden, nicht `httpGet` (verursacht 404-Fehler)
+- **502-Fehler**: War durch fehlgeschlagene Liveness-Probe verursacht (Pod wurde getötet während Login-Request)
 - **API Token**: `glpat-q9cRQjBeN--9eKsPzjZn5G86MQp1OjEH.01.0w11ag1un`
 
 ### GitHub/GitLab Sync
