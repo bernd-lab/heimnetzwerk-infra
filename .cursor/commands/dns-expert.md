@@ -21,6 +21,9 @@ Lese diese Dateien für vollständigen Kontext:
 - `pihole-analyse.md` - Pi-hole Konfiguration und Status
 - `laptop-dns-problem-analysis.md` - **NEU**: Laptop DNS-Problem-Analyse (Fedora 42)
 - `laptop-dns-fix-fedora.md` - **NEU**: Fedora-spezifische DNS-Fix-Anleitung
+- `pihole-deployment-status.md` - **NEU**: Pi-hole Kubernetes Deployment-Status (2025-11-05)
+- `k8s/pihole/README.md` - **NEU**: Pi-hole Kubernetes Deployment-Anleitung
+- `scripts/deploy-pihole.sh` - **NEU**: Automatisches Pi-hole Deployment-Script
 - `agent-handover-dns-dokumentation.md` - DNS-Infrastruktur Übersicht
 
 ## Infrastruktur-Übersicht
@@ -74,8 +77,12 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 ### Pi-hole Problembehandlung (2025-11-05)
 - **Problem**: Pi-hole Port 53 nicht erreichbar (aber IP pingbar)
 - **Workaround**: Cloudflare DNS (1.1.1.1) temporär setzen
-- **Lösung**: Pi-hole Service in Kubernetes prüfen/reparieren/deployen
+- **Lösung**: Pi-hole Service in Kubernetes deployen
+  - **Manifeste**: `k8s/pihole/` - Vollständige Kubernetes Manifeste vorbereitet
+  - **Deployment-Script**: `scripts/deploy-pihole.sh` - Automatisches Deployment
+  - **Status**: Manifeste erstellt, Deployment ausstehend (Cluster-Verfügbarkeit)
 - Siehe: `laptop-dns-problem-analysis.md` für vollständige Analyse
+- Siehe: `pihole-deployment-status.md` für Deployment-Anleitung
 
 ### Domain-Management
 - WHOIS-Informationen prüfen
@@ -99,11 +106,21 @@ kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup gitlab.k8
 
 ### Pi-hole Status
 ```bash
-# Pi-hole Pod-Status
-kubectl get pods -n default -l app=pihole
+# Pi-hole Pod-Status (Kubernetes)
+kubectl get pods -n pihole -l app=pihole
+
+# Pi-hole Service-Status
+kubectl get svc -n pihole pihole
 
 # Pi-hole Logs
-kubectl logs -n default -l app=pihole
+kubectl logs -n pihole -l app=pihole
+
+# Pi-hole Deployment (2025-11-05)
+# Automatisches Deployment:
+./scripts/deploy-pihole.sh
+
+# Oder manuell:
+kubectl apply -k k8s/pihole/
 ```
 
 ### CoreDNS Status

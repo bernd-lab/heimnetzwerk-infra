@@ -17,6 +17,10 @@ Lese diese Dateien für vollständigen Kontext:
 - `kubernetes-analyse.md` - Detaillierte Cluster-Analyse
 - `docker-kubernetes-migration.md` - Migrationsplan Docker → Kubernetes
 - `k8s/` Verzeichnis - Kubernetes Manifeste
+- `k8s/pihole/` - **NEU**: Pi-hole Kubernetes Manifeste (2025-11-05)
+- `k8s/pihole/README.md` - Pi-hole Deployment-Anleitung
+- `pihole-deployment-status.md` - **NEU**: Pi-hole Deployment-Status und Anleitung
+- `scripts/deploy-pihole.sh` - **NEU**: Automatisches Pi-hole Deployment-Script
 - `dns-flow-diagram.md` - DNS-Integration mit Kubernetes
 
 ## Cluster-Informationen
@@ -26,6 +30,12 @@ Lese diese Dateien für vollständigen Kontext:
 - **Control Plane**: https://192.168.178.54:6443
 - **Pod Network**: 10.244.0.0/16 (Flannel CNI)
 - **Service Network**: 10.100.0.0/16
+
+### Kubernetes Config-Zugriff
+- **Config Location**: `~/.kube/config` oder `~/.kube/config-new-cluster.yaml`
+- **Context**: `kubernetes-admin@kubernetes`
+- **Cluster**: `kubernetes` (192.168.178.54:6443)
+- **Verwendung**: `kubectl --kubeconfig=~/.kube/config-new-cluster.yaml <command>`
 
 ### Ingress-Controller
 - **Controller**: ingress-nginx
@@ -70,6 +80,7 @@ Lese diese Dateien für vollständigen Kontext:
 - `syncthing` - Datei-Synchronisation
 - `test-tls` - Test-Umgebung
 - `velero` - Backup
+- `pihole` - Pi-hole DNS-Server (deployment vorbereitet)
 
 ## Services mit Ingress
 
@@ -117,6 +128,13 @@ Alle Services verwenden Ingress mit Host `*.k8sops.online`:
 - LoadBalancer-IPs verwalten
 - Netzwerk-Policies
 
+### Pi-hole Deployment (2025-11-05)
+- **Manifeste**: `k8s/pihole/` - Vollständige Kubernetes Manifeste vorbereitet
+- **Deployment-Script**: `scripts/deploy-pihole.sh` - Automatisches Deployment
+- **Status**: Manifeste erstellt, Deployment ausstehend (Cluster-Verfügbarkeit)
+- **IP**: 192.168.178.10 (MetallB LoadBalancer)
+- **Namespace**: `pihole`
+
 ## Wichtige Befehle
 
 ### Cluster-Status
@@ -132,6 +150,9 @@ kubectl get ingress -A
 
 # Cluster-Info
 kubectl cluster-info
+
+# Mit spezifischem Config (falls nötig)
+kubectl --kubeconfig=~/.kube/config-new-cluster.yaml cluster-info
 ```
 
 ### Pod-Management

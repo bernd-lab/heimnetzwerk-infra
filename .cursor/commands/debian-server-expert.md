@@ -73,9 +73,14 @@ Dieser Server ist ein **Hybrid-Host** mit:
 # SSH-Verbindung
 ssh bernd@192.168.178.54
 
-# Oder mit Key
+# Mit SSH Key (infra_ed25519) - **VERFÜGBAR (2025-11-05)**
+ssh -i ~/.ssh/infra_ed25519 bernd@192.168.178.54
+
+# Oder mit Standard-Key
 ssh -i ~/.ssh/id_rsa bernd@192.168.178.54
 ```
+
+**SSH Key Location**: `~/.ssh/infra_ed25519` (ed25519 Key, verfügbar seit 2025-11-05)
 
 ### Docker-Analyse
 ```bash
