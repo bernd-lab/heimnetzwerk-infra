@@ -1,0 +1,12 @@
+# Secrets - niemals committen!
+~/.cursor/secrets/
+.cursor/secrets/
+secrets/*.age
+secrets/*.encrypted
+*.key
+*.pem
+
+# System-spezifische Dateien
+.DS_Store
+Thumbs.db
+

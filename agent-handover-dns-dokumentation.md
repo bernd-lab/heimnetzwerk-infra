@@ -279,9 +279,9 @@ CF_DNS --> CF : DNS-Records
 ### Über DNS erreichbar:
 
 1. **GitLab** - https://gitlab.k8sops.online
-   - Status: ✅ Läuft stabil
-   - HTTPS: ✅ Funktioniert
-   - Web-Interface: ⚠️ Login-Problem (500-Fehler, wird behoben)
+   - Status: ✅ Läuft stabil (Pod `gitlab-fff89c66b-lxgh5` seit 2025-11-05 17:10 CET ohne Restarts)
+   - HTTPS: ✅ Funktioniert (Ingress-Check → 308 Redirect zu HTTPS)
+   - Web-Interface: 🟡 Login-Test ausstehend (IP-Spoofing-Fix aktiv, bitte im Browser prüfen)
 
 2. **Kubernetes Dashboard** - https://dashboard.k8sops.online
    - Status: ✅ Läuft
@@ -456,12 +456,11 @@ curl -k -H "PRIVATE-TOKEN: <token>" https://gitlab.k8sops.online/api/v4/user
 - [x] Personal Access Token für GitLab API erstellt
 
 ### ⚠️ In Arbeit
-- [ ] GitLab Web-Interface-Login (500-Fehler - IP-Spoofing-Problem)
 - [ ] Repository "heimnetzwerk-infra" in GitLab erstellen
 - [ ] GitHub/GitLab Sync finalisieren
+- [ ] GitLab Login im Browser testen (HandleIpSpoof-Fix aktiv, Pod seit 17:10 CET stabil)
 
 ### 📋 Offen
-- [ ] GitLab Login-Problem beheben (trusted_proxies wurde hinzugefügt, Neustart läuft)
 - [ ] ArgoCD-Zugriff testen
 - [ ] Alle Services im Dashboard verifizieren
 
@@ -470,10 +469,9 @@ curl -k -H "PRIVATE-TOKEN: <token>" https://gitlab.k8sops.online/api/v4/user
 ## 🚨 Bekannte Probleme
 
 ### GitLab
-- **Problem**: Web-Interface-Login gibt 500-Fehler
-- **Ursache**: IP-Spoofing-Protection (HandleIpSpoofAttackError)
-- **Fix**: `trusted_proxies` in ConfigMap hinzugefügt
-- **Status**: Pod wurde neu gestartet, Login muss erneut getestet werden
+- **Problem**: Web-Interface-Login gab 500-Fehler (HandleIpSpoofAttackError)
+- **Fix**: `trusted_proxies` in ConfigMap + Liveness-Probe auf `initialDelaySeconds=600`, `failureThreshold=12` via `kubectl patch` (2025-11-05)
+- **Status**: Pod `gitlab-fff89c66b-lxgh5` läuft seit 2025-11-05 17:10 CET ohne Restarts; `curl` auf `/users/sign_in` liefert 200, manueller Browser-Login noch offen
 
 ### Kubernetes Dashboard
 - **Problem**: Secret "kubernetes-dashboard-csrf" fehlte

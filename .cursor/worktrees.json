@@ -1,0 +1,7 @@
+{
+  "setup-worktree": [
+    "# Dokumentationsprojekt - keine Dependencies nötig",
+    "# Worktree wird für parallele Agent-Experimente genutzt",
+    "echo 'Worktree für Infrastruktur-Dokumentation bereit'"
+  ]
+}

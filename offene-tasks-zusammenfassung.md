@@ -50,41 +50,39 @@ docker rm gitlab jenkins jellyfin
 **Vorher prüfen:**
 - ✅ Kubernetes Services funktionieren (bereits verifiziert)
 - ⚠️ Daten-Migration: Kubernetes-Versionen haben bereits PVCs mit Daten
-- ⚠️ GitLab: 463 Restarts (instabil) - sollte überprüft werden
+- ✅ GitLab: Pod `gitlab-fff89c66b-lxgh5` (Start 2025-11-05 17:10 CET) läuft aktuell ohne Restarts – mindestens 24h beobachten, bevor Docker-GitLab gestoppt wird
 
-### 2. GitLab Stabilität prüfen
+### 2. GitLab Stabilität beobachten
 
 **Status:**
-- ⚠️ Kubernetes GitLab: 463 Restarts in 40h (sehr instabil)
-- ⚠️ Docker GitLab: Läuft noch (könnte stabiler sein)
+- ✅ Kubernetes GitLab: Liveness-Probe angepasst (`initialDelaySeconds=600`, `failureThreshold=12`), Pod `gitlab-fff89c66b-lxgh5` seit 2025-11-05 17:10 CET ohne Restarts
+- ⚠️ Docker GitLab: Läuft noch (kann nach erfolgreicher Beobachtung abgeschaltet werden)
 
 **Aktion:**
 ```bash
-# GitLab Logs prüfen
-kubectl logs -n gitlab gitlab-6bd6446c6f-fbltz --tail=100
+# GitLab Deployment beobachten (Restarts, Logs)
+kubectl get pods -n gitlab -w
+kubectl logs -n gitlab deployment/gitlab --since=10m
 
-# Pod-Status detailliert prüfen
-kubectl describe pod -n gitlab gitlab-6bd6446c6f-fbltz
-
-# Ressourcen prüfen
-kubectl top pod -n gitlab
+# Readiness/Liveness manuell testen (optional)
+kubectl exec -n gitlab deploy/gitlab -- curl -s -o /dev/null -w "%{http_code}\n" http://localhost/-/health
 ```
 
 **Mögliche Ursachen:**
-- Ressourcenknappheit (CPU/RAM)
-- PVC-Probleme
-- Konfigurationsfehler
-- Health-Check-Probleme
+- Vorher: Health-Check zu aggressiv (initialDelay 300s → Pod restarte vor Abschluss)
+- Weiterhin im Auge behalten: Ressourcenknappheit (CPU/RAM), PVC-Probleme, Konfigurationsfehler
 
 **Empfehlung:**
-- Ursache identifizieren und beheben
-- Erst danach Docker-Container stoppen
+- 24h Monitoring: Wenn keine neuen Restarts → Docker-GitLab herunterfahren
+- Bei neuen Restarts: Logs erneut prüfen (v. a. `/var/log/gitlab/gitlab-workhorse/current`)
 
 ### 3. Kubernetes Ingress-Verfügbarkeit prüfen
 
 **Status:**
 - ✅ nginx-reverse-proxy Docker gestoppt (Port 80/443 frei)
 - ⚠️ Kubernetes ingress-nginx sollte jetzt auf 192.168.178.54:80/443 funktionieren
+- ✅ Interner Curl-Test über `ingress-nginx-controller` liefert erwartete 308-Redirects (GitLab, Dashboard, ArgoCD, Grafana, Prometheus)
+- ⚠️ Externer Test aus dem LAN noch offen (WSL erreicht 192.168.178.54 aktuell nicht direkt)
 
 **Aktion:**
 ```bash
@@ -94,19 +92,24 @@ kubectl get pods -n ingress-nginx
 # Service-Status prüfen
 kubectl get svc -n ingress-nginx
 
-# HTTP/HTTPS-Test
-curl -I http://192.168.178.54
-curl -I https://192.168.178.54
+# Interner DNS-Test (bereits durchgeführt)
+kubectl run ingress-check --image=curlimages/curl --restart=Never --command -- \
+  /bin/sh -c 'for host in gitlab dashboard argocd grafana prometheus; do \ 
+    echo "Checking ${host}.k8sops.online"; \ 
+    curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" -H "Host: ${host}.k8sops.online" \ 
+      http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/; \ 
+  done'
 
-# Domain-Tests
-curl -I http://gitlab.k8sops.online
-curl -I http://jenkins.k8sops.online
-curl -I http://jellyfin.k8sops.online
+# Externe Tests (vom LAN-Rechner)
+curl -I http://192.168.178.54
+curl -k -I https://gitlab.k8sops.online
+
 ```
 
 **Erwartung:**
 - Kubernetes Services sollten jetzt über ingress-nginx erreichbar sein
 - Alle *.k8sops.online Domains sollten funktionieren
+- Externe Tests sollten identische 308→HTTPS Antworten liefern (zertifikat via Let's Encrypt)
 
 ## 🟡 Wichtige offene Tasks
 
@@ -210,19 +213,18 @@ curl -I http://jellyfin.k8sops.online
 
 ### Priorität 1 (Kritisch - sofort)
 
-1. **GitLab Stabilität prüfen und beheben**
-   - 463 Restarts in 40h ist kritisch
-   - Ursache identifizieren (Logs, Ressourcen, PVCs)
-   - Beheben bevor Docker-Container gestoppt wird
+1. **GitLab Login testen**
+   - Fix (`trusted_proxies` + Liveness-Delay) ist ausgerollt, Pod stabil
+   - Browser-Test mit `root / TempPass123!`
+   - Bei neuem 500-Fehler: `kubectl logs -n gitlab deployment/gitlab --since=5m`
 
-2. **Kubernetes Ingress-Verfügbarkeit verifizieren**
-   - Prüfen ob Services jetzt über ingress-nginx erreichbar sind
-   - HTTP/HTTPS-Tests durchführen
-   - Bei Problemen: Logs prüfen
+2. **Kubernetes Ingress extern verifizieren**
+   - Interner Curl-Test erfolgreich, externer Test via LAN-Gerät noch offen
+   - Erwartet: 308 Redirect zu HTTPS und gültiges Zertifikat
 
 3. **Doppelte Docker-Container stoppen**
    - GitLab, Jenkins, Jellyfin
-   - Nur nach Verifizierung, dass Kubernetes-Versionen funktionieren
+   - Nur nach Verifizierung, dass Kubernetes-Versionen funktionieren (GitLab ≥24h stabil)
 
 ### Priorität 2 (Wichtig - bald)
 
@@ -253,18 +255,17 @@ curl -I http://jellyfin.k8sops.online
 ### 1. GitLab Instabilität
 
 **Beobachtung:**
-- Kubernetes GitLab: 463 Restarts in 40h
-- Docker GitLab: Läuft stabil (Up 2 weeks)
+- Früher: 463 Restarts in 40h (Liveness Probe zu aggressiv)
+- Neu: Pod `gitlab-fff89c66b-lxgh5` seit 2025-11-05 17:10 CET mit 0 Restarts
+- Docker GitLab: Läuft stabil (Up 2 weeks) – Abschaltung nach 24h Monitoring möglich
 
 **Vermutung:**
-- Ressourcenknappheit (CPU/RAM-Limits zu niedrig)
-- PVC-Probleme (Mount-Probleme?)
-- Health-Check konfiguriert zu aggressiv
+- Hauptursache behoben: Liveness-Probe (initialDelay 300s → 600s)
+- Weiterhin beobachten: Ressourcenknappheit, PVC-Probleme, Konfiguration
 
 **Empfehlung:**
-- Logs analysieren
-- Ressourcen-Limits prüfen
-- PVC-Status prüfen
+- Logs weiter beobachten (insb. Workhorse / Puma)
+- Bei neuen Restarts: Ressourcen & PVCs prüfen
 
 ### 2. Port-Konflikt-Lösung
 
@@ -312,18 +313,18 @@ curl -I http://jellyfin.k8sops.online
 
 ### Sofort (heute):
 
-1. **GitLab Stabilität analysieren:**
+1. **GitLab Login prüfen:**
    ```bash
-   kubectl logs -n gitlab gitlab-6bd6446c6f-fbltz --tail=200
-   kubectl describe pod -n gitlab gitlab-6bd6446c6f-fbltz
-   kubectl top pod -n gitlab
+   # Browser im LAN öffnen: https://gitlab.k8sops.online
+   # Login mit root / TempPass123!
+   # Bei 500-Fehler: kubectl logs -n gitlab deployment/gitlab --since=5m
    ```
 
-2. **Kubernetes Ingress testen:**
+2. **Kubernetes Ingress extern testen:**
    ```bash
+   # Auf einem LAN-Client (nicht WSL):
    curl -I http://192.168.178.54
-   curl -I http://gitlab.k8sops.online
-   curl -I http://jenkins.k8sops.online
+   curl -k -I https://gitlab.k8sops.online
    ```
 
 3. **Docker-Container Status prüfen:**
@@ -348,8 +349,8 @@ curl -I http://jellyfin.k8sops.online
 ### Vor dem Stoppen der Docker-Container:
 
 1. **GitLab Kubernetes stabilisieren**
-   - 463 Restarts ist kritisch
-   - Ursache muss behoben werden
+   - Liveness-Probe angepasst (initialDelay 600s, failureThreshold 12)
+   - Beobachten: mind. 24h ohne Restarts bevor Docker-Version abgeschaltet wird
 
 2. **Alle Kubernetes Services testen**
    - Verifizieren, dass alle Services funktionieren
@@ -369,8 +370,8 @@ curl -I http://jellyfin.k8sops.online
 ## 🎯 Zusammenfassung
 
 **Kritisch:**
-- GitLab Stabilität (463 Restarts)
-- Kubernetes Ingress-Verfügbarkeit verifizieren
+- GitLab Login-Test (Fix ausgerollt, Monitoring läuft)
+- Kubernetes Ingress-Verfügbarkeit extern verifizieren
 - Doppelte Docker-Container stoppen
 
 **Wichtig:**
@@ -387,5 +388,5 @@ curl -I http://jellyfin.k8sops.online
 - ✅ DNS-Stack optimiert
 - ✅ Port-Konflikte behoben
 - ✅ Sicherheit verbessert (WHOIS Privacy, Domain-Lock, 2FA)
-- ⚠️ GitLab Stabilität muss noch behoben werden
+- 🟡 GitLab Pod stabil seit 2025-11-05 17:10 CET (Liveness Delay erhöht) – Login-Test noch offen
 
