@@ -209,6 +209,26 @@ kubectl get configmap -n kube-system coredns -o yaml
 kubectl logs -n kube-system -l k8s-app=kube-dns
 ```
 
+### Pi-hole Deployment
+```bash
+# Automatisches Deployment (Empfohlen)
+./scripts/deploy-pihole.sh
+
+# Oder manuell mit kubectl
+kubectl apply -k k8s/pihole/
+
+# Pi-hole Status prüfen
+kubectl get pods -n pihole
+kubectl get svc -n pihole
+kubectl describe svc pihole -n pihole
+
+# Pi-hole Logs
+kubectl logs -n pihole -l app=pihole
+
+# MetallB IP-Pool prüfen
+kubectl get ipaddresspool -n metallb-system
+```
+
 ## Best Practices
 
 1. **Namespaces**: Services logisch in Namespaces organisieren
