@@ -32,7 +32,6 @@ spec:
         volumeMounts:
         - name: kubernetes-dashboard-certs
           mountPath: /certs
-          createMode: '0600'
         - name: tmp-volume
           mountPath: /tmp
         livenessProbe:
