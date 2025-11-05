@@ -1,0 +1,23 @@
+# GitLab CI für automatischen Sync zu GitHub
+# Falls Änderungen direkt in GitLab gemacht werden
+
+stages:
+  - sync
+
+sync-to-github:
+  stage: sync
+  image: alpine/git:latest
+  only:
+    - main
+  before_script:
+    - git config --global user.name "GitLab CI"
+    - git config --global user.email "gitlab-ci@k8sops.online"
+  script:
+    - |
+      git remote add github https://oauth2:${GITHUB_TOKEN}@github.com/bernd-lab/heimnetzwerk-infra.git || git remote set-url github https://oauth2:${GITHUB_TOKEN}@github.com/bernd-lab/heimnetzwerk-infra.git
+      git push github main --force || git push github main
+  only:
+    - main
+  variables:
+    GIT_STRATEGY: clone
+
