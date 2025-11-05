@@ -57,7 +57,7 @@
 - TR-064 prüfen und ggf. beschränken
 - Passwort wird während der Arbeit benötigt
 
-**Status**: ⚠️ Benötigt Fritzbox-Passwort
+**Status**: ⏳ In Arbeit (Passwort vorhanden, Login erfolgreich, Konfiguration ausstehend)
 
 ---
 
@@ -84,7 +84,7 @@
 - GitHub Secrets via API erstellen
 - GitLab CI Variables erstellen
 
-**Status**: ⚠️ Benötigt manuelle Token-Erstellung
+**Status**: ✅ Erledigt (GitHub Token erstellt, GitLab Token vorhanden, beide verschlüsselt gespeichert in `~/.cursor/secrets/system-key/`)
 
 ---
 
