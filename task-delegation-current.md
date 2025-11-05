@@ -57,7 +57,7 @@
 - TR-064 prüfen und ggf. beschränken
 - Passwort wird während der Arbeit benötigt
 
-**Status**: ⏳ In Arbeit (Passwort vorhanden, Login erfolgreich, Konfiguration ausstehend)
+**Status**: ✅ Erledigt (DNS-Rebind-Schutz ist aktiviert, UPnP/TR-064 geprüft und dokumentiert, Kubernetes-Integration analysiert)
 
 ---
 
