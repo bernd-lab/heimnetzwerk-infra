@@ -14,7 +14,7 @@
 - Prüfen ob CSRF-Problem behoben ist
 - Bei Erfolg: GitLab Root-Passwort verschlüsselt speichern
 
-**Status**: ⏳ Bereit zum Testen (Pod ist Ready, CSRF-Fix aktiv)
+**Status**: ⏳ Wartet auf Cluster-Verfügbarkeit (Liveness-Probe-Fix aktiv, noch nicht getestet)
 
 ---
 
@@ -31,7 +31,7 @@
   - Dokumentation für Secrets-Management
 - Status-Reports prüfen (können committet werden oder sind temporär)
 
-**Status**: 📋 Viele uncommittete Dateien vorhanden
+**Status**: ✅ Erledigt (0 uncommittete Dateien, alle Änderungen committed und gepusht)
 
 ---
 
@@ -44,7 +44,7 @@
 - Speicherplatz freigeben (~5.66GB)
 - Prüfen ob libvirt-exporter und cadvisor noch benötigt werden
 
-**Status**: 📋 Ready (Container bereits entfernt, Images noch vorhanden)
+**Status**: ✅ Erledigt (nginx:alpine Image entfernt, alle ungenutzten Images bereinigt)
 
 ---
 
@@ -70,7 +70,7 @@
 - SSH Key für Debian-Server prüfen (falls vorhanden)
 - Dokumentation aktualisieren
 
-**Status**: 📋 Ready (Scripts vorhanden)
+**Status**: ✅ Erledigt (GITLAB_ROOT_PASSWORD.age bereits vorhanden)
 
 ---
 
@@ -97,7 +97,7 @@
 - Logs analysieren auf Fehler
 - 24h Stabilität sicherstellen
 
-**Status**: ⏳ Monitoring läuft (Pod läuft seit 19m, 1 Restart vor 6m58s)
+**Status**: ⏳ Wartet auf Cluster-Verfügbarkeit (Liveness-Probe-Fix implementiert, Monitoring ausstehend)
 
 ---
 
