@@ -19,6 +19,8 @@ Lese diese Dateien für vollständigen Kontext:
 - `domain-sicherheitsanalyse.md` - WHOIS-Daten und Domain-Sicherheit
 - `dnssec-erklaerung.md` - DNSSEC Vor- und Nachteile
 - `pihole-analyse.md` - Pi-hole Konfiguration und Status
+- `laptop-dns-problem-analysis.md` - **NEU**: Laptop DNS-Problem-Analyse (Fedora 42)
+- `laptop-dns-fix-fedora.md` - **NEU**: Fedora-spezifische DNS-Fix-Anleitung
 - `agent-handover-dns-dokumentation.md` - DNS-Infrastruktur Übersicht
 
 ## Infrastruktur-Übersicht
@@ -42,10 +44,12 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 - **Nameserver**: gabriella.ns.cloudflare.com, olof.ns.cloudflare.com
 
 ### Pi-hole Konfiguration
+- **IP**: 192.168.178.10 (Kubernetes LoadBalancer)
 - **Upstream DNS**: Cloudflare (1.1.1.1, 1.0.0.1)
 - **Custom DNS Records**: `*.k8sops.online` → `192.168.178.54`
 - **Ad-Block Lists**: Aktiviert
 - **Port**: 53 (TCP/UDP)
+- **⚠️ AKTUELLER STATUS (2025-11-05)**: Pi-hole läuft nicht oder Port 53 nicht erreichbar
 
 ### CoreDNS Konfiguration
 - **Upstream**: Pi-hole (192.168.178.10)
@@ -65,6 +69,13 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 - Pi-hole Logs analysieren
 - CoreDNS Konfiguration prüfen
 - DNS-Flow nachvollziehen
+- **Client DNS-Probleme**: Port 53 Erreichbarkeit prüfen, Workarounds (Cloudflare DNS)
+
+### Pi-hole Problembehandlung (2025-11-05)
+- **Problem**: Pi-hole Port 53 nicht erreichbar (aber IP pingbar)
+- **Workaround**: Cloudflare DNS (1.1.1.1) temporär setzen
+- **Lösung**: Pi-hole Service in Kubernetes prüfen/reparieren/deployen
+- Siehe: `laptop-dns-problem-analysis.md` für vollständige Analyse
 
 ### Domain-Management
 - WHOIS-Informationen prüfen

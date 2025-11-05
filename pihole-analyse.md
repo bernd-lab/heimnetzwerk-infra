@@ -1,15 +1,24 @@
 # Pi-hole Analyse
 
-## Status
+## Status (Aktualisiert: 2025-11-05)
 
-**Pi-hole wurde nicht im Netzwerk gefunden.**
+**⚠️ Pi-hole läuft nicht oder ist nicht erreichbar.**
+
+### Aktuelle Situation
+
+- **Erwartete IP**: 192.168.178.10 (Kubernetes LoadBalancer)
+- **Netzwerk-Erreichbarkeit**: ✅ Ping funktioniert
+- **Port 53**: ❌ Nicht erreichbar (Timeout)
+- **DNS-Abfragen**: ❌ Schlagen fehl
+- **Docker Pi-hole**: Gestoppt (Exited 4 hours ago laut `debian-server-analysis-report.md`)
 
 ### Suchresultate
 
-- **192.168.178.54**: Kubernetes LoadBalancer (nicht Pi-hole)
-- **Scan durchgeführt**: IPs 192.168.178.20-202 getestet
+- **192.168.178.54**: Kubernetes LoadBalancer (Ingress-Controller, nicht Pi-hole)
+- **192.168.178.10**: IP ist pingbar, aber Port 53 nicht erreichbar
 - **Pi-hole API**: Nicht erreichbar
-- **Pi-hole Webinterface**: Nicht gefunden
+- **Pi-hole Webinterface**: Nicht erreichbar
+- **Kubernetes-Cluster**: Aktuell nicht erreichbar (kann nicht direkt geprüft werden)
 
 ## Mögliche Szenarien
 
@@ -49,8 +58,23 @@ Die Fritzbox ist konfiguriert mit:
 
 ## Nächste Schritte
 
-1. Klären ob Pi-hole gewünscht/benötigt wird
-2. Falls ja: Pi-hole installieren und konfigurieren
-3. DNS-Stack optimieren: Fritzbox → Pi-hole → Cloudflare/United Domains
-4. Certbot DNS-Challenge Integration prüfen
+1. **Sofort**: Cloudflare DNS als Workaround für betroffene Clients (siehe `laptop-dns-fix-fedora.md`)
+2. **Kubernetes-Cluster-Verfügbarkeit prüfen**: Warten bis Cluster wieder erreichbar ist
+3. **Pi-hole Status prüfen**: Sobald Cluster erreichbar ist
+   - `kubectl get pods -A | grep pihole`
+   - `kubectl get svc -A | grep pihole`
+4. **Falls Pi-hole nicht existiert**: In Kubernetes deployen
+   - IP: 192.168.178.10 (MetallB LoadBalancer)
+   - Helm Chart: `mojo2600/pihole`
+5. **Falls Pi-hole existiert aber nicht funktioniert**: Service-Konfiguration prüfen
+6. **DNS-Stack optimieren**: Fritzbox → Pi-hole → Cloudflare/United Domains
+7. **Zurück zu Pi-hole wechseln**: Nach erfolgreicher Reparatur
+
+## Bekannte Probleme (2025-11-05)
+
+- **Port 53 nicht erreichbar**: Pi-hole läuft nicht oder Service ist nicht korrekt konfiguriert
+- **Kubernetes-Cluster nicht erreichbar**: Kann aktuell nicht direkt geprüft werden
+- **Workaround verfügbar**: Cloudflare DNS (1.1.1.1) funktioniert temporär
+
+Siehe: `laptop-dns-problem-analysis.md` für vollständige Analyse.
 
