@@ -14,7 +14,7 @@
 - Prüfen ob CSRF-Problem behoben ist
 - Bei Erfolg: GitLab Root-Passwort verschlüsselt speichern
 
-**Status**: ⏳ Wartet auf Cluster-Verfügbarkeit (Liveness-Probe-Fix aktiv, noch nicht getestet)
+**Status**: ⏳ Prüfungen durchgeführt, Browser-Test erforderlich (Pod läuft, Service erreichbar)
 
 ---
 
@@ -97,7 +97,7 @@
 - Logs analysieren auf Fehler
 - 24h Stabilität sicherstellen
 
-**Status**: ⏳ Wartet auf Cluster-Verfügbarkeit (Liveness-Probe-Fix implementiert, Monitoring ausstehend)
+**Status**: ⏳ Monitoring durchgeführt (Pod läuft stabil, Restart-Count und Uptime geprüft)
 
 ---
 
