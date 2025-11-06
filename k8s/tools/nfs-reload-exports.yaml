@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nfs-reload-exports
+  namespace: default
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: zuhause
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: reload-exports
+        image: debian:bookworm
+        command: ["bash", "-c"]
+        args:
+        - |
+          apt-get update -qq
+          apt-get install -y -qq nfs-kernel-server > /dev/null 2>&1
+          chroot /host bash -c 'exportfs -ra && systemctl reload nfs-kernel-server 2>&1 || exportfs -ra'
+          echo "NFS exports reloaded"
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+        securityContext:
+          privileged: true
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
+          type: Directory
+      restartPolicy: Never
+  backoffLimit: 2
+

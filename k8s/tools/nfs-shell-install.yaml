@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-shell-install
+  namespace: default
+spec:
+  hostNetwork: true
+  hostPID: true
+  nodeSelector:
+    kubernetes.io/hostname: wsl2-ubuntu
+  tolerations:
+  - key: workload-type
+    operator: Equal
+    value: development
+    effect: NoSchedule
+  containers:
+  - name: shell
+    image: ubuntu:22.04
+    command: ["/bin/bash", "-c", "sleep infinity"]
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+        - SYS_ADMIN
+        - SYS_CHROOT
+        - MKNOD
+  restartPolicy: Never
+

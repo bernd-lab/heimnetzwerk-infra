@@ -1,153 +1,222 @@
-# Cluster-Handover Dokumentation
+# Kubernetes-Cluster Handover Dokumentation
 
 **Datum**: 2025-11-06  
 **Erstellt von**: System-Handover  
-**Zweck**: Vollständige Übergabe des Kubernetes-Clusters an den nächsten Agenten
+**Status**: Vollständiger Handover für nächsten Agenten
 
 ---
 
-## Schnellübersicht
+## Executive Summary
 
 ### Cluster-Status
-
-- **Nodes**: 2 (zuhause, wsl2-ubuntu)
-- **Pods**: 46 total (38 Running, 1 Pending, 3 Terminating, 4 Completed)
-- **Namespaces**: 23
-- **Services**: 30+
-- **Ingress**: 13
+- **Nodes**: 2 (1 Ready, 1 NotReady)
+- **Kubernetes Version**: v1.34.1 (beide Nodes)
+- **Pods**: 51 total (48 Running, 3 Pending)
+- **Namespaces**: 23 aktiv
+- **Services**: 30+ (2 LoadBalancer)
+- **Ingress**: 13 aktive Ingress-Ressourcen
+- **Storage**: 24 PVCs, 24 PVs (NFS-basiert)
 
 ### Kritische Probleme
-
-1. **Jellyfin kann nicht starten** - NFS-Mount-Fehler (P0)
-2. **ServiceAccount-Fehler** - ArgoCD, Velero, GitLab-Runner (P1)
-3. **Namespace-Inkonsistenz** - Jellyfin verteilt auf 2 Namespaces (P1)
+1. **WSL2-Node NotReady** - Kubelet-Fehler: "system validation failed" (P0)
+2. **3 Pods Pending** - Jenkins (2x), Velero (1x) - CPU-Ressourcen-Mangel (P1)
 
 ### Funktionierende Services
-
-✅ Pi-hole, Jenkins, GitLab, ArgoCD, Ingress, CoreDNS, Monitoring, Logging, Komga, Heimdall, Syncthing
-
----
-
-## Detaillierte Dokumentation
-
-### 📋 PROBLEME.md
-Priorisierte Liste aller identifizierten Probleme mit Lösungsansätzen.
-
-### 📊 CLUSTER-ANALYSE.md
-Detaillierte technische Analyse des gesamten Clusters (Nodes, Pods, Services, Storage, Netzwerk).
+✅ Pi-hole, ArgoCD, GitLab, Ingress-nginx, CoreDNS, Monitoring, Logging, Komga, Heimdall, Syncthing, Cert-Manager
 
 ---
 
-## Aktionsplan für nächsten Agenten
+## Cluster-Architektur
 
-### Phase 1: Kritische Probleme beheben (P0)
+### Nodes
 
-#### 1.1 Jellyfin NFS-Mount-Problem lösen
+| Node | IP | Status | Role | OS | Kubernetes | Container Runtime |
+|------|----|----|-----|----|----|----|
+| zuhause | 192.168.178.54 | Ready | control-plane | Debian 12 | v1.34.1 | containerd 1.6.20 |
+| wsl2-ubuntu | 172.31.16.162 | NotReady | worker | Ubuntu 24.04 WSL2 | v1.34.1 | containerd 1.7.28 |
 
-**Problem**: Jellyfin-Pod ist Pending, NFS-Volumes können nicht gemountet werden.
+**Wichtig**: WSL2-Node ist aktuell nicht funktionsfähig. Alle Pods laufen auf `zuhause` Node.
 
-**Schritte**:
-1. Prüfen, welche IP der NFS-Server bei Mount-Versuchen sieht:
-   ```bash
-   # Auf zuhause Node (192.168.178.54):
-   journalctl -u nfs-kernel-server -f
-   # Oder:
-   tail -f /var/log/syslog | grep nfs
-   ```
+### Netzwerk
 
-2. Windows-Host-IP identifizieren (nicht WSL2-interne IP 172.31.16.162)
+- **Pod Network**: 10.244.0.0/16 (Flannel CNI)
+- **Service Network**: 10.100.0.0/16
+- **Control Plane**: https://192.168.178.54:6443
+- **CNI**: Flannel (2 DaemonSet Pods)
 
-3. `/etc/exports` auf zuhause Node anpassen:
-   ```bash
-   # Option A: WSL2-Subnetz hinzufügen
-   /DATA 192.168.178.0/24,172.31.16.0/20(rw,sync,no_subtree_check,no_root_squash)
-   
-   # Option B: Windows-Host-IP hinzufügen (empfohlen)
-   /DATA 192.168.178.0/24,<WINDOWS_HOST_IP>(rw,sync,no_subtree_check,no_root_squash)
-   ```
+### Storage
 
-4. NFS-Exports neu laden:
-   ```bash
-   exportfs -ra
-   systemctl reload nfs-kernel-server
-   ```
+**StorageClasses**:
+- `nfs-data` (default) - Dynamische Provisionierung auf `/DATA`
+- `nfs-elements` - Für `/media/devmon/Elements`
+- `nfs-wd-black` - Für `/media/devmon/WD-Black_8TB`
+- `manual` - Manuelle Provisionierung
 
-5. Jellyfin-Pod neu starten:
-   ```bash
-   kubectl delete pod -l app=jellyfin
-   ```
+**NFS-Server** (auf zuhause Node):
+- Server: 192.168.178.54
+- Exports: `/DATA`, `/media/devmon/Elements`, `/media/devmon/WD-Black_8TB`
+- Erlaubte Subnetze: `192.168.178.0/24`, `172.31.16.0/20` (WSL2-Subnetz hinzugefügt)
 
-**Alternative**: Jellyfin auf zuhause Node verschieben (weniger CPU, aber funktioniert sofort).
+**PVCs/PVs**: 24 PVCs mit 24 zugehörigen PVs (alle NFS-basiert)
 
 ---
 
-### Phase 2: Wichtige Probleme beheben (P1)
+## Services und Namespaces
 
-#### 2.1 ServiceAccounts erstellen
+### LoadBalancer Services
 
-**Betroffene Namespaces**: argocd, velero, gitlab-runner
+| Service | Namespace | External IP | Ports | Status |
+|---------|-----------|-------------|-------|--------|
+| ingress-nginx-controller | ingress-nginx | 192.168.178.54 | 80, 443 | ✅ Running |
+| pihole | pihole | 192.168.178.10 | 53, 80 | ✅ Running |
 
-**Schritte**:
-1. Prüfen, welche ServiceAccounts fehlen:
-   ```bash
-   kubectl get events -A | grep "serviceaccount.*not found"
-   ```
+### Ingress-Ressourcen (13)
 
-2. ServiceAccounts erstellen oder Helm-Charts neu installieren:
-   ```bash
-   # Beispiel für ArgoCD:
-   kubectl create serviceaccount argocd-application-controller -n argocd
-   # ... weitere ServiceAccounts
-   ```
+Alle Services sind über `*.k8sops.online` erreichbar:
 
-#### 2.2 Namespace-Konsistenz für Jellyfin
+| Namespace | Service | Host | TLS |
+|-----------|--------|------|-----|
+| argocd | ArgoCD | argocd.k8sops.online | ✅ |
+| default | Jellyfin | jellyfin.k8sops.online | ✅ |
+| default | Jenkins | jenkins.k8sops.online | ✅ |
+| default | PlantUML | plantuml.k8sops.online | ✅ |
+| gitlab | GitLab | gitlab.k8sops.online | ✅ |
+| heimdall | Heimdall | heimdall.k8sops.online | ✅ |
+| komga | Komga | komga.k8sops.online | ✅ |
+| logging | Loki | loki.k8sops.online | ✅ |
+| monitoring | Grafana | grafana.k8sops.online | ✅ |
+| monitoring | Prometheus | prometheus.k8sops.online | ✅ |
+| syncthing | Syncthing | syncthing.k8sops.online | ✅ |
+| kubernetes-dashboard | Dashboard | dashboard.k8sops.online | ✅ |
+| test-tls | Test | test.k8sops.online | ✅ |
 
-**Entscheidung treffen**:
-- Option A: Alles in `jellyfin` Namespace verschieben
-- Option B: Alles zurück in `default` Namespace
+### Namespaces (23)
 
-**Hinweis**: PVCs können nicht einfach verschoben werden (an PVs gebunden).
+| Namespace | Pods | Zweck | Status |
+|-----------|------|-------|--------|
+| argocd | 7 | GitOps Deployment | ✅ Running |
+| cert-manager | 3 | TLS-Zertifikate | ✅ Running |
+| default | 8 | Standard-Services | ⚠️ 2 Pending |
+| gitlab | 3 | GitLab CI/CD | ✅ Running |
+| gitlab-agent | 1 | GitLab Agent | ✅ Running |
+| gitlab-runner | 1 | GitLab Runner | ✅ Running |
+| heimdall | 1 | Dashboard | ✅ Running |
+| ingress-nginx | 3 | Ingress Controller | ✅ Running |
+| komga | 1 | Manga-Server | ✅ Running |
+| kube-flannel | 2 | CNI Plugin | ✅ Running |
+| kube-system | 8 | System Components | ✅ Running |
+| kubernetes-dashboard | 1 | Dashboard | ✅ Running |
+| logging | 1 | Loki Logging | ✅ Running |
+| metallb-system | 2 | LoadBalancer | ✅ Running |
+| monitoring | 3 | Prometheus/Grafana | ✅ Running |
+| pihole | 1 | DNS/Ad-Blocker | ✅ Running |
+| syncthing | 1 | File-Sync | ✅ Running |
+| test-tls | 1 | TLS Testing | ✅ Running |
+| velero | 3 | Backup | ⚠️ 1 Pending |
 
 ---
 
-### Phase 3: Warnungen beheben (P2)
+## Kritische Probleme
 
-#### 3.1 WSL2-Disk-Capacity-Warnungen untersuchen
+### 1. WSL2-Node NotReady (P0 - Kritisch)
 
-**Problem**: Viele "InvalidDiskCapacity" Warnungen für wsl2-ubuntu.
+**Problem**:
+- Node `wsl2-ubuntu` ist im Status `NotReady`
+- Kubelet-Fehler: "system validation failed - wrong number of fields (expected 6, got 7)"
+- Ursache: Kubernetes v1.34.1 Inkompatibilität mit WSL2/cgroup2
 
-**Schritte**:
-1. WSL2-Disk-Konfiguration prüfen
-2. Möglicherweise WSL2-spezifisches Problem (kann ignoriert werden)
+**Auswirkung**:
+- WSL2-Node kann keine Pods schedulen
+- Alle Pods laufen auf `zuhause` Node
+- CPU-Ressourcen-Mangel auf `zuhause` Node
+
+**Lösungsansätze**:
+1. **Kubernetes Downgrade** (empfohlen): Auf v1.31.5 downgraden
+   - Siehe: `kubernetes-downgrade-feinkonzept.md` (wird erstellt)
+2. **WSL2 cgroup v1**: WSL2 auf cgroup v1 umstellen (komplex)
+3. **Warten auf Kubernetes-Fix**: Für WSL2/cgroup2 Kompatibilität
+
+**Status**: Wartet auf Implementierung
+
+### 2. Pods Pending - CPU-Ressourcen-Mangel (P1)
+
+**Betroffene Pods**:
+- `default/jenkins-6c5c5687f4-z77hf`: Pending
+- `default/jenkins-7fb5d89ddf-2rqxf`: Pending
+- `velero/velero-7c697f8956-ffphp`: Pending
+
+**Ursache**:
+- Alle Pods laufen auf `zuhause` Node (4 CPU)
+- CPU-Requests übersteigen verfügbare Ressourcen
+- WSL2-Node ist nicht verfügbar
+
+**Lösung**:
+- WSL2-Node reparieren (siehe Problem 1)
+- Oder: CPU-Requests reduzieren für weniger kritische Services
+- Oder: Services auf WSL2-Node verschieben (sobald Ready)
 
 ---
 
 ## Wichtige Konfigurationen
 
-### NFS-Server
-
-- **Server**: 192.168.178.54 (zuhause Node)
-- **Exports**: `/etc/exports`
-- **Pfade**:
-  - `/DATA` → Dynamische PVCs
-  - `/media/devmon/WD-Black_8TB` → WD-Black Festplatte
-  - `/media/devmon/Elements` → Elements Festplatte
-
 ### DNS
 
-- **CoreDNS**: Forward an Pi-hole (192.168.178.10) und 8.8.8.8
-- **Pi-hole**: LoadBalancer IP 192.168.178.10
+**CoreDNS**:
+- Forward an Pi-hole (192.168.178.10) und 8.8.8.8
+- Cache: 30 Sekunden
+- Service Discovery: cluster.local
 
-### Ingress
+**Pi-hole**:
+- LoadBalancer IP: 192.168.178.10
+- Ports: 53 (TCP/UDP), 80
+- Status: ✅ Running
 
-- **Controller**: nginx (hostNetwork: true)
+### Ingress-Controller
+
+- **Controller**: nginx-ingress
+- **Namespace**: ingress-nginx
 - **LoadBalancer IP**: 192.168.178.54
-- **Alle Domains**: `*.k8sops.online`
+- **Host Network**: true (bindet direkt an Host-IP)
+- **ConfigMap**: `allow-snippet-annotations: false` (Sicherheit)
 
-### Nodes
+### MetalLB
 
-- **zuhause**: Debian 12, 4 CPU, 32GB RAM (control-plane)
-- **wsl2-ubuntu**: Ubuntu 24.04 WSL2, 16 CPU, 58GB RAM
+- **IP-Pool**: `default-pool`
+- **Adressen**: `192.168.178.54/32`, `192.168.178.10/32`
+- **L2 Advertisement**: aktiviert
+
+### Cert-Manager
+
+- **ClusterIssuer**: `letsencrypt-prod-dns01`
+- **Challenge**: DNS01 mit Cloudflare
+- **API Token**: Secret `cloudflare-api-token` in `cert-manager` Namespace
+- **Status**: ✅ Ready
+
+---
+
+## Bekannte Konfigurationen
+
+### Jellyfin
+
+- **Namespace**: `default` (Deployment), `jellyfin` (Service/Ingress) - **Inkonsistent**
+- **PVCs**: Im `default` Namespace
+- **Status**: Deployment läuft, aber Service/Ingress im anderen Namespace
+- **PriorityClass**: `jellyfin-high-priority` (1000000)
+
+### GitLab
+
+- **Namespace**: `gitlab`
+- **Ingress**: `gitlab.k8sops.online`
+- **TLS**: Cert-Manager Zertifikat
+- **Liveness-Probe**: Verwendet `exec` mit `curl` (nicht `httpGet`)
+- **Status**: ✅ Running stabil
+
+### ArgoCD
+
+- **Namespace**: `argocd`
+- **Ingress**: `argocd.k8sops.online`
+- **TLS**: Cert-Manager Zertifikat
+- **Status**: ✅ Running (7 Pods)
 
 ---
 
@@ -155,74 +224,96 @@ Detaillierte technische Analyse des gesamten Clusters (Nodes, Pods, Services, St
 
 ### Kubernetes-Manifeste
 
-- `k8s/jellyfin/deployment.yaml` - Jellyfin Deployment
-- `k8s/jellyfin/service.yaml` - Jellyfin Service
-- `k8s/jellyfin/ingress.yaml` - Jellyfin Ingress
-- `k8s/jellyfin/namespace.yaml` - Jellyfin Namespace
-- `k8s/jellyfin/priorityclass.yaml` - PriorityClass
+- `k8s/` - Alle Kubernetes-Manifeste
+- `k8s/jellyfin/` - Jellyfin-Konfiguration
+- `k8s/pihole/` - Pi-hole-Konfiguration
+- `k8s/tools/` - Utility-Jobs und Tools
 
-### Tools
+### Dokumentation
 
-- `k8s/tools/nfs-reload-exports.yaml` - Job zum Neuladen der NFS-Exports
-- `k8s/tools/README.md` - Dokumentation der Tools
+- `CLUSTER-ANALYSE.md` - Detaillierte Cluster-Analyse
+- `PROBLEME.md` - Priorisierte Problem-Liste
+- `kubernetes-analyse.md` - Kubernetes-Konfiguration
+- `docker-kubernetes-migration.md` - Migrationsplan
 
----
+### Scripts
 
-## Bekannte Funktionsfähige Services
-
-### ✅ Laufen stabil
-
-- **Pi-hole** (192.168.178.10) - DNS/Ad-Blocking
-- **Jenkins** - CI/CD
-- **GitLab** - Code-Repository
-- **ArgoCD** - GitOps (teilweise - ServiceAccount-Probleme)
-- **Ingress-Controller** (192.168.178.54) - Routing
-- **CoreDNS** - Cluster-DNS
-- **Prometheus/Grafana** - Monitoring
-- **Loki** - Logging
-- **Komga** - Manga-Server
-- **Heimdall** - Dashboard
-- **Syncthing** - File-Sync
-
-### ⚠️ Probleme
-
-- **Jellyfin** - Kann nicht starten (NFS-Mount-Fehler)
+- `scripts/deploy-pihole.sh` - Pi-hole Deployment
+- `scripts/load-secrets.sh` - Secrets laden
 
 ---
 
 ## Nächste Schritte
 
-1. **Sofort**: Jellyfin NFS-Problem lösen (siehe Phase 1.1)
-2. **Bald**: ServiceAccounts erstellen (siehe Phase 2.1)
-3. **Später**: Namespace-Konsistenz, Disk-Warnungen
+### Sofort (P0)
+
+1. **WSL2-Node reparieren**:
+   - Kubernetes Downgrade auf v1.31.5 durchführen
+   - Oder: Alternative Lösung für cgroup2-Problem finden
+
+### Bald (P1)
+
+2. **Pending Pods beheben**:
+   - CPU-Ressourcen optimieren
+   - Oder: WSL2-Node reparieren und Pods dorthin verschieben
+
+3. **Namespace-Konsistenz**:
+   - Jellyfin komplett in `jellyfin` Namespace verschieben
+   - Oder: Alles zurück in `default` Namespace
+
+### Später (P2)
+
+4. **Monitoring verbessern**:
+   - Metrics-Server installieren (fehlt aktuell)
+   - Ressourcen-Monitoring erweitern
+
+5. **Backup-Strategie**:
+   - Velero-Backups verifizieren
+   - Automatische Backups einrichten
 
 ---
 
-## Kontaktinformationen / Zugriff
+## Zugriff und Kontakte
 
-- **Kubernetes API**: `https://192.168.178.54:6443`
-- **Dashboard**: `https://dashboard.k8sops.online`
-- **GitLab**: `https://gitlab.k8sops.online`
-- **ArgoCD**: `https://argocd.k8sops.online`
+### Kubernetes API
 
----
+- **Endpoint**: `https://192.168.178.54:6443`
+- **Config**: `~/.kube/config` oder `~/.kube/config-new-cluster.yaml`
+- **Context**: `kubernetes-admin@kubernetes`
 
-## Zusätzliche Ressourcen
+### Services
 
-- **PROBLEME.md** - Detaillierte Problem-Liste
-- **CLUSTER-ANALYSE.md** - Technische Cluster-Analyse
-- **k8s/tools/README.md** - Tools-Dokumentation
+- **Dashboard**: https://dashboard.k8sops.online
+- **GitLab**: https://gitlab.k8sops.online
+- **ArgoCD**: https://argocd.k8sops.online
+- **Grafana**: https://grafana.k8sops.online
+- **Pi-hole**: http://192.168.178.10
+
+### SSH-Zugriff
+
+- **zuhause Node**: `ssh bernd@192.168.178.54`
+- **SSH Key**: `~/.ssh/infra_ed25519` (verfügbar)
 
 ---
 
 ## Wichtige Hinweise
 
-1. **NFS-Problem ist komplex**: WSL2-Netzwerk vs. NFS-Export-Berechtigungen
-2. **PVCs können nicht verschoben werden**: An PVs gebunden, ReclaimPolicy beachten
-3. **ServiceAccounts**: Möglicherweise durch Helm-Charts verwaltet
-4. **WSL2-Disk-Warnungen**: Vermutlich harmlos, aber sollte untersucht werden
+1. **WSL2-Node ist aktuell nicht nutzbar** - Alle Pods laufen auf `zuhause` Node
+2. **CPU-Ressourcen sind knapp** - 4 CPU auf `zuhause` Node für alle Services
+3. **NFS-Exports wurden erweitert** - WSL2-Subnetz (172.31.16.0/20) ist erlaubt
+4. **Metrics-Server fehlt** - `kubectl top` funktioniert nicht
+5. **PVCs können nicht verschoben werden** - An PVs gebunden, ReclaimPolicy beachten
+
+---
+
+## Zusammenarbeit mit Agenten
+
+- **k8s-expert**: Kubernetes-Cluster-Management, Services, Ingress
+- **debian-server-expert**: Server-Analyse, Docker, KVM, Node-Management
+- **dns-expert**: DNS-Konfiguration, Pi-hole, CoreDNS
+- **gitops-expert**: ArgoCD, GitOps-Workflows
+- **monitoring-expert**: Prometheus, Grafana, Logging
 
 ---
 
 **Viel Erfolg beim Weiterarbeiten! 🚀**
-

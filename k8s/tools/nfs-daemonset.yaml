@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nfs-tools-installer
+spec:
+  selector:
+    matchLabels:
+      app: nfs-tools-installer
+  template:
+    metadata:
+      labels:
+        app: nfs-tools-installer
+    spec:
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/hostname: wsl2-ubuntu
+      tolerations:
+      - key: workload-type
+        operator: Equal
+        value: development
+        effect: NoSchedule
+      initContainers:
+      - name: install-nfs
+        image: ubuntu:22.04
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          mkdir -p /host
+          mount --bind / /host
+          chroot /host bash -c "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y nfs-common && echo 'NFS-Tools installiert' && which mount.nfs"
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - SYS_ADMIN
+            - SYS_CHROOT
+      containers:
+      - name: sleep
+        image: busybox:latest
+        command: ["sleep", "infinity"]
+  updateStrategy:
+    type: OnDelete
+

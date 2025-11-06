@@ -69,10 +69,10 @@ spec:
           value: compute,video,utility
         resources:
           limits:
-            cpu: "4"
-            memory: 12Gi
+            cpu: "8"
+            memory: 16Gi
           requests:
-            cpu: 3000m
+            cpu: 2000m
             memory: 8Gi
         livenessProbe:
           httpGet:

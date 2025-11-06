@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-check-and-fix
+  namespace: default
+spec:
+  hostNetwork: true
+  hostPID: true
+  nodeSelector:
+    kubernetes.io/hostname: zuhause
+  containers:
+  - name: nfs-check
+    image: debian:bookworm
+    command: ["bash", "-c"]
+    args:
+    - |
+      echo "=== Checking NFS server logs for mount attempts ==="
+      tail -100 /host/var/log/syslog | grep -i nfs | tail -20 || echo "No recent NFS logs found"
+      echo ""
+      echo "=== Current /etc/exports ==="
+      cat /host/etc/exports || echo "Cannot read /etc/exports"
+      echo ""
+      echo "=== Checking journalctl for NFS mount attempts ==="
+      chroot /host journalctl -u nfs-kernel-server --no-pager -n 50 | grep -i mount | tail -10 || echo "No mount attempts in journal"
+    volumeMounts:
+    - name: host-root
+      mountPath: /host
+    securityContext:
+      privileged: true
+  volumes:
+  - name: host-root
+    hostPath:
+      path: /
+      type: Directory
+  restartPolicy: Never
+

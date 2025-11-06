@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nfs-installer
+  namespace: default
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: wsl2-ubuntu
+      tolerations:
+      - key: workload-type
+        operator: Equal
+        value: development
+        effect: NoSchedule
+      containers:
+      - name: nfs-installer
+        image: ubuntu:22.04
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          apt-get update
+          apt-get install -y nfs-common
+          echo "NFS-Tools erfolgreich installiert"
+          sleep 5
+        securityContext:
+          privileged: true
+      restartPolicy: Never
+  backoffLimit: 3
+

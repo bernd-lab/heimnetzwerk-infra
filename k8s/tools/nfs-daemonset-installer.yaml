@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nfs-tools-installer
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: nfs-tools-installer
+  template:
+    metadata:
+      labels:
+        app: nfs-tools-installer
+    spec:
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/hostname: wsl2-ubuntu
+      tolerations:
+      - key: workload-type
+        operator: Equal
+        value: development
+        effect: NoSchedule
+      initContainers:
+      - name: install-nfs
+        image: ubuntu:22.04
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          # Install nfs-common on host
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get install -y nfs-common
+          echo "NFS-Tools installiert"
+        securityContext:
+          privileged: true
+      containers:
+      - name: sleep
+        image: busybox:latest
+        command: ["sleep", "infinity"]
+  updateStrategy:
+    type: OnDelete
+

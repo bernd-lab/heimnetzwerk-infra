@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-host-install-final
+  namespace: default
+spec:
+  hostNetwork: true
+  hostPID: true
+  nodeSelector:
+    kubernetes.io/hostname: wsl2-ubuntu
+  tolerations:
+  - key: workload-type
+    operator: Equal
+    value: development
+    effect: NoSchedule
+  containers:
+  - name: installer
+    image: ubuntu:22.04
+    command: ["/bin/bash", "-c"]
+    args:
+    - |
+      set -e
+      echo "=== NFS-Tools Installation auf Host ==="
+      
+      # Install nfs-common directly on host
+      export DEBIAN_FRONTEND=noninteractive
+      
+      # Update package list
+      apt-get update
+      
+      # Install nfs-common
+      apt-get install -y nfs-common
+      
+      # Verify installation
+      if [ -f /sbin/mount.nfs ]; then
+        echo "✅ NFS-Tools erfolgreich installiert!"
+        ls -la /sbin/mount.nfs
+        which mount.nfs
+      else
+        echo "❌ Fehler: mount.nfs nicht gefunden"
+        exit 1
+      fi
+      
+      echo "=== Installation abgeschlossen ==="
+      sleep 10
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+        - SYS_ADMIN
+        - CHOWN
+        - DAC_OVERRIDE
+        - FOWNER
+        - SETGID
+        - SETUID
+        - SYS_CHROOT
+        - MKNOD
+  restartPolicy: Never
+

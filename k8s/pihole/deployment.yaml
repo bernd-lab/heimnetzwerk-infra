@@ -90,6 +90,8 @@ spec:
       - name: dnsmasq-custom-config
         configMap:
           name: pihole-dnsmasq-custom
+      nodeSelector:
+        kubernetes.io/hostname: zuhause
       dnsPolicy: "None"
       dnsConfig:
         nameservers:

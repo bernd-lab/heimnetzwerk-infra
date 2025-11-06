@@ -1,0 +1,75 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nfs-update-exports
+  namespace: default
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: zuhause
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - name: update-exports
+        image: debian:bookworm
+        command: ["bash", "-c"]
+        args:
+        - |
+          set -e
+          echo "=== Current /etc/exports ==="
+          cat /host/etc/exports
+          echo ""
+          echo "=== Updating /etc/exports to include WSL2 subnet ==="
+          
+          # Backup erstellen
+          cp /host/etc/exports /host/etc/exports.backup.$(date +%Y%m%d_%H%M%S)
+          
+          # Neue /etc/exports erstellen mit WSL2-Subnetz
+          cat > /host/etc/exports.new << 'EOF'
+          # /etc/exports: the access control list for filesystems which may be exported
+          #		to NFS clients.  See exports(5).
+          #
+          # NFS Exports für Kubernetes Cluster
+          # Erstellt: 2025-11-03
+          # Aktualisiert: 2025-11-06 - WSL2-Subnetz hinzugefügt
+          
+          # DATA Volume - Erlaubt 192.168.178.0/24 und WSL2-Subnetz 172.31.16.0/20
+          /DATA 192.168.178.0/24(rw,sync,no_subtree_check,no_root_squash) 172.31.16.0/20(rw,sync,no_subtree_check,no_root_squash)
+          
+          # Elements Volume
+          /media/devmon/Elements 192.168.178.0/24(rw,sync,no_subtree_check,no_root_squash) 172.31.16.0/20(rw,sync,no_subtree_check,no_root_squash)
+          
+          # WD-Black Volume
+          /media/devmon/WD-Black_8TB 192.168.178.0/24(rw,sync,no_subtree_check,no_root_squash) 172.31.16.0/20(rw,sync,no_subtree_check,no_root_squash)
+          EOF
+          
+          # Neue Datei prüfen
+          echo "=== New /etc/exports ==="
+          cat /host/etc/exports.new
+          echo ""
+          
+          # Alte Datei ersetzen
+          mv /host/etc/exports.new /host/etc/exports
+          
+          echo "=== Reloading NFS exports ==="
+          chroot /host exportfs -ra
+          chroot /host systemctl reload nfs-kernel-server || chroot /host systemctl restart nfs-kernel-server
+          
+          echo "=== Verifying exports ==="
+          chroot /host exportfs -v
+          
+          echo "=== Done ==="
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+        securityContext:
+          privileged: true
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
+          type: Directory
+      restartPolicy: Never
+  backoffLimit: 2
+

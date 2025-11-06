@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nfs-install
+  namespace: default
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/hostname: wsl2-ubuntu
+      tolerations:
+      - key: workload-type
+        operator: Equal
+        value: development
+        effect: NoSchedule
+      containers:
+      - name: install
+        image: ubuntu:22.04
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          mkdir -p /host
+          mount --bind / /host
+          chroot /host bash -c "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y nfs-common && echo 'Installiert'"
+        securityContext:
+          privileged: true
+      restartPolicy: Never
+  backoffLimit: 1
+
