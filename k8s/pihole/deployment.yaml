@@ -70,6 +70,10 @@ spec:
           mountPath: /etc/pihole
         - name: pihole-dnsmasq
           mountPath: /etc/dnsmasq.d
+        - name: dnsmasq-custom-config
+          mountPath: /etc/dnsmasq.d/99-custom.conf
+          subPath: 99-custom.conf
+          readOnly: true
         resources:
           requests:
             memory: "256Mi"
@@ -83,6 +87,9 @@ spec:
           claimName: pihole-data
       - name: pihole-dnsmasq
         emptyDir: {}
+      - name: dnsmasq-custom-config
+        configMap:
+          name: pihole-dnsmasq-custom
       dnsPolicy: "None"
       dnsConfig:
         nameservers:

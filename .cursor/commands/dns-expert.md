@@ -52,7 +52,9 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 - **Custom DNS Records**: `*.k8sops.online` → `192.168.178.54`
 - **Ad-Block Lists**: Aktiviert
 - **Port**: 53 (TCP/UDP)
-- **⚠️ AKTUELLER STATUS (2025-11-05)**: Pi-hole läuft nicht oder Port 53 nicht erreichbar
+- **✅ AKTUELLER STATUS (2025-11-06)**: Pi-hole läuft vollständig funktionsfähig
+- **DNSMASQ_LISTENING**: "all" (akzeptiert Anfragen von allen Netzwerken)
+- **Kubernetes Pod Network**: Konfiguriert für Anfragen von 10.244.0.0/16 (dnsmasq local-service=false)
 
 ### CoreDNS Konfiguration
 - **Upstream**: Pi-hole (192.168.178.10)
@@ -74,15 +76,20 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 - DNS-Flow nachvollziehen
 - **Client DNS-Probleme**: Port 53 Erreichbarkeit prüfen, Workarounds (Cloudflare DNS)
 
-### Pi-hole Problembehandlung (2025-11-05)
-- **Problem**: Pi-hole Port 53 nicht erreichbar (aber IP pingbar)
-- **Workaround**: Cloudflare DNS (1.1.1.1) temporär setzen
-- **Lösung**: Pi-hole Service in Kubernetes deployen
-  - **Manifeste**: `k8s/pihole/` - Vollständige Kubernetes Manifeste vorbereitet
-  - **Deployment-Script**: `scripts/deploy-pihole.sh` - Automatisches Deployment
-  - **Status**: Manifeste erstellt, Deployment ausstehend (Cluster-Verfügbarkeit)
-- Siehe: `laptop-dns-problem-analysis.md` für vollständige Analyse
-- Siehe: `pihole-deployment-status.md` für Deployment-Anleitung
+### Pi-hole Status (2025-11-06) ✅ FUNKTIONSFÄHIG
+- **✅ Status**: Pi-hole läuft vollständig funktionsfähig
+- **IP**: 192.168.178.10 (Kubernetes LoadBalancer)
+- **Service**: LoadBalancer mit MetalLB, korrekte Konfiguration (kein loadBalancerIP Feld)
+- **DNS**: Funktioniert vom Server, Windows-PC und WSL
+- **Kubernetes Pod Network**: Konfiguriert für Anfragen von 10.244.0.0/16
+  - **dnsmasq local-service=false**: Erlaubt Anfragen von Kubernetes Pods
+  - **ConfigMap**: `pihole-dnsmasq-custom` mit `/etc/dnsmasq.d/99-custom.conf`
+- **Windows-PC**: Verwendet automatisch Pi-hole (192.168.178.10)
+- **Fedora-Laptop**: Manuelle DNS (8.8.8.8) entfernt, sollte automatisch Pi-hole verwenden
+- **Dokumentation**:
+  - `pihole-reparatur-zusammenfassung.md` - Vollständige Reparatur-Dokumentation
+  - `pihole-funktionsfaehig.md` - Aktueller Status
+  - `pihole-dnsmasq-kubernetes-fix.md` - dnsmasq Kubernetes Pod Network Fix
 
 ### Domain-Management
 - WHOIS-Informationen prüfen
@@ -183,27 +190,64 @@ ssh -i <(echo "$DEBIAN_SERVER_SSH_KEY") bernd@192.168.178.54
 
 Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentation.
 
-## Git-Commit
+## Git-Commit mit Qualitätskontrolle
 
-**WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!
+**WICHTIG**: Qualitätskontrolle MUSS vor jedem Git-Commit durchgeführt werden!
+
+### Prozess: Qualitätskontrolle → Git-Commit
+
+1. **Qualitätskontrolle durchführen** (siehe Qualitätskontrolle-Sektion oben)
+2. **Tests ausführen**: Alle relevanten Tests müssen erfolgreich sein
+3. **Erst bei Erfolg**: Git-Commit durchführen
+4. **Bei Fehlern**: Fehler beheben, erneut testen, dann committen
+
+### Git-Commit-Script mit Qualitätskontrolle
 
 ```bash
-AGENT_NAME="dns-expert" \
-COMMIT_MESSAGE="dns-expert: $(date '+%Y-%m-%d %H:%M') - DNS-Konfiguration aktualisiert" \
-scripts/auto-git-commit.sh
+# 1. Qualitätskontrolle durchführen
+echo "=== Qualitätskontrolle: DNS-Änderungen ==="
+
+# DNS-Auflösung testen
+if ! dig @192.168.178.10 google.de +short +timeout=3 > /dev/null 2>&1; then
+  echo "❌ FEHLER: DNS-Auflösung fehlgeschlagen!"
+  exit 1
+fi
+
+# Lokale Domains testen
+if ! dig @192.168.178.10 gitlab.k8sops.online +short +timeout=3 > /dev/null 2>&1; then
+  echo "❌ FEHLER: Lokale Domain-Auflösung fehlgeschlagen!"
+  exit 1
+fi
+
+# Pi-hole Service-Status prüfen
+if ! kubectl get svc pihole -n pihole > /dev/null 2>&1; then
+  echo "❌ FEHLER: Pi-hole Service nicht erreichbar!"
+  exit 1
+fi
+
+echo "✅ Qualitätskontrolle erfolgreich!"
+
+# 2. Git-Commit durchführen (nur bei erfolgreicher Qualitätskontrolle)
+bash scripts/git-commit-with-qc.sh "dns-expert" "dns-expert: $(date '+%Y-%m-%d %H:%M') - DNS-Konfiguration aktualisiert"
 ```
+
+### Automatische Qualitätskontrolle
 
 **Das Script prüft automatisch**:
 - ✅ Ob Secrets versehentlich committet würden (stoppt falls ja!)
 - ✅ Ob Git-Repository vorhanden ist
 - ✅ Ob Remote (GitHub/GitLab) konfiguriert ist
 - ✅ Ob Push erfolgreich war
+- ✅ **NEU**: Ob Qualitätskontrolle-Tests erfolgreich waren
+
+**Bei fehlgeschlagenen Tests**: Script stoppt und meldet welche Tests fehlgeschlagen sind.
 
 **Bei Problemen**: Script meldet klar was das Problem ist und wie es behoben wird.
 
 **Falls Git-Commit nicht möglich**: Problem klar dokumentieren und Lösungsschritte angeben.
 
 Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
+Siehe: `qualitaetskontrolle-checkliste.md` für vollständige Checkliste.
 
 ## Kontext-Aktualisierung
 
@@ -230,6 +274,35 @@ Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 - [ ] Pi-hole/Cloudflare-Status aktualisiert?
 - [ ] DNS-Flow-Diagramm aktualisiert (falls nötig)?
 - [ ] Konsistenz mit k8s-expert (CoreDNS) geprüft?
+
+## Qualitätskontrolle
+
+**WICHTIG**: Nach jedem Task Qualitätskontrolle durchführen!
+
+### Standard-Qualitätskontrolle
+1. **Funktionalitätstest**:
+   - [ ] DNS-Auflösung getestet: `dig @192.168.178.10 google.de`
+   - [ ] Lokale Domains getestet: `dig @192.168.178.10 gitlab.k8sops.online`
+   - [ ] Pi-hole Logs geprüft: `kubectl logs -n pihole -l app=pihole --tail=20`
+   - [ ] Service-Status geprüft: `kubectl get svc pihole -n pihole`
+
+2. **Konfigurationstest**:
+   - [ ] ConfigMaps korrekt: `kubectl get configmap -n pihole`
+   - [ ] Secrets korrekt: `kubectl get secret -n pihole`
+   - [ ] Deployment korrekt: `kubectl describe deployment pihole -n pihole`
+
+3. **Integrationstest**:
+   - [ ] CoreDNS Integration: `kubectl run test-dns --image=busybox --rm -it --restart=Never -- nslookup google.de`
+   - [ ] Windows-PC DNS: `nslookup google.de` (vom Windows-PC)
+   - [ ] WSL DNS: `dig google.de` (vom WSL)
+
+4. **Nacharbeit bei Fehlern**:
+   - [ ] Fehler analysiert und dokumentiert
+   - [ ] Korrektur durchgeführt
+   - [ ] Erneut getestet
+   - [ ] Dokumentation aktualisiert
+
+Siehe: `qualitaetskontrolle-checkliste.md` für vollständige Checkliste.
 
 Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
 

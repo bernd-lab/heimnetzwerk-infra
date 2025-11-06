@@ -9,6 +9,7 @@ data:
   PIHOLE_DNS_: "1.1.1.1;1.0.0.1"  # Cloudflare DNS
   DNSSEC: "true"
   DNSMASQ_LISTENING: "all"
+  DNSMASQ_USER: "root"
   VIRTUAL_HOST: "pihole.k8sops.online"
   ServerIP: "192.168.178.10"
 

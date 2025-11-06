@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-dnsmasq-custom
+  namespace: pihole
+data:
+  99-custom.conf: |
+    # Custom dnsmasq configuration for Kubernetes Pod Network
+    # Allows DNS queries from Kubernetes Pod Network (10.244.0.0/16)
+    
+    # Disable local-service restriction to allow queries from Pod Network
+    # This allows Kubernetes pods to query Pi-hole DNS
+    # The default dnsmasq behavior blocks queries from non-local networks
+    # Setting local-service=false allows queries from any network
+    local-service=false
+    
+    # Explicitly allow queries from Kubernetes Pod Network
+    # This prevents the "ignoring query from non-local network" warning
+    interface=
+    bind-interfaces=false
+

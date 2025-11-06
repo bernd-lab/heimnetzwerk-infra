@@ -32,6 +32,7 @@ Lese diese Dateien für vollständigen Kontext:
 Clients → Fritzbox DHCP → Pi-hole (192.168.178.10) → Cloudflare (1.1.1.1) → Internet
 Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Internet
 ```
+**Status (2025-11-06)**: ✅ Pi-hole funktioniert vollständig, akzeptiert Anfragen von Kubernetes Pod Network (10.244.0.0/16)
 
 ### Kubernetes Services
 - **Ingress**: nginx-ingress (192.168.178.54:80/443)
@@ -56,7 +57,7 @@ Kubernetes Pods → CoreDNS → Pi-hole (192.168.178.10) → Cloudflare → Inte
 ### DHCP
 - **DHCP-Server**: ✅ Aktiviert
 - **IP-Bereich**: 192.168.178.20 - 192.168.178.200
-- **Lokaler DNS-Server**: 192.168.178.54 (Kubernetes LoadBalancer)
+- **Lokaler DNS-Server**: 192.168.178.10 (Pi-hole, Kubernetes LoadBalancer)
 - **Lease-Zeit**: 1 Tag
 
 ### Internet
@@ -248,27 +249,96 @@ Siehe auch: `.cursor/context/secrets-context.md` für vollständige Dokumentatio
 - [ ] Infrastruktur-Übersicht aktualisiert?
 - [ ] Konsistenz mit anderen Agenten geprüft (z.B. dns-expert, k8s-expert)?
 
+## Qualitätskontrolle
+
+**WICHTIG**: Nach jedem Task Qualitätskontrolle durchführen!
+
+### Standard-Qualitätskontrolle
+1. **Funktionalitätstest**:
+   - [ ] Netzwerk-Konnektivität: `ping -c 2 <target>`
+   - [ ] DNS-Auflösung: `nslookup <domain>`
+   - [ ] Service-Erreichbarkeit: `curl http://<service>`
+   - [ ] Kubernetes-Services: `kubectl get svc -A`
+
+2. **Konfigurationstest**:
+   - [ ] Fritzbox-Konfiguration geprüft (DHCP, DNS)
+   - [ ] Kubernetes-Konfiguration geprüft (Services, Ingress)
+   - [ ] Netzwerk-Routing geprüft: `ip route show`
+   - [ ] IP-Adressen geprüft: `ip addr show`
+
+3. **Integrationstest**:
+   - [ ] Services kommunizieren korrekt
+   - [ ] Netzwerk-Routing funktioniert
+   - [ ] DNS-Weiterleitung funktioniert
+   - [ ] LoadBalancer IPs zugewiesen
+
+4. **Nacharbeit bei Fehlern**:
+   - [ ] Fehler analysiert und dokumentiert
+   - [ ] Korrektur durchgeführt
+   - [ ] Erneut getestet
+   - [ ] Dokumentation aktualisiert
+
+Siehe: `qualitaetskontrolle-checkliste.md` für vollständige Checkliste.
+
 Siehe: `.cursor/context/context-self-update.md` für vollständige Anleitung.
 
-## Git-Commit
+## Git-Commit mit Qualitätskontrolle
 
-**WICHTIG**: Nach jeder Änderung automatisch in Git einchecken!
+**WICHTIG**: Qualitätskontrolle MUSS vor jedem Git-Commit durchgeführt werden!
+
+### Prozess: Qualitätskontrolle → Git-Commit
+
+1. **Qualitätskontrolle durchführen** (siehe Qualitätskontrolle-Sektion oben)
+2. **Tests ausführen**: Alle relevanten Tests müssen erfolgreich sein
+3. **Erst bei Erfolg**: Git-Commit durchführen
+4. **Bei Fehlern**: Fehler beheben, erneut testen, dann committen
+
+### Git-Commit-Script mit Qualitätskontrolle
 
 ```bash
-AGENT_NAME="infrastructure-expert" \
-COMMIT_MESSAGE="infrastructure-expert: $(date '+%Y-%m-%d %H:%M') - Infrastruktur-Dokumentation aktualisiert" \
-scripts/auto-git-commit.sh
+# 1. Qualitätskontrolle durchführen
+echo "=== Qualitätskontrolle: Infrastruktur-Änderungen ==="
+
+# Netzwerk-Konnektivität testen
+if ! ping -c 2 192.168.178.1 > /dev/null 2>&1; then
+  echo "❌ FEHLER: Netzwerk-Konnektivität fehlgeschlagen!"
+  exit 1
+fi
+
+# DNS-Auflösung testen
+if ! nslookup google.de > /dev/null 2>&1; then
+  echo "❌ FEHLER: DNS-Auflösung fehlgeschlagen!"
+  exit 1
+fi
+
+# Kubernetes-Services prüfen
+if ! kubectl get svc -A > /dev/null 2>&1; then
+  echo "❌ FEHLER: Kubernetes-Services nicht erreichbar!"
+  exit 1
+fi
+
+echo "✅ Qualitätskontrolle erfolgreich!"
+
+# 2. Git-Commit durchführen (nur bei erfolgreicher Qualitätskontrolle)
+bash scripts/git-commit-with-qc.sh "infrastructure-expert" "infrastructure-expert: $(date '+%Y-%m-%d %H:%M') - Infrastruktur-Dokumentation aktualisiert"
 ```
+
+### Automatische Qualitätskontrolle
 
 **Das Script prüft automatisch**:
 - ✅ Ob Secrets versehentlich committet würden (stoppt falls ja!)
 - ✅ Ob Git-Repository vorhanden ist
 - ✅ Ob Remote (GitHub/GitLab) konfiguriert ist
 - ✅ Ob Push erfolgreich war
+- ✅ **NEU**: Ob Qualitätskontrolle-Tests erfolgreich waren
+
+**Bei fehlgeschlagenen Tests**: Script stoppt und meldet welche Tests fehlgeschlagen sind.
 
 **Bei Problemen**: Script meldet klar was das Problem ist und wie es behoben wird.
 
 **Falls Git-Commit nicht möglich**: Problem klar dokumentieren und Lösungsschritte angeben.
+
+Siehe: `qualitaetskontrolle-checkliste.md` für vollständige Checkliste.
 
 Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 
