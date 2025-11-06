@@ -1,0 +1,11 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: jellyfin-high-priority
+  labels:
+    app: jellyfin
+value: 1000000
+description: "Highest priority for Jellyfin media server - can preempt other pods"
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+

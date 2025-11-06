@@ -17,6 +17,7 @@ spec:
       labels:
         app: jellyfin
     spec:
+      priorityClassName: jellyfin-high-priority
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -68,11 +69,11 @@ spec:
           value: compute,video,utility
         resources:
           limits:
-            cpu: "2"
-            memory: 2Gi
+            cpu: "4"
+            memory: 12Gi
           requests:
-            cpu: 800m
-            memory: 1Gi
+            cpu: 3000m
+            memory: 8Gi
         livenessProbe:
           httpGet:
             path: /health
