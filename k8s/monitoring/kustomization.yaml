@@ -6,6 +6,8 @@ resources:
 - prometheus/clusterrole.yaml
 - prometheus/clusterrolebinding.yaml
 - prometheus/configmap.yaml
+- prometheus/deployment.yaml
+- prometheus/service.yaml
 - prometheus/servicemonitors/coredns.yaml
 - prometheus/servicemonitors/cert-manager.yaml
 - prometheus/servicemonitors/nginx-ingress.yaml
@@ -22,6 +24,9 @@ resources:
 - prometheus/prometheusrules/kubernetes.yaml
 - prometheus/prometheusrules/services.yaml
 - prometheus/prometheusrules/infrastructure.yaml
+- grafana/serviceaccount.yaml
+- grafana/deployment.yaml
+- grafana/service.yaml
 - grafana/dashboard-provisioning.yaml
 - grafana/dashboards/standard/prometheus-stats.yaml
 - grafana/dashboards/standard/alertmanager.yaml
