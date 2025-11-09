@@ -28,34 +28,35 @@ Diese Dokumentation beschreibt die komplette Infrastruktur-Landschaft des Heimne
 ### Infrastruktur-Diagramm (PlantUML)
 
 ```plantuml
-@startuml Infrastruktur-Landschaft-Komplett
+@startuml Infrastruktur-Landschaft-Umfassend
 !theme plain
 skinparam backgroundColor #FFFFFF
 skinparam componentStyle rectangle
+skinparam linetype ortho
 
 title Umfassende Infrastruktur-Landschaft: Heimnetzwerk k8sops.online
 
 package "Hardware & Netzwerk" #E8F4F8 {
   component "FritzBox 7590 AX\n192.168.178.1\nDHCP: 20-50, 60-200\nDNS Forwarder" as fritzbox #FFA500
-  component "Kubernetes Node\nzuhause\n192.168.178.54" as k8snode #4169E1
+  component "Kubernetes Node\nzuhause\n192.168.178.54\nSingle-Node Cluster" as k8snode #4169E1
   component "Windows-Maschine\nWSL2 Host" as windows #00A8E8
   component "Laptop\nFedora 42" as laptop #87CEEB
 }
 
 package "Kubernetes Cluster" #F0F8F0 {
   package "DNS-Stack" #E8F5E9 {
-    component "Pi-hole\n192.168.178.54:53\n15 Blocklisten\nhostNetwork: true" as pihole #2E7D32
+    component "Pi-hole\n192.168.178.54:53\n15 Blocklisten\nhostNetwork: true\nRollingUpdate" as pihole #2E7D32
     component "CoreDNS\n10.96.0.10\nCluster DNS" as coredns #1565C0
   }
   
   package "Ingress & TLS" #FFF0F5 {
-    component "nginx-ingress\n192.168.178.54:80/443" as ingress #E91E63
-    component "Cert-Manager\nLet's Encrypt\nACME Server" as certmgr #00BCD4
+    component "nginx-ingress\n192.168.178.54:80/443\nLoadBalancer" as ingress #E91E63
+    component "Cert-Manager\nLet's Encrypt\nACME Server\nDNS Challenge" as certmgr #00BCD4
   }
   
   package "GitOps & CI/CD" #FFEBEE {
-    component "ArgoCD\n8 Applications\nGitOps Controller" as argocd #EF4444
-    component "GitLab CE\nPostgreSQL + Redis\nCI/CD Platform" as gitlab #FC6D26
+    component "ArgoCD\n8 Applications\nGitOps Controller\nAuto-Sync + Self-Heal" as argocd #EF4444
+    component "GitLab CE\nPostgreSQL + Redis\nCI/CD Platform\n2 CPU, 6Gi Memory" as gitlab #FC6D26
     component "GitLab Agent\nKubernetes Integration" as gitlabagent #FC6D26
     component "GitLab Runner\nCI/CD Execution" as gitlabrunner #FC6D26
   }
@@ -66,57 +67,68 @@ package "Kubernetes Cluster" #F0F8F0 {
   }
   
   package "Monitoring & Observability" #FFF3E0 {
-    component "Grafana\nMonitoring Dashboard" as grafana #F46800
-    component "Prometheus\nMetrics Collection" as prometheus #F46800
-    component "Loki\nLog Aggregation" as loki #F46800
+    component "Grafana\nMonitoring Dashboard\nPrometheus + Loki" as grafana #F46800
+    component "Prometheus\nMetrics Collection\nPort 9090" as prometheus #F46800
+    component "Loki\nLog Aggregation\nPort 3100" as loki #F46800
   }
   
   package "Dashboard & Tools" #E3F2FD {
-    component "Heimdall\nService Dashboard" as heimdall #3B82F6
-    component "Kubernetes Dashboard\nCluster Management" as k8sdash #3B82F6
+    component "Heimdall\nService Dashboard\nPublic Access" as heimdall #3B82F6
+    component "Kubernetes Dashboard\nCluster Management\nService Account Auth" as k8sdash #3B82F6
     component "PlantUML Server\nPort 8080\nDiagram Rendering" as plantuml #3B82F6
-    component "Syncthing\nFile Synchronization" as syncthing #3B82F6
+    component "Syncthing\nFile Synchronization\nPort 22000" as syncthing #3B82F6
   }
   
-  component "Velero\nBackup System" as velero #9C27B0
+  component "Velero\nBackup System\nPort 8085" as velero #9C27B0
 }
 
 package "Internet Services" #FFF8E1 {
-  component "Cloudflare DNS\n1.1.1.1, 1.0.0.1\nUpstream DNS" as cloudflare #FF6F00
-  component "Let's Encrypt\nACME Certificate Authority" as letsencrypt #00BCD4
+  component "Cloudflare DNS\n1.1.1.1, 1.0.0.1\nUpstream DNS\nDNS Challenge" as cloudflare #FF6F00
+  component "Let's Encrypt\nACME Certificate Authority\nTLS Certificates" as letsencrypt #00BCD4
   component "United Domains\nDomain Registrar\nk8sops.online" as uniteddomains #FF6F00
 }
 
-' Netzwerk-Verbindungen
-fritzbox --> k8snode : DHCP
+' Netzwerk-Verbindungen Hardware
+fritzbox --> k8snode : DHCP + DNS Forward
 fritzbox --> windows : DHCP
 fritzbox --> laptop : DHCP
-fritzbox --> pihole : DNS Forward
 
+' DNS-Flow
 k8snode --> coredns : Cluster DNS
 coredns --> pihole : Upstream DNS
 pihole --> cloudflare : Upstream DNS
+fritzbox --> pihole : DNS Forward
 
-ingress --> argocd : HTTPS
-ingress --> gitlab : HTTPS
-ingress --> jellyfin : HTTPS
-ingress --> komga : HTTPS
-ingress --> grafana : HTTPS
-ingress --> heimdall : HTTPS
-ingress --> k8sdash : HTTPS
-ingress --> plantuml : HTTPS
-ingress --> syncthing : HTTPS
-ingress --> pihole : HTTPS
+' Ingress zu Services
+ingress --> argocd : HTTPS (argocd.k8sops.online)
+ingress --> gitlab : HTTPS (gitlab.k8sops.online)
+ingress --> jellyfin : HTTPS (jellyfin.k8sops.online)
+ingress --> komga : HTTPS (komga.k8sops.online)
+ingress --> grafana : HTTPS (grafana.k8sops.online)
+ingress --> prometheus : HTTPS (prometheus.k8sops.online)
+ingress --> heimdall : HTTPS (heimdall.k8sops.online)
+ingress --> k8sdash : HTTPS (dashboard.k8sops.online)
+ingress --> plantuml : HTTPS (plantuml.k8sops.online)
+ingress --> syncthing : HTTPS (syncthing.k8sops.online)
+ingress --> pihole : HTTPS (pihole.k8sops.online)
 
-certmgr --> letsencrypt : ACME
+' TLS & Certificates
+certmgr --> letsencrypt : ACME Protocol
 certmgr --> cloudflare : DNS Challenge
 certmgr --> ingress : TLS Certificates
 
-argocd --> gitlab : Git Repository
-gitlabagent --> gitlab : Connection
+' GitOps Flow
+argocd --> gitlab : Git Repository Sync
+gitlabagent --> gitlab : Kubernetes Connection
 gitlabrunner --> gitlab : CI/CD Jobs
 
+' Monitoring Flow
+grafana --> prometheus : Metrics Query
+grafana --> loki : Log Query
+
+' Domain & DNS
 cloudflare --> uniteddomains : DNS Records
+cloudflare --> ingress : DNS Resolution
 
 @enduml
 ```
