@@ -10,8 +10,9 @@ data:
     
     # Discord webhook receiver (using webhook_configs with custom template)
     # WICHTIG: Die Webhook-URL wird aus dem Secret alertmanager-discord-webhook gelesen
-    # Das Secret muss manuell erstellt werden (siehe secret.yaml für Anleitung)
+    # Das Secret muss manuell erstellt werden (siehe README-SECRET.md für Anleitung)
     # Die ConfigMap wird zur Laufzeit durch einen Init-Container generiert
+    # ⚠️ secret.yaml.template darf NICHT angewendet werden - nur als Dokumentation!
     receivers:
     - name: 'discord-default'
       webhook_configs:

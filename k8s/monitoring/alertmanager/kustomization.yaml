@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- secret.yaml
+# secret.yaml ist AUSDRÜCKLICH NICHT enthalten!
+# Das Secret muss manuell erstellt werden (siehe README-SECRET.md)
 - configmap.yaml
 - pvc.yaml
 - deployment.yaml

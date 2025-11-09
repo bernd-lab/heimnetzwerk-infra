@@ -6,6 +6,15 @@
 
 Die Webhook URL ermöglicht es, Nachrichten an den Discord-Kanal zu senden. Jeder mit Zugriff auf die URL kann Nachrichten im Namen des Alertmanagers senden.
 
+## ⚠️ KRITISCH: secret.yaml.template darf NICHT angewendet werden!
+
+Die Datei `secret.yaml.template` ist **NUR** als Dokumentation gedacht und enthält einen Platzhalter-Wert.
+**Wenn Sie diese Datei mit `kubectl apply` ausführen, wird der Platzhalter als echter Secret-Wert gesetzt,**
+**was zu fehlgeschlagenen Webhooks führt!**
+
+Die `secret.yaml.template` ist **AUSDRÜCKLICH** aus der Kustomization ausgeschlossen.
+Das Secret **MUSS** manuell erstellt werden (siehe unten).
+
 ## Secret erstellen
 
 Das Secret muss **manuell** erstellt werden, bevor Alertmanager deployed wird:
