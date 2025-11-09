@@ -1,0 +1,233 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"gitlab","namespace":"gitlab"},"spec":{"ports":[{"name":"http","port":80,"targetPort":80},{"name":"ssh","port":22,"targetPort":22}],"selector":{"app":"gitlab"},"type":"ClusterIP"}}
+
+        '
+    creationTimestamp: '2025-11-03T19:01:43Z'
+    name: gitlab
+    namespace: gitlab
+    resourceVersion: '189435'
+    uid: b5db2415-a16e-4b2d-aee0-ed8420d23e09
+  spec:
+    clusterIP: 10.105.61.1
+    clusterIPs:
+    - 10.105.61.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: ssh
+      port: 22
+      protocol: TCP
+      targetPort: 22
+    selector:
+      app: gitlab
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitlab-postgresql
+      meta.helm.sh/release-namespace: gitlab
+    creationTimestamp: '2025-11-03T19:00:44Z'
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: gitlab-postgresql
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/version: 18.0.0
+      helm.sh/chart: postgresql-18.1.3
+    name: gitlab-postgresql
+    namespace: gitlab
+    resourceVersion: '189100'
+    uid: 38ebb1a0-6e83-45cc-b5f2-6d644021e721
+  spec:
+    clusterIP: 10.109.229.6
+    clusterIPs:
+    - 10.109.229.6
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: tcp-postgresql
+    selector:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: gitlab-postgresql
+      app.kubernetes.io/name: postgresql
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitlab-postgresql
+      meta.helm.sh/release-namespace: gitlab
+    creationTimestamp: '2025-11-03T19:00:44Z'
+    labels:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: gitlab-postgresql
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/version: 18.0.0
+      helm.sh/chart: postgresql-18.1.3
+    name: gitlab-postgresql-hl
+    namespace: gitlab
+    resourceVersion: '189098'
+    uid: 44dc966f-0f1a-44f0-94df-e53a59b0bb85
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: tcp-postgresql
+    publishNotReadyAddresses: true
+    selector:
+      app.kubernetes.io/component: primary
+      app.kubernetes.io/instance: gitlab-postgresql
+      app.kubernetes.io/name: postgresql
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitlab-redis
+      meta.helm.sh/release-namespace: gitlab
+    creationTimestamp: '2025-11-03T19:00:57Z'
+    labels:
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/version: 8.2.3
+      helm.sh/chart: redis-23.2.3
+    name: gitlab-redis-headless
+    namespace: gitlab
+    resourceVersion: '189199'
+    uid: a4443366-a4a9-4290-8b8d-3afdb00795c4
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-redis
+      port: 6379
+      protocol: TCP
+      targetPort: redis
+    selector:
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/name: redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitlab-redis
+      meta.helm.sh/release-namespace: gitlab
+    creationTimestamp: '2025-11-03T19:00:57Z'
+    labels:
+      app.kubernetes.io/component: master
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/version: 8.2.3
+      helm.sh/chart: redis-23.2.3
+    name: gitlab-redis-master
+    namespace: gitlab
+    resourceVersion: '189203'
+    uid: d998af39-84ba-484d-95e4-fa502b96cc14
+  spec:
+    clusterIP: 10.105.85.108
+    clusterIPs:
+    - 10.105.85.108
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-redis
+      port: 6379
+      protocol: TCP
+      targetPort: redis
+    selector:
+      app.kubernetes.io/component: master
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/name: redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitlab-redis
+      meta.helm.sh/release-namespace: gitlab
+    creationTimestamp: '2025-11-03T19:00:57Z'
+    labels:
+      app.kubernetes.io/component: replica
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/version: 8.2.3
+      helm.sh/chart: redis-23.2.3
+    name: gitlab-redis-replicas
+    namespace: gitlab
+    resourceVersion: '189205'
+    uid: 79e78f4e-73ba-41cf-863c-4fc13fc14c92
+  spec:
+    clusterIP: 10.96.14.88
+    clusterIPs:
+    - 10.96.14.88
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-redis
+      port: 6379
+      protocol: TCP
+      targetPort: redis
+    selector:
+      app.kubernetes.io/component: replica
+      app.kubernetes.io/instance: gitlab-redis
+      app.kubernetes.io/name: redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}

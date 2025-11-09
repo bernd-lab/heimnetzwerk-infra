@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plantuml
+  namespace: argocd
+  labels:
+    app: plantuml
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/bernd-lab/heimnetzwerk-infra.git
+    targetRevision: main
+    path: k8s/plantuml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  revisionHistoryLimit: 10
+

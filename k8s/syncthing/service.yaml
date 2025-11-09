@@ -1,0 +1,73 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"syncthing-headless","namespace":"syncthing"},"spec":{"clusterIP":"None","ports":[{"name":"sync","port":22000},{"name":"sync-udp","port":22000,"protocol":"UDP"},{"name":"discovery","port":21027,"protocol":"UDP"}],"selector":{"app":"syncthing"},"type":"ClusterIP"}}
+
+        '
+    creationTimestamp: '2025-11-03T11:19:37Z'
+    name: syncthing-headless
+    namespace: syncthing
+    resourceVersion: '95775'
+    uid: df7084b1-f7ed-44b1-9589-7cb9b81bae24
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: sync
+      port: 22000
+      protocol: TCP
+      targetPort: 22000
+    - name: sync-udp
+      port: 22000
+      protocol: UDP
+      targetPort: 22000
+    - name: discovery
+      port: 21027
+      protocol: UDP
+      targetPort: 21027
+    selector:
+      app: syncthing
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"syncthing-ui","namespace":"syncthing"},"spec":{"ports":[{"port":8384,"targetPort":8384}],"selector":{"app":"syncthing"},"type":"ClusterIP"}}
+
+        '
+    creationTimestamp: '2025-11-03T11:19:37Z'
+    name: syncthing-ui
+    namespace: syncthing
+    resourceVersion: '95779'
+    uid: 77011d1a-793a-4eaf-9c42-148e4a431788
+  spec:
+    clusterIP: 10.110.60.98
+    clusterIPs:
+    - 10.110.60.98
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8384
+      protocol: TCP
+      targetPort: 8384
+    selector:
+      app: syncthing
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}

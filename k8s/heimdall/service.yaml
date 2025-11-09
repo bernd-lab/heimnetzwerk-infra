@@ -1,0 +1,34 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"heimdall","namespace":"heimdall"},"spec":{"ports":[{"port":80,"targetPort":80}],"selector":{"app":"heimdall"},"type":"ClusterIP"}}
+
+        '
+    creationTimestamp: '2025-11-03T11:21:16Z'
+    name: heimdall
+    namespace: heimdall
+    resourceVersion: '96261'
+    uid: 8859c115-bb01-41bd-ae53-496a5f9d703e
+  spec:
+    clusterIP: 10.111.195.34
+    clusterIPs:
+    - 10.111.195.34
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: heimdall
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
