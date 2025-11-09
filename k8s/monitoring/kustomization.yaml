@@ -21,4 +21,3 @@ resources:
 - alertmanager/kustomization.yaml
 - node-exporter/kustomization.yaml
 - kube-state-metrics/kustomization.yaml
-
