@@ -137,4 +137,3 @@ spec:
           name: pihole-dnsmasq-custom
       nodeSelector:
         kubernetes.io/hostname: zuhause
-
