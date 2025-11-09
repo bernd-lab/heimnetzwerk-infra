@@ -13,9 +13,12 @@ Du bist ein Monitoring-Experte spezialisiert auf Grafana, Prometheus, Logging, M
 ## Wichtige Dokumentation
 
 Lese diese Dateien für vollständigen Kontext:
-- `HANDOVER-MONITORING-2025-11-09.md` - **NEU**: Vollständiges Monitoring-Setup Handover mit allen To-Dos
+- `HANDOVER-ARGOCD-MONITORING-2025-11-09.md` - **NEU**: ArgoCD Monitoring Degraded Status Handover (2025-11-09)
+- `HANDOVER-MONITORING-2025-11-09.md` - Vollständiges Monitoring-Setup Handover mit allen To-Dos
+- `ARGOCD-OUT-OF-SYNC-ANALYSE.md` - Detaillierte Analyse der Out-of-Sync-Applications
+- `MONITORING-LANDSCHAFT.md` - Monitoring-Landschaft Übersicht
 - `k8s/monitoring/README.md` - Monitoring-Setup und Konfiguration
-- `k8s/monitoring/alertmanager/README-SECRET.md` - **NEU**: Discord Webhook Secret Setup-Anleitung
+- `k8s/monitoring/alertmanager/README-SECRET.md` - Discord Webhook Secret Setup-Anleitung
 - `k8s/monitoring/` Verzeichnis - Monitoring-Manifeste
 - Kubernetes Cluster-Analyse für Service-Discovery
 
@@ -27,6 +30,9 @@ Lese diese Dateien für vollständigen Kontext:
 - **Ingress**: `grafana.k8sops.online` (Port 80, 443)
 - **TLS**: Cert-Manager Zertifikat
 - **Status**: ✅ Deployed
+- **Deployment**: ✅ In ArgoCD verwaltet (`k8s/monitoring/grafana/deployment.yaml`)
+- **Service**: ✅ In ArgoCD verwaltet (`k8s/monitoring/grafana/service.yaml`)
+- **Dashboards**: ✅ 16 Dashboards (Standard + Custom) als ConfigMaps
 
 ### Prometheus
 - **Namespace**: `monitoring`
@@ -34,9 +40,12 @@ Lese diese Dateien für vollständigen Kontext:
 - **Ingress**: `prometheus.k8sops.online` (Port 80, 443)
 - **TLS**: Cert-Manager Zertifikat
 - **Status**: ✅ Deployed
-- **ServiceMonitors**: ✅ CoreDNS, Cert-Manager, nginx-ingress, ArgoCD, Velero, Kubelet
-- **PrometheusRules**: ✅ Kubernetes, Services, Infrastructure Alerts
-- **Scrape Targets**: Kubernetes API, Nodes, Pods, Node Exporter, Kube-State-Metrics, Services
+- **Deployment**: ✅ In ArgoCD verwaltet (`k8s/monitoring/prometheus/deployment.yaml`)
+- **Service**: ✅ In ArgoCD verwaltet (`k8s/monitoring/prometheus/service.yaml`)
+- **ServiceAccount**: ✅ Mit RBAC-Permissions für Kubernetes Service Discovery
+- **ServiceMonitors**: ✅ CoreDNS, Cert-Manager, nginx-ingress, ArgoCD, Velero, Kubelet (alle direkt referenziert)
+- **PrometheusRules**: ✅ Kubernetes, Services, Infrastructure Alerts (alle direkt referenziert)
+- **Scrape Targets**: ✅ 15 Targets (Kubernetes API, Nodes, Pods, Node Exporter, Kube-State-Metrics, Services)
 
 ### Alertmanager
 - **Namespace**: `monitoring`
@@ -174,17 +183,31 @@ kubectl get --raw /metrics
 - **PrometheusRules CRDs**: ✅ Installiert für Kubernetes, Services, Infrastructure Alerts
 
 ### Grafana Dashboards
-- **Standard-Dashboards**: ✅ 9 Dashboards (K8s Cluster, Node Exporter, Pods, Deployments, Kubelet, Prometheus Stats, Alertmanager, Nginx Ingress)
-- **Custom-Dashboards**: ✅ Infrastructure Overview
-- **Dashboard Provisioning**: ⚠️ ConfigMap erstellt, muss noch korrekt eingebunden werden
-- **Problem**: Dashboards müssen noch in Grafana eingebunden werden (siehe HANDOVER-MONITORING-2025-11-09.md TODO 1)
+- **Standard-Dashboards**: ✅ 4 Dashboards (Prometheus Stats, Alertmanager, Node Exporter, Kubernetes Cluster)
+- **Custom-Dashboards**: ✅ 12 Dashboards (Infrastructure Overview, ArgoCD, CoreDNS, NGINX Ingress, Cert-Manager, Velero, Resource Usage, Services Overview, ReplicaSet, DaemonSet, StatefulSet, PVC)
+- **Dashboard Provisioning**: ✅ ConfigMap erstellt und korrekt eingebunden
+- **Status**: ✅ Alle 16 Dashboards sind in Grafana sichtbar und funktionieren
+- **Metriken**: ✅ Alle Dashboards verwenden verfügbare Metriken (keine "No Data" Panels mehr)
 
-## Offene To-Dos (siehe HANDOVER-MONITORING-2025-11-09.md)
+## Aktuelle Probleme & Status (2025-11-09)
 
-1. **Grafana Dashboard Provisioning korrigieren** - Dashboards müssen noch korrekt eingebunden werden
+### ArgoCD Monitoring Application "Degraded"
+- **Status**: ⚠️ Application zeigt "Degraded" trotz laufender Pods
+- **Root Cause**: ✅ BEHOBEN - Grafana und Prometheus Deployments/Services waren nicht in `kustomization.yaml`
+- **Lösung**: ✅ Deployments/Services hinzugefügt (Commit `0b9d64c`)
+- **Aktueller Status**: ArgoCD synchronisiert neue Revision, sollte zu "Healthy" wechseln
+- **Siehe**: `HANDOVER-ARGOCD-MONITORING-2025-11-09.md` für Details
+
+### Kustomization-Struktur
+- **Problem**: ✅ BEHOBEN - Verschachtelte Kustomizations wurden als Resources referenziert
+- **Lösung**: Alle Ressourcen werden jetzt direkt referenziert (keine verschachtelten Kustomizations)
+- **Commits**: `38a8f00`, `0771c1c`, `b0bad60`, `0195b07`, `f4d5113`, `0b9d64c`
+
+## Offene To-Dos
+
+1. **ArgoCD Monitoring Status prüfen** - Warten auf Sync, dann Status auf "Healthy" prüfen
 2. **Discord Webhook-Integration testen** - Alertmanager Secret muss erstellt werden, Webhook muss getestet werden
-3. **Custom Dashboards erstellen** - Pi-hole, ArgoCD, GitLab, Media Services, Syncthing, Velero
-4. **Dashboard-Verifikation** - Alle Dashboards im Browser prüfen, ob echte Daten angezeigt werden
+3. **Weitere Custom Dashboards** - Pi-hole, GitLab, Media Services, Syncthing (optional)
 
 ## Zusammenarbeit mit anderen Experten
 

@@ -1,7 +1,7 @@
 # Handover-Dokument - Kubernetes Home Infrastructure
 
 **Erstellt**: 2025-11-07  
-**Letzte Aktualisierung**: 2025-11-07  
+**Letzte Aktualisierung**: 2025-11-09  
 **Cluster**: K3s v1.34.1  
 **Node**: zuhause (Debian 12, 192.168.178.54)
 
@@ -388,6 +388,13 @@ kubectl get pods --all-namespaces -o json | jq -r '.items[] | select(.spec.nodeN
 ---
 
 ## 📝 Changelog
+
+### 2025-11-09
+- ✅ ArgoCD Monitoring Kustomization-Fehler behoben
+- ✅ Grafana und Prometheus Deployments/Services zur Kustomization hinzugefügt
+- ✅ Alle Ressourcen direkt referenziert (keine verschachtelten Kustomizations)
+- ✅ Monitoring-Application neu strukturiert für ArgoCD
+- ✅ Handover-Dokument für ArgoCD Monitoring erstellt (`HANDOVER-ARGOCD-MONITORING-2025-11-09.md`)
 
 ### 2025-11-07
 - ✅ Pi-hole auf DNS-01 Challenge umgestellt
