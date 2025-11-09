@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-toml-config
+  namespace: pihole
+data:
+  pihole.toml: |
+    # Pi-hole configuration file (v6.3.3)
+    # Encoding: UTF-8
+    # This file is managed by ConfigMap for Kubernetes deployment
+    
+    [FTL]
+    # Interface: Listen on all interfaces (required for hostNetwork mode)
+    # This allows Pi-hole to accept DNS queries from all networks:
+    # - Kubernetes Pod Network (10.244.0.0/16)
+    # - Home Network (192.168.178.0/24)
+    interface = "all"
+    
+    # DNS Listening Mode: Accept queries from all networks
+    # This is CRITICAL for accepting queries from external networks (home network)
+    dns_listeningMode = "all"
+    
+    [webserver]
+    # Webserver port: 8080 (to avoid conflict with nginx-ingress on port 80)
+    port = "8080"
+    
+    [dns]
+    # Upstream DNS Servers: Cloudflare
+    upstreams = [
+      "1.1.1.1",
+      "1.0.0.1"
+    ]
+    
+    # Deep CNAME inspection
+    CNAMEdeepInspect = true
+    
+    # Block ESNI subdomains
+    blockESNI = true
+    
+    # EDNS0 Client Subnet
+    EDNS0ECS = true
+    
+    # Show localhost queries
+    ignoreLocalhost = false
+    
+    # Show DNSSEC queries
+    showDNSSEC = true
+    
+    # Analyze only A and AAAA queries
+    analyzeOnlyAandAAAA = false
+    
+    # PTR response mode
+    piholePTR = "PI.HOLE"
+

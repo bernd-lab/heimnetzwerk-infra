@@ -69,11 +69,11 @@ spec:
           value: compute,video,utility
         resources:
           limits:
-            cpu: "8"
-            memory: 16Gi
+            cpu: "4"           # Maximal verfügbare Node-CPUs (Node hat 4 cores)
+            memory: 16Gi       # Entspricht Empfehlungen für hohe Nutzung
           requests:
-            cpu: 2000m
-            memory: 8Gi
+            cpu: 1500m        # 1.5 cores garantiert (reduziert für Pi-hole Platz)
+            memory: 10Gi       # Reduziert für Pi-hole Platz
         livenessProbe:
           httpGet:
             path: /health

@@ -3,8 +3,16 @@ kind: Ingress
 metadata:
   name: jellyfin-ingress
   namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-dns01
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - jellyfin.k8sops.online
+    secretName: jellyfin-k8sops-online-tls
   rules:
   - host: jellyfin.k8sops.online
     http:

@@ -7,6 +7,8 @@ metadata:
     app: pihole
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: pihole
@@ -15,19 +17,52 @@ spec:
       labels:
         app: pihole
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      initContainers:
+      - name: setup-adlists
+        image: busybox:latest
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Setting up adlists from ConfigMap..."
+          
+          # Copy adlists.list to Pi-hole data directory
+          ADLISTS_SOURCE="/tmp/adlists.list"
+          ADLISTS_TARGET="/etc/pihole/adlists.list"
+          
+          if [ ! -f "$ADLISTS_SOURCE" ]; then
+            echo "ERROR: adlists.list not found in ConfigMap"
+            exit 1
+          fi
+          
+          # Wait for Pi-hole data directory
+          while [ ! -d "/etc/pihole" ]; do
+            echo "Waiting for Pi-hole data directory..."
+            sleep 1
+          done
+          
+          # Copy adlists.list (Pi-hole will process it on startup)
+          cp "$ADLISTS_SOURCE" "$ADLISTS_TARGET"
+          echo "✅ Copied adlists.list to Pi-hole data directory"
+          
+          # Count adlists
+          ADLIST_COUNT=$(grep -v '^#' "$ADLISTS_TARGET" | grep -v '^$' | wc -l)
+          echo "📋 Found $ADLIST_COUNT adlists to process"
+        volumeMounts:
+        - name: pihole-data
+          mountPath: /etc/pihole
+        - name: adlists-config
+          mountPath: /tmp/adlists.list
+          subPath: adlists.list
+          readOnly: true
+        resources:
+          limits:
+            memory: "32Mi"
       containers:
       - name: pihole
         image: pihole/pihole:latest
-        ports:
-        - name: dns-tcp
-          containerPort: 53
-          protocol: TCP
-        - name: dns-udp
-          containerPort: 53
-          protocol: UDP
-        - name: http
-          containerPort: 80
-          protocol: TCP
+        # Ports nicht explizit deklarieren bei hostNetwork - lauscht direkt auf Host-Ports
         env:
         - name: TZ
           valueFrom:
@@ -65,9 +100,17 @@ spec:
             configMapKeyRef:
               name: pihole-config
               key: ServerIP
+        - name: FTLCONF_dns_listeningMode
+          value: "all"
+        - name: FTLCONF_dns_interface
+          value: "all"
         volumeMounts:
         - name: pihole-data
           mountPath: /etc/pihole
+        - name: pihole-toml-config
+          mountPath: /etc/pihole/pihole.toml
+          subPath: pihole.toml
+          readOnly: true
         - name: pihole-dnsmasq
           mountPath: /etc/dnsmasq.d
         - name: dnsmasq-custom-config
@@ -75,16 +118,18 @@ spec:
           subPath: 99-custom.conf
           readOnly: true
         resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "512Mi"       # Limit für Spitzenlast
       volumes:
       - name: pihole-data
         persistentVolumeClaim:
           claimName: pihole-data
+      - name: pihole-toml-config
+        configMap:
+          name: pihole-toml-config
+      - name: adlists-config
+        configMap:
+          name: pihole-adlists-config
       - name: pihole-dnsmasq
         emptyDir: {}
       - name: dnsmasq-custom-config
@@ -92,9 +137,4 @@ spec:
           name: pihole-dnsmasq-custom
       nodeSelector:
         kubernetes.io/hostname: zuhause
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          - "1.1.1.1"
-          - "1.0.0.1"
 

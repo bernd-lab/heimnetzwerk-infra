@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pihole-k8sops-online-tls
+  namespace: pihole
+spec:
+  secretName: pihole-k8sops-online-tls
+  issuerRef:
+    name: letsencrypt-prod-dns01
+    kind: ClusterIssuer
+  dnsNames:
+  - pihole.k8sops.online
+

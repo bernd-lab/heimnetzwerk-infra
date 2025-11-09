@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-adlists-config
+  namespace: pihole
+data:
+  adlists.list: |
+    # Pi-hole Ad-Blocker Listen
+    # Diese Listen werden automatisch von Pi-hole verwendet
+    # Format: Eine URL pro Zeile
+    
+    # Steven Black's Unified Hosts (sehr umfassend)
+    https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    
+    # OISD - Optional Internet Security Domains (sehr gute Balance)
+    https://dbl.oisd.nl/
+    
+    # AdGuard DNS Filter (sehr effektiv)
+    https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
+    
+    # EasyList (Standard für Werbeblockierung)
+    https://easylist.to/easylist/easylist.txt
+    
+    # EasyPrivacy (Tracking-Schutz)
+    https://easylist.to/easylist/easyprivacy.txt
+    
+    # Malware Domain List (Sicherheit)
+    https://mirror1.malwaredomains.com/files/justdomains
+    
+    # Spam404 (Spam-Schutz)
+    https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
+    
+    # Peter Lowe's Ad server list (klassisch, bewährt)
+    https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
+    
+    # WindowsSpyBlocker (Windows-Telemetrie)
+    https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    
+    # NoCoin (Krypto-Mining-Blocker)
+    https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt
+    
+    # RPiList Phishing-Angriffe (Phishing-Schutz, besonders für deutschen Raum)
+    https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    
+    # Aggressive Tracking List (aggressive Tracking-Domains)
+    https://www.github.developerdan.com/hosts/lists/tracking-aggressive-extended.txt
+    
+    # Disconnect.me Tracking Protection (Tracking-Schutz)
+    https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+    
+    # Goodbye Ads (umfassende Ad-Blocker-Liste)
+    https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Hosts/GoodbyeAds.txt
+

@@ -1,0 +1,55 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="daserste.de" tvg-name="Das Erste" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/ARD_logo_2019.svg/200px-ARD_logo_2019.svg.png" group-title="Öffentlich-rechtlich",Das Erste
+https://mcdn.daserste.de/daserste/de/master.m3u8
+
+#EXTINF:-1 tvg-id="zdf.de" tvg-name="ZDF" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/ZDF_logo.svg/200px-ZDF_logo.svg.png" group-title="Öffentlich-rechtlich",ZDF
+https://zdf-hls-18.akamaized.net/hls/live/2016501/dach/high/master.m3u8
+
+#EXTINF:-1 tvg-id="3sat.de" tvg-name="3sat" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/3sat_logo.svg/200px-3sat_logo.svg.png" group-title="Öffentlich-rechtlich",3sat
+https://zdf-hls-19.akamaized.net/hls/live/2016502/dach/high/master.m3u8
+
+#EXTINF:-1 tvg-id="arte.de" tvg-name="Arte" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Arte_Logo_2011.svg/200px-Arte_Logo_2011.svg.png" group-title="Öffentlich-rechtlich",Arte
+https://artelive-lh.akamaihd.net/i/artelive_de@393591/master.m3u8
+
+#EXTINF:-1 tvg-id="phoenix.de" tvg-name="Phoenix" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Phoenix_Logo.svg/200px-Phoenix_Logo.svg.png" group-title="Öffentlich-rechtlich",Phoenix
+https://zdf-hls-20.akamaized.net/hls/live/2016503/dach/high/master.m3u8
+
+#EXTINF:-1 tvg-id="ard-alpha.de" tvg-name="ARD-alpha" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/ARD_alpha_logo.svg/200px-ARD_alpha_logo.svg.png" group-title="Öffentlich-rechtlich",ARD-alpha
+https://mcdn.ardalpha.de/ardalpha/de/master.m3u8
+
+#EXTINF:-1 tvg-id="deutsche-welle.de" tvg-name="Deutsche Welle" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Deutsche_Welle_logo.svg/200px-Deutsche_Welle_logo.svg.png" group-title="Öffentlich-rechtlich",Deutsche Welle
+https://dwamdstream111.akamaized.net/hls/live/2017972/dwstream111/stream05/streamPlaylist.m3u8
+
+#EXTINF:-1 tvg-id="kika.de" tvg-name="KiKA" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/KiKA_logo.svg/200px-KiKA_logo.svg.png" group-title="Öffentlich-rechtlich",KiKA
+https://kikade-lh.akamaihd.net/i/livetvkika_de@450035/master.m3u8
+
+#EXTINF:-1 tvg-id="tagesschau24.de" tvg-name="tagesschau24" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Tagesschau24_logo.svg/200px-Tagesschau24_logo.svg.png" group-title="Öffentlich-rechtlich",tagesschau24
+https://tagesschau.akamaized.net/hls/live/2021011/tagesschau/tagesschau_1/high/master.m3u8
+
+#EXTINF:-1 tvg-id="one.de" tvg-name="ONE" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/ONE_logo.svg/200px-ONE_logo.svg.png" group-title="Öffentlich-rechtlich",ONE
+https://onelivestream-lh.akamaihd.net/i/one_livestream_1@383030/master.m3u8
+
+#EXTINF:-1 tvg-id="ndr.de" tvg-name="NDR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/NDR_logo.svg/200px-NDR_logo.svg.png" group-title="Öffentlich-rechtlich",NDR
+https://ndr.akamaized.net/ndr/hls/live/2023130/ndr/master.m3u8
+
+#EXTINF:-1 tvg-id="wdr.de" tvg-name="WDR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/WDR_logo.svg/200px-WDR_logo.svg.png" group-title="Öffentlich-rechtlich",WDR
+https://wdrfsgeo-lh.akamaihd.net/i/wdrfs_geogeblockt@530016/master.m3u8
+
+#EXTINF:-1 tvg-id="br.de" tvg-name="BR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/BR_logo.svg/200px-BR_logo.svg.png" group-title="Öffentlich-rechtlich",BR
+https://brlive-lh.akamaihd.net/i/bfsnord_germany@119898/master.m3u8
+
+#EXTINF:-1 tvg-id="mdr.de" tvg-name="MDR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/MDR_logo.svg/200px-MDR_logo.svg.png" group-title="Öffentlich-rechtlich",MDR
+https://mdr.akamaized.net/hls/live/2017835/mdr_tv/master.m3u8
+
+#EXTINF:-1 tvg-id="swr.de" tvg-name="SWR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/SWR_logo.svg/200px-SWR_logo.svg.png" group-title="Öffentlich-rechtlich",SWR
+https://swr.akamaized.net/hls/live/2023130/swr_tv/master.m3u8
+
+#EXTINF:-1 tvg-id="hr.de" tvg-name="HR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/HR_logo.svg/200px-HR_logo.svg.png" group-title="Öffentlich-rechtlich",HR
+https://hrlive-lh.akamaihd.net/i/hr_fernsehen@75910/master.m3u8
+
+#EXTINF:-1 tvg-id="rbb.de" tvg-name="RBB" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/RBB_logo.svg/200px-RBB_logo.svg.png" group-title="Öffentlich-rechtlich",RBB
+https://rbblive-lh.akamaihd.net/i/rbb_fernsehen@106872/master.m3u8
+
+#EXTINF:-1 tvg-id="sr.de" tvg-name="SR" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/SR_logo.svg/200px-SR_logo.svg.png" group-title="Öffentlich-rechtlich",SR
+https://srlive-lh.akamaihd.net/i/sr_fernsehen@75910/master.m3u8
+

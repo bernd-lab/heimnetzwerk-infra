@@ -11,5 +11,5 @@ data:
   DNSMASQ_LISTENING: "all"
   DNSMASQ_USER: "root"
   VIRTUAL_HOST: "pihole.k8sops.online"
-  ServerIP: "192.168.178.10"
+  ServerIP: "192.168.178.54"
 

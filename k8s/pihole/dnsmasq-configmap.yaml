@@ -5,17 +5,28 @@ metadata:
   namespace: pihole
 data:
   99-custom.conf: |
-    # Custom dnsmasq configuration for Kubernetes Pod Network
-    # Allows DNS queries from Kubernetes Pod Network (10.244.0.0/16)
+    # Custom dnsmasq configuration for Kubernetes Pod Network and Home Network
+    # Allows DNS queries from Kubernetes Pod Network (10.244.0.0/16) and Home Network (192.168.178.0/24)
     
-    # Disable local-service restriction to allow queries from Pod Network
-    # This allows Kubernetes pods to query Pi-hole DNS
+    # CRITICAL: Listen on all addresses to accept queries from all networks
+    # This is required to accept queries from Windows clients (192.168.178.x)
+    # With hostNetwork=true, Pi-hole runs directly on host interfaces
+    listen-address=0.0.0.0
+    
+    # Use bind-interfaces to bind to all interfaces explicitly
+    # This ensures dnsmasq listens on all interfaces including WSL bridge
+    bind-interfaces
+    
+    # Do NOT set interface=eth0 with hostNetwork - let dnsmasq listen on all interfaces
+    # This allows queries from all networks (Kubernetes Pod Network + Home Network)
+    
+    # Disable local-service restriction to allow queries from Pod Network and Home Network
+    # This allows Kubernetes pods and Windows clients to query Pi-hole DNS
     # The default dnsmasq behavior blocks queries from non-local networks
     # Setting local-service=false allows queries from any network
     local-service=false
     
-    # Explicitly allow queries from Kubernetes Pod Network
-    # This prevents the "ignoring query from non-local network" warning
-    interface=
-    bind-interfaces=false
+    # Disable localise-queries to prevent dnsmasq from trying to determine
+    # "local" networks, which can cause issues in Kubernetes environments
+    localise-queries=false
 
