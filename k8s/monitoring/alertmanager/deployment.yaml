@@ -15,6 +15,23 @@ spec:
       labels:
         app: alertmanager
     spec:
+      initContainers:
+      - name: config-generator
+        image: busybox:1.36
+        command:
+        - sh
+        - -c
+        - |
+          WEBHOOK_URL=$(cat /etc/secret/webhook_url)
+          sed "s|REPLACE_WITH_WEBHOOK_URL_FROM_SECRET|${WEBHOOK_URL}|g" /etc/config-template/alertmanager.yml > /etc/alertmanager/alertmanager.yml
+        volumeMounts:
+        - name: config-template
+          mountPath: /etc/config-template
+        - name: config
+          mountPath: /etc/alertmanager
+        - name: webhook-secret
+          mountPath: /etc/secret
+          readOnly: true
       containers:
       - name: alertmanager
         image: prom/alertmanager:v0.26.0
@@ -37,9 +54,14 @@ spec:
             cpu: 200m
             memory: 256Mi
       volumes:
-      - name: config
+      - name: config-template
         configMap:
           name: alertmanager-config
+      - name: config
+        emptyDir: {}
+      - name: webhook-secret
+        secret:
+          secretName: alertmanager-discord-webhook
       - name: storage
         persistentVolumeClaim:
           claimName: alertmanager-data

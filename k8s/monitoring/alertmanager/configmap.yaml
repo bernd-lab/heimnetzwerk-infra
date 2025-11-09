@@ -9,10 +9,13 @@ data:
       resolve_timeout: 5m
     
     # Discord webhook receiver (using webhook_configs with custom template)
+    # WICHTIG: Die Webhook-URL wird aus dem Secret alertmanager-discord-webhook gelesen
+    # Das Secret muss manuell erstellt werden (siehe secret.yaml für Anleitung)
+    # Die ConfigMap wird zur Laufzeit durch einen Init-Container generiert
     receivers:
     - name: 'discord-default'
       webhook_configs:
-      - url: 'https://discord.com/api/webhooks/1434373123225948180/fI_jDJabe9f9DRy1WKAzL4E5CevlToCrprF7kb-_icM2DMa7sUFu6vVMJ4iZGxH47OUs'
+      - url: 'REPLACE_WITH_WEBHOOK_URL_FROM_SECRET'
         send_resolved: true
         http_config:
           follow_redirects: true

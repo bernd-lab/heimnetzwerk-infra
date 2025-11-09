@@ -225,9 +225,10 @@ kubectl logs -n monitoring -l app=grafana --tail=100 | grep -i dashboard
 - `k8s/monitoring/alertmanager/secret.yaml`
 
 **Discord Webhook URL:**
-```
-https://discord.com/api/webhooks/1434373123225948180/fI_jDJabe9f9DRy1WKAzL4E5CevlToCrprF7kb-_icM2DMa7sUFu6vVMJ4iZGxH47OUs
-```
+⚠️ **SICHERHEITSHINWEIS**: Die Webhook-URL darf nicht im Repository gespeichert werden!
+Die URL muss als Kubernetes Secret erstellt werden (siehe `k8s/monitoring/alertmanager/README-SECRET.md`).
+
+Die Webhook-URL ist in einem Secret gespeichert und wird zur Laufzeit durch einen Init-Container in die ConfigMap eingefügt.
 
 **Referenzen:**
 - [Prometheus Discord Webhook](https://promlabs.com/blog/2022/12/23/sending-prometheus-alerts-to-discord-with-alertmanager-v0-25-0/)
