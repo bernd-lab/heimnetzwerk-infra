@@ -467,4 +467,3 @@ Services (ArgoCD, GitLab, Jellyfin, etc.)
 **Ende der Dokumentation**
 
 *Letzte Aktualisierung: 2025-11-09*
-
