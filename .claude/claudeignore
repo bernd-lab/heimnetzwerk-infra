@@ -1,0 +1,54 @@
+# Claude Code Ignore File
+# Dateien die Claude ignorieren soll
+
+# Secrets
+secrets/**/*.age
+secrets/**/*.key
+secrets/**/*.secret
+*.secret
+*.key
+*.age
+
+# Git
+.git/
+.gitignore
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+

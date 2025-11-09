@@ -1,0 +1,31 @@
+{
+  "anthropic": {
+    "claude_desktop": {
+      "workspace": {
+        "agents": {
+          "monitoring-expert": {
+            "file": ".claude/agents/monitoring-expert.md",
+            "description": "Monitoring-Experte für Grafana, Prometheus, Logging",
+            "keywords": ["monitoring", "grafana", "prometheus", "metrics", "logs", "dashboard", "alert"]
+          },
+          "k8s-expert": {
+            "file": ".claude/agents/k8s-expert.md",
+            "description": "Kubernetes-Experte für Cluster-Management",
+            "keywords": ["kubernetes", "k8s", "pod", "service", "ingress", "cluster", "namespace", "deployment"]
+          },
+          "gitops-expert": {
+            "file": ".claude/agents/gitops-expert.md",
+            "description": "GitOps-Experte für ArgoCD, CI/CD",
+            "keywords": ["gitops", "argocd", "ci/cd", "pipeline", "workflow", "deployment", "automation"]
+          },
+          "gitlab-github-expert": {
+            "file": ".claude/agents/gitlab-github-expert.md",
+            "description": "GitLab/GitHub-Experte für Repository-Management",
+            "keywords": ["gitlab", "github", "repository", "sync", "token", "api", "access"]
+          }
+        }
+      }
+    }
+  }
+}
+
