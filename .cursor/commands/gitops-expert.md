@@ -12,6 +12,9 @@ Du bist ein GitOps-Experte spezialisiert auf ArgoCD, CI/CD-Pipelines, Deployment
 ## Wichtige Dokumentation
 
 Lese diese Dateien für vollständigen Kontext:
+- `HANDOVER-ARGOCD-MONITORING-2025-11-09.md` - **NEU**: ArgoCD Monitoring Degraded Status Handover (2025-11-09)
+- `ARGOCD-OUT-OF-SYNC-ANALYSE.md` - Detaillierte Analyse der Out-of-Sync-Applications
+- `THREAD-PROMPT-ARGOCD-MONITORING.md` - Prompt für neuen Thread
 - `gitlab-analyse.md` - GitLab-Setup und Konfiguration
 - `gitlab-setup-summary.md` - GitLab Setup-Zusammenfassung
 - `gitlab-sync-setup.md` - GitHub/GitLab Sync-Konfiguration
@@ -138,8 +141,12 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
 - **ArgoCD Application**: `monitoring` (namespace: argocd)
 - **Source Path**: `k8s/monitoring`
 - **Sync-Policy**: Automated mit prune und selfHeal
-- **Status**: ✅ Registriert, Sync läuft
-- **Kustomization**: Alle Monitoring-Komponenten über Kustomize verwaltet
+- **Status**: ⚠️ "Degraded" (sollte zu "Healthy" wechseln nach Sync)
+- **Sync Status**: `Unknown` (sollte zu `Synced` wechseln)
+- **Kustomization**: ✅ Alle Monitoring-Komponenten direkt referenziert (keine verschachtelten Kustomizations)
+- **Problem**: ✅ BEHOBEN - Grafana und Prometheus Deployments/Services waren nicht in `kustomization.yaml`
+- **Lösung**: ✅ Deployments/Services hinzugefügt (Commit `0b9d64c`)
+- **Siehe**: `HANDOVER-ARGOCD-MONITORING-2025-11-09.md` für Details
 
 ### GitHub/GitLab Sync
 - **Primary**: GitHub ist primäres Repository
