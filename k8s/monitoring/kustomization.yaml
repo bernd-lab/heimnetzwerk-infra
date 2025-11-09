@@ -19,7 +19,6 @@ resources:
 - prometheus/servicemonitors/alertmanager.yaml
 - prometheus/servicemonitors/node-exporter.yaml
 - prometheus/servicemonitors/kube-state-metrics.yaml
-- prometheus/prometheusrules/kustomization.yaml
 - grafana/dashboard-provisioning.yaml
 - grafana/dashboards/standard/prometheus-stats.yaml
 - grafana/dashboards/standard/alertmanager.yaml
