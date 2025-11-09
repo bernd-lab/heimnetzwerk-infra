@@ -13,7 +13,9 @@ Du bist ein Monitoring-Experte spezialisiert auf Grafana, Prometheus, Logging, M
 ## Wichtige Dokumentation
 
 Lese diese Dateien für vollständigen Kontext:
+- `HANDOVER-MONITORING-2025-11-09.md` - **NEU**: Vollständiges Monitoring-Setup Handover mit allen To-Dos
 - `k8s/monitoring/README.md` - Monitoring-Setup und Konfiguration
+- `k8s/monitoring/alertmanager/README-SECRET.md` - **NEU**: Discord Webhook Secret Setup-Anleitung
 - `k8s/monitoring/` Verzeichnis - Monitoring-Manifeste
 - Kubernetes Cluster-Analyse für Service-Discovery
 
@@ -32,6 +34,32 @@ Lese diese Dateien für vollständigen Kontext:
 - **Ingress**: `prometheus.k8sops.online` (Port 80, 443)
 - **TLS**: Cert-Manager Zertifikat
 - **Status**: ✅ Deployed
+- **ServiceMonitors**: ✅ CoreDNS, Cert-Manager, nginx-ingress, ArgoCD, Velero, Kubelet
+- **PrometheusRules**: ✅ Kubernetes, Services, Infrastructure Alerts
+- **Scrape Targets**: Kubernetes API, Nodes, Pods, Node Exporter, Kube-State-Metrics, Services
+
+### Alertmanager
+- **Namespace**: `monitoring`
+- **URL**: `alertmanager.k8sops.online` (wird erstellt)
+- **Ingress**: `alertmanager.k8sops.online` (Port 80, 443)
+- **TLS**: Cert-Manager Zertifikat
+- **Status**: ⚠️ Pending (PVC wird erstellt)
+- **Discord Integration**: ⚠️ Konfiguriert, aber Secret muss manuell erstellt werden
+- **Secret**: `alertmanager-discord-webhook` (muss manuell erstellt werden, siehe README-SECRET.md)
+- **Init-Container**: Generiert Config zur Laufzeit aus Secret
+
+### Node Exporter
+- **Namespace**: `monitoring`
+- **Type**: DaemonSet (läuft auf jedem Node)
+- **Port**: 9100 (hostNetwork)
+- **Status**: ✅ Running
+- **Metriken**: CPU, Memory, Disk, Network
+
+### Kube-State-Metrics
+- **Namespace**: `monitoring`
+- **Port**: 8080
+- **Status**: ✅ Running
+- **Metriken**: Kubernetes Resource-Metriken (Pods, Deployments, Services, etc.)
 
 ### Loki (Logging)
 - **Namespace**: `logging`
@@ -141,13 +169,28 @@ kubectl get --raw /metrics
 ### Service-Discovery
 - Prometheus entdeckt automatisch Kubernetes Services
 - Metrics-Endpunkte werden automatisch gescraped
-- ServiceMonitor CRDs für Custom-Services
+- **ServiceMonitor CRDs**: ✅ Installiert für CoreDNS, Cert-Manager, nginx-ingress, ArgoCD, Velero, Kubelet
+- **PrometheusRules CRDs**: ✅ Installiert für Kubernetes, Services, Infrastructure Alerts
+
+### Grafana Dashboards
+- **Standard-Dashboards**: ✅ 9 Dashboards (K8s Cluster, Node Exporter, Pods, Deployments, Kubelet, Prometheus Stats, Alertmanager, Nginx Ingress)
+- **Custom-Dashboards**: ✅ Infrastructure Overview
+- **Dashboard Provisioning**: ⚠️ ConfigMap erstellt, muss noch korrekt eingebunden werden
+- **Problem**: Dashboards müssen noch in Grafana eingebunden werden (siehe HANDOVER-MONITORING-2025-11-09.md TODO 1)
+
+## Offene To-Dos (siehe HANDOVER-MONITORING-2025-11-09.md)
+
+1. **Grafana Dashboard Provisioning korrigieren** - Dashboards müssen noch korrekt eingebunden werden
+2. **Discord Webhook-Integration testen** - Alertmanager Secret muss erstellt werden, Webhook muss getestet werden
+3. **Custom Dashboards erstellen** - Pi-hole, ArgoCD, GitLab, Media Services, Syncthing, Velero
+4. **Dashboard-Verifikation** - Alle Dashboards im Browser prüfen, ob echte Daten angezeigt werden
 
 ## Zusammenarbeit mit anderen Experten
 
-- **Kubernetes-Spezialist**: Bei Cluster-Metriken und Pod-Status
+- **Kubernetes-Spezialist**: Bei Cluster-Metriken und Pod-Status, ServiceMonitors
 - **Infrastructure-Spezialist**: Bei Netzwerk-Metriken
-- **GitOps-Spezialist**: Bei Deployment-Monitoring
+- **GitOps-Spezialist**: Bei Deployment-Monitoring, ArgoCD Application für Monitoring
+- **Secrets-Spezialist**: Bei Discord Webhook Secret-Management
 
 ## Secret-Zugriff
 

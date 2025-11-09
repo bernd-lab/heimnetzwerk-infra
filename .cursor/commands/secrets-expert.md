@@ -36,6 +36,10 @@ Lese diese Dateien für vollständigen Kontext:
 - `cloudflare-api-token` - Cert-Manager Cloudflare Integration (namespace: cert-manager)
 - **Rotation**: 365 Tage
 - **Status**: ✅ Active
+- `alertmanager-discord-webhook` - **NEU**: Alertmanager Discord Webhook URL (namespace: monitoring)
+- **Rotation**: Bei Bedarf (Webhook-URL ändert sich selten)
+- **Status**: ⚠️ Muss manuell erstellt werden (siehe `k8s/monitoring/alertmanager/README-SECRET.md`)
+- **WICHTIG**: Webhook-URL darf NICHT im Git-Repository gespeichert werden!
 
 ### Cloudflare
 - `CLOUDFLARE_API_TOKEN` - DNS-Management
@@ -56,6 +60,8 @@ Lese diese Dateien für vollständigen Kontext:
 - API-Tokens generieren
 - Secrets verschlüsselt speichern
 - Dokumentation aktualisieren
+- **NEU**: Alertmanager Discord Webhook Secret manuell erstellen (siehe `k8s/monitoring/alertmanager/README-SECRET.md`)
+- **NEU**: Init-Container Pattern für Secret-Injection in ConfigMaps verwenden
 
 ### Secret-Rotation
 - Regelmäßige Rotation durchführen
@@ -128,18 +134,23 @@ kubectl describe secret -n cert-manager cloudflare-api-token
 4. **Minimal Privilege**: Nur notwendige Berechtigungen für Tokens
 5. **Audit-Logging**: Alle Secret-Zugriffe loggen
 6. **Backup**: Secrets in sicheren Backup-Systemen speichern
+7. **NEU**: **Keine Credentials im Git**: Webhook-URLs, API-Keys, Passwörter dürfen NIE im Repository gespeichert werden
+8. **NEU**: **Init-Container Pattern**: Für Secret-Injection in ConfigMaps zur Laufzeit verwenden (siehe Alertmanager Deployment)
+9. **NEU**: **Secret-Management**: Secrets müssen manuell erstellt werden, Templates mit Platzhaltern im Repository
 
 ## Bekannte Konfigurationen
 
 ### Aktive Secrets
 - ✅ `cloudflare-api-token` (Kubernetes, cert-manager)
 - ✅ `CLOUDFLARE_API_TOKEN` (Cloudflare)
+- ⚠️ `alertmanager-discord-webhook` (Kubernetes, monitoring) - **MUSS MANUELL ERSTELLT WERDEN**
 
 ### Pending Secrets
 - ⚠️ GitHub Secrets (noch zu erstellen)
 - ⚠️ GitLab Secrets (noch zu erstellen)
 - ⚠️ United Domains API Key (optional)
 - ⚠️ Fritzbox Admin Password (optional, verschlüsselt)
+- ⚠️ **Alertmanager Discord Webhook** - **KRITISCH**: Muss manuell erstellt werden bevor Alertmanager deployed wird (siehe `k8s/monitoring/alertmanager/README-SECRET.md`)
 
 ## Secret-Workflows
 
@@ -253,4 +264,7 @@ Siehe: `.cursor/context/git-auto-commit-context.md` für Details.
 - Secret-Rotation ist automatisiert geplant
 - Alle Secrets sind verschlüsselt gespeichert
 - Audit-Logging ist aktiviert
+- **NEU**: Discord Webhook URL wurde aus dem Repository entfernt (Security-Fix)
+- **NEU**: Alertmanager verwendet Init-Container Pattern für Secret-Injection
+- **NEU**: Secret-Templates enthalten Platzhalter, echte Werte müssen manuell erstellt werden
 

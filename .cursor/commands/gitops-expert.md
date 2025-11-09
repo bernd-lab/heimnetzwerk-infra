@@ -28,10 +28,12 @@ Lese diese Dateien für vollständigen Kontext:
 - **Status**: Deployed
 
 ### ArgoCD Application
-- **Application**: In `k8s/monitoring/argocd-application.yaml`
+- **Application**: In `k8s/monitoring/argocd-application.yaml` - **NEU**: Monitoring-Stack Application erstellt
 - **Sync-Policy**: Automatisch oder manuell
 - **Source**: Git Repository (GitHub/GitLab)
 - **Destination**: Kubernetes Cluster
+- **Monitoring-Stack**: ✅ ArgoCD Application für kompletten Monitoring-Stack registriert
+- **Kustomization**: `k8s/monitoring/kustomization.yaml` für alle Monitoring-Komponenten
 
 ## CI/CD-Pipelines
 
@@ -131,6 +133,13 @@ curl -H "PRIVATE-TOKEN: $GITLAB_TOKEN" \
 - **Group**: `neue-zeit` (ID: 3)
 - **API Token**: `glpat-q9cRQjBeN--9eKsPzjZn5G86MQp1OjEH.01.0w11ag1un`
 - **Status**: Stabil (nach Liveness-Probe-Korrektur)
+
+### Monitoring-Stack (2025-11-09)
+- **ArgoCD Application**: `monitoring` (namespace: argocd)
+- **Source Path**: `k8s/monitoring`
+- **Sync-Policy**: Automated mit prune und selfHeal
+- **Status**: ✅ Registriert, Sync läuft
+- **Kustomization**: Alle Monitoring-Komponenten über Kustomize verwaltet
 
 ### GitHub/GitLab Sync
 - **Primary**: GitHub ist primäres Repository

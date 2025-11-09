@@ -76,7 +76,7 @@ Lese diese Dateien für vollständigen Kontext:
 - `kube-system` - System-Komponenten
 - `logging` - Logging (Loki)
 - `metallb-system` - LoadBalancer
-- `monitoring` - Prometheus/Grafana
+- `monitoring` - **ERWEITERT**: Prometheus, Grafana, Alertmanager, Node Exporter, Kube-State-Metrics
 - `syncthing` - Datei-Synchronisation
 - `test-tls` - Test-Umgebung
 - `velero` - Backup
@@ -127,6 +127,12 @@ Alle Services verwenden Ingress mit Host `*.k8sops.online`:
 - DNS-Integration mit CoreDNS
 - LoadBalancer-IPs verwalten
 - Netzwerk-Policies
+
+### Monitoring-Integration
+- **ServiceMonitors**: CRDs für Prometheus Service Discovery (CoreDNS, Cert-Manager, nginx-ingress, ArgoCD, Velero, Kubelet)
+- **PrometheusRules**: CRDs für Alert-Rules (Kubernetes, Services, Infrastructure)
+- **Node Exporter**: DaemonSet für Node-Metriken
+- **Kube-State-Metrics**: Deployment für Kubernetes Resource-Metriken
 
 ### Pi-hole Deployment (2025-11-05)
 - **Manifeste**: `k8s/pihole/` - Vollständige Kubernetes Manifeste vorbereitet
@@ -256,6 +262,14 @@ kubectl get ipaddresspool -n metallb-system
 ### MetalLB
 - **IP-Pool**: Nur eine IP (192.168.178.54)
 - **Alle Services**: Teilen sich diese IP über verschiedene Ports
+
+### Monitoring-Stack (2025-11-09)
+- **Namespace**: `monitoring`
+- **Komponenten**: Prometheus, Grafana, Alertmanager, Node Exporter, Kube-State-Metrics
+- **ServiceMonitors**: ✅ Installiert für alle Services
+- **PrometheusRules**: ✅ Installiert für Kubernetes, Services, Infrastructure Alerts
+- **ArgoCD Application**: ✅ Registriert (`k8s/monitoring/argocd-application.yaml`)
+- **Handover**: `HANDOVER-MONITORING-2025-11-09.md` mit allen To-Dos
 
 ## Zusammenarbeit mit anderen Experten
 

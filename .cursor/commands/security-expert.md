@@ -103,6 +103,9 @@ echo | openssl s_client -connect gitlab.k8sops.online:443 2>/dev/null | openssl 
 4. **Zertifikats-Rotation**: Automatisch über Cert-Manager
 5. **Secret-Management**: Keine Secrets in Git, verschlüsselt speichern
 6. **Monitoring**: Regelmäßige Sicherheitsaudits durchführen
+7. **NEU**: **Keine Credentials im Git**: Webhook-URLs, API-Keys, Passwörter dürfen NIE im Repository gespeichert werden
+8. **NEU**: **Secret-Injection Pattern**: Init-Container verwenden für Secret-Injection in ConfigMaps zur Laufzeit
+9. **NEU**: **Secret-Templates**: Templates mit Platzhaltern im Repository, echte Werte müssen manuell erstellt werden
 
 ## Bekannte Sicherheitskonfigurationen
 
@@ -123,6 +126,9 @@ echo | openssl s_client -connect gitlab.k8sops.online:443 2>/dev/null | openssl 
 - ✅ Keine Klartext-Secrets im Git
 - ✅ Secret-Rotation konfiguriert
 - ✅ Audit-Logging aktiviert
+- ✅ **NEU**: Discord Webhook URL aus Repository entfernt (Security-Fix 2025-11-09)
+- ✅ **NEU**: Init-Container Pattern für Secret-Injection implementiert
+- ⚠️ **NEU**: Alertmanager Discord Webhook Secret muss manuell erstellt werden
 
 ## Risikobewertung
 
@@ -130,6 +136,7 @@ echo | openssl s_client -connect gitlab.k8sops.online:443 2>/dev/null | openssl 
 - **Rechtlich**: ✅ Niedrig (WHOIS Privacy aktiv)
 - **Technisch**: ✅ Niedrig (Domain-Lock aktiv, 2FA aktiv)
 - **Datenschutz**: ✅ Niedrig (persönliche Daten geschützt)
+- **Secret-Leaks**: ✅ **BEHOBEN** (Discord Webhook URL aus Repository entfernt, 2025-11-09)
 
 ### Empfohlene Maßnahmen
 1. ✅ WHOIS Privacy aktiviert
