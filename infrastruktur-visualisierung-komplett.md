@@ -94,9 +94,15 @@ ingress --> jellyfin
 
 **Gerendertes Diagramm** (als Bild eingebunden):
 
+**Option 1: Direkte URL** (funktioniert in GitLab, wenn Server erreichbar):
 ![Infrastruktur-Diagramm](https://plantuml.k8sops.online/png/eJx1U01z2jAQvetXbPGhJ3eAgIEeOjHCJGlopjM9tFdhr42KWHkkeUjS6X-vLJMEk6lOT2_efujt6to6YVxzUHBHpRHWmWbvGhNvBBU234nSsQ9uhweEWglJzO4l1cKIA2xFvq-MbqjgWmkD0Tocxpx0CuFeH2qFzuF_E3-GW5QHQvd8RLOH_dzq2n7SpCQhY7VPLyqEwa0wxVEYHMAfBpD7tJqQHAzWRrrnpX6E2XQxhPTXAISFsiW3nvTtpNPhsB9y32zR-Ipo4UEXGCJ8XfIYoskoWWSjfsBPSYU-2vib8D37vkLEsSMhGg7TeTbvR2xE7XQddCpAiOYznmVL9vfsUWeNcNVYh-bd877LeKdVV7GWLYRonM1WV-O-jmuDq4cfQZd7XJDvbDRNpvzi8VRJeowlVQatDfIThihbjLLkqi9PTaX5KuiEh3nhZeuJP33ZjXQbsQ2yyg9ebL3zPFmNk77sKyr1VEoKwt-nC0RpOuX8ovCNEaUg0aXssM85SeZ-muce3pELHr5zjivdFKXyOwOvxrxRfjGS9eVibNB9tJBRbp5q1w0PncXu3g56yVeTtvrrfsXxl9NY2Gk6LfNWh72Y29KdgT2qM6tHvdjC2DVS4f_kP_ZZL68=)
 
-**Hinweis**: Dieses Bild wird von deinem PlantUML-Server (`plantuml.k8sops.online`) gerendert. Die URL funktioniert sowohl in GitLab als auch lokal.
+**Option 2: Als Asset** (funktioniert immer, auch in GitHub Public Repos):
+![Infrastruktur-Diagramm](./docs/infrastruktur-diagramm.png)
+
+**Hinweis**: 
+- Option 1 nutzt deinen PlantUML-Server (`plantuml.k8sops.online`) - funktioniert in GitLab, wenn der Server erreichbar ist
+- Option 2 ist ein gerendertes PNG-Asset, das immer funktioniert (auch in GitHub Public Repos)
 
 **Vorteile**:
 - ✅ Läuft auf eigenem Server
