@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-nginx-ingress
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  nginx-ingress.json: |
+    {
+      "title": "NGINX Ingress Controller",
+      "tags": [
+        "nginx",
+        "ingress"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 3,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "NGINX Ingress Metrics Overview",
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# NGINX Ingress Controller Dashboard\n\n## ⚠️ HINWEIS\n\n**Die NGINX Ingress Metriken sind aktuell nicht verfügbar!**\n\n### Status\n- ❌ `nginx_ingress_controller_requests`: 0 Samples\n- ❌ `nginx_ingress_controller_request_duration_seconds`: 0 Samples\n- ❌ NGINX Ingress wird nicht von Prometheus gescraped\n\n### Mögliche Ursachen\n1. NGINX Ingress Controller ist nicht installiert\n2. Metrics-Endpoint ist nicht aktiviert\n3. ServiceMonitor ist nicht korrekt konfiguriert\n4. Prometheus findet den Service nicht\n\n### Lösung\n1. Prüfen Sie, ob NGINX Ingress Controller läuft:\n   ```bash\n   kubectl get pods -n ingress-nginx\n   ```\n\n2. Prüfen Sie, ob Metrics-Port verfügbar ist:\n   ```bash\n   kubectl get svc -n ingress-nginx\n   ```\n\n3. Prüfen Sie Prometheus Targets:\n   ```bash\n   curl https://prometheus.k8sops.online/api/v1/targets | grep nginx\n   ```\n\n4. ServiceMonitor prüfen:\n   ```bash\n   kubectl get servicemonitor -n monitoring nginx-ingress -o yaml\n   ```\n\n## Erwartete Metriken (wenn verfügbar)\n\n- `nginx_ingress_controller_requests`: Anzahl HTTP-Requests\n- `nginx_ingress_controller_request_duration_seconds`: Request-Dauer\n- `nginx_ingress_controller_connections`: Aktive Verbindungen\n- `nginx_ingress_controller_response_size`: Response-Größe\n",
+            "mode": "markdown"
+          }
+        }
+      ]
+    }

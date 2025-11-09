@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-statefulset-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  statefulset-overview.json: |
+    {
+      "title": "Kubernetes StatefulSet Overview",
+      "tags": [
+        "kubernetes",
+        "statefulset"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 1,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "StatefulSet Metrics Overview",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Kubernetes StatefulSet Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht StatefulSets im Kubernetes-Cluster.\n\n## Überwachte Komponenten\n\n- **Total StatefulSets**: Gesamtanzahl der StatefulSets\n- **Desired Replicas**: Gewünschte Anzahl von Replicas\n- **StatefulSet by Namespace**: Verteilung nach Namespace\n- **StatefulSet Age**: Alter der StatefulSets\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Total StatefulSets",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_statefulset_created)",
+              "legendFormat": "StatefulSets",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Desired Replicas",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_statefulset_replicas)",
+              "legendFormat": "Desired",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "StatefulSets by Namespace",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "count by (namespace) (kube_statefulset_created)",
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Desired Replicas by StatefulSet",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "kube_statefulset_replicas",
+              "legendFormat": "{{namespace}}/{{statefulset}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "StatefulSet Age",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "time() - kube_statefulset_created",
+              "legendFormat": "{{namespace}}/{{statefulset}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "s"
+            }
+          }
+        }
+      ]
+    }
+

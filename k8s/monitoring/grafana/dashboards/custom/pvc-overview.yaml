@@ -1,27 +1,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboard-alertmanager
+  name: grafana-dashboard-pvc-overview
   namespace: monitoring
   labels:
     grafana_dashboard: '1'
 data:
-  alertmanager.json: |
+  pvc-overview.json: |
     {
-      "title": "Alertmanager Overview",
+      "title": "Kubernetes PVC Overview",
       "tags": [
-        "alertmanager",
-        "alerts"
+        "kubernetes",
+        "pvc",
+        "storage"
       ],
       "timezone": "browser",
       "schemaVersion": 16,
-      "version": 4,
+      "version": 1,
       "refresh": "30s",
       "panels": [
         {
           "id": 100,
           "type": "text",
-          "title": "Alertmanager Metrics Overview",
+          "title": "PVC Metrics Overview",
           "gridPos": {
             "h": 6,
             "w": 24,
@@ -29,13 +30,13 @@ data:
             "y": 0
           },
           "options": {
-            "content": "# Alertmanager Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht Alertmanager, den Alerting-Service.\n\n## Überwachte Komponenten\n\n- **Alertmanager Status**: Up/Down Status\n- **Alerts Received/Sent**: Anzahl empfangener und gesendeter Alerts\n- **Notifications**: Anzahl Benachrichtigungen (Total/Failed)\n- **Silences**: Aktive Stillezeiten\n- **Config Reload**: Status des letzten Config-Reloads\n- **Cluster**: Cluster-Mitglieder (falls HA)\n",
+            "content": "# Kubernetes PersistentVolumeClaim Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht PersistentVolumeClaims (PVCs) im Kubernetes-Cluster.\n\n## Überwachte Komponenten\n\n- **Total PVCs**: Gesamtanzahl der PVCs\n- **PVC Status**: Verteilung nach Status (Pending, Bound, Lost)\n- **PVC by Namespace**: Verteilung nach Namespace\n- **Storage Requests**: Angeforderte Speichergröße\n- **PVC Age**: Alter der PVCs\n",
             "mode": "markdown"
           }
         },
         {
           "id": 1,
-          "title": "Alertmanager Status",
+          "title": "Total PVCs",
           "type": "stat",
           "gridPos": {
             "h": 4,
@@ -45,8 +46,34 @@ data:
           },
           "targets": [
             {
-              "expr": "up{job=\"alertmanager\"}",
-              "legendFormat": "Alertmanager",
+              "expr": "count(kube_persistentvolumeclaim_created)",
+              "legendFormat": "PVCs",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Bound PVCs",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_persistentvolumeclaim_status_phase{phase=\"Bound\"})",
+              "legendFormat": "Bound",
               "refId": "A"
             }
           ],
@@ -60,31 +87,186 @@ data:
                 "steps": [
                   {
                     "value": null,
-                    "color": "red"
+                    "color": "green"
                   },
                   {
                     "value": 1,
                     "color": "green"
                   }
                 ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Pending PVCs",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_persistentvolumeclaim_status_phase{phase=\"Pending\"})",
+              "legendFormat": "Pending",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 1,
+                    "color": "yellow"
+                  }
+                ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Lost PVCs",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_persistentvolumeclaim_status_phase{phase=\"Lost\"})",
+              "legendFormat": "Lost",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 1,
+                    "color": "red"
+                  }
+                ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "PVC Status Distribution",
+          "type": "piechart",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "count by (phase) (kube_persistentvolumeclaim_status_phase)",
+              "legendFormat": "{{phase}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
               }
             }
           }
         },
         {
-          "id": 2,
-          "title": "Config Reload Status",
-          "type": "stat",
+          "id": 6,
+          "title": "PVCs by Namespace",
+          "type": "table",
           "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 6,
-            "y": 6
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
           },
           "targets": [
             {
-              "expr": "alertmanager_config_last_reload_success_timestamp_seconds",
-              "legendFormat": "Last Reload",
+              "expr": "count by (namespace) (kube_persistentvolumeclaim_created)",
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              }
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Storage Requests",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "kube_persistentvolumeclaim_resource_requests_storage_bytes",
+              "legendFormat": "{{namespace}}/{{persistentvolumeclaim}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "PVC Age",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "time() - kube_persistentvolumeclaim_created",
+              "legendFormat": "{{namespace}}/{{persistentvolumeclaim}}",
               "refId": "A"
             }
           ],
@@ -96,188 +278,7 @@ data:
               "unit": "s"
             }
           }
-        },
-        {
-          "id": 3,
-          "title": "Cluster Members",
-          "type": "stat",
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 12,
-            "y": 6
-          },
-          "targets": [
-            {
-              "expr": "alertmanager_cluster_members",
-              "legendFormat": "Members",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "short"
-            }
-          }
-        },
-        {
-          "id": 4,
-          "title": "Active Silences",
-          "type": "stat",
-          "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 18,
-            "y": 6
-          },
-          "targets": [
-            {
-              "expr": "alertmanager_silences",
-              "legendFormat": "Silences",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "short"
-            }
-          }
-        },
-        {
-          "id": 5,
-          "title": "Alerts Received Rate",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 10
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_alerts_received_total[5m])",
-              "legendFormat": "Received",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 6,
-          "title": "Cluster Messages Sent Rate",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 10
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_cluster_messages_sent_total[5m])",
-              "legendFormat": "Sent",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 7,
-          "title": "Notifications Total",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 18
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_notifications_total[5m])",
-              "legendFormat": "{{integration}}",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 8,
-          "title": "Notifications Failed",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 18
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_notifications_failed_total[5m])",
-              "legendFormat": "{{integration}}",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 9,
-          "title": "HTTP Request Rate",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 26
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_http_requests_total[5m])",
-              "legendFormat": "{{handler}} {{code}}",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
         }
       ]
     }
+

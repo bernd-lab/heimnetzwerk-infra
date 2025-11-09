@@ -1,18 +1,19 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: argocd
+  name: alertmanager
   namespace: monitoring
   labels:
-    app: argocd
+    app: alertmanager
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server
+      app: alertmanager
   endpoints:
   - port: http
-    interval: 30s
     path: /metrics
+    interval: 30s
   namespaceSelector:
     matchNames:
-    - argocd
+    - monitoring
+

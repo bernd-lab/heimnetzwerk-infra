@@ -1,0 +1,229 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-daemonset-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  daemonset-overview.json: |
+    {
+      "title": "Kubernetes DaemonSet Overview",
+      "tags": [
+        "kubernetes",
+        "daemonset"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 1,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "DaemonSet Metrics Overview",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Kubernetes DaemonSet Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht DaemonSets im Kubernetes-Cluster.\n\n## Überwachte Komponenten\n\n- **Total DaemonSets**: Gesamtanzahl der DaemonSets\n- **Desired vs Current vs Available**: Vergleich von gewünschten, aktuellen und verfügbaren Pods\n- **DaemonSet by Namespace**: Verteilung nach Namespace\n- **DaemonSet Age**: Alter der DaemonSets\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Total DaemonSets",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_daemonset_created)",
+              "legendFormat": "DaemonSets",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Desired Pods",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_daemonset_status_desired_number_scheduled)",
+              "legendFormat": "Desired",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Current Pods",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_daemonset_status_current_number_scheduled)",
+              "legendFormat": "Current",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Available Pods",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_daemonset_status_number_available)",
+              "legendFormat": "Available",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "DaemonSets by Namespace",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "count by (namespace) (kube_daemonset_created)",
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              }
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Desired vs Current vs Available",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "kube_daemonset_status_desired_number_scheduled",
+              "legendFormat": "{{namespace}}/{{daemonset}} Desired",
+              "refId": "A"
+            },
+            {
+              "expr": "kube_daemonset_status_current_number_scheduled",
+              "legendFormat": "{{namespace}}/{{daemonset}} Current",
+              "refId": "B"
+            },
+            {
+              "expr": "kube_daemonset_status_number_available",
+              "legendFormat": "{{namespace}}/{{daemonset}} Available",
+              "refId": "C"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "DaemonSet Age",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "time() - kube_daemonset_created",
+              "legendFormat": "{{namespace}}/{{daemonset}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "s"
+            }
+          }
+        }
+      ]
+    }
+

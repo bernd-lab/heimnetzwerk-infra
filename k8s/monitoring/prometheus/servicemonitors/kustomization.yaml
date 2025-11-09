@@ -6,6 +6,13 @@ resources:
 - cert-manager.yaml
 - nginx-ingress.yaml
 - argocd.yaml
+- argocd-server.yaml
+- argocd-application-controller.yaml
+- argocd-repo-server.yaml
+- argocd-dex-server.yaml
 - velero.yaml
 - kubelet.yaml
+- alertmanager.yaml
+- node-exporter.yaml
+- kube-state-metrics.yaml
 

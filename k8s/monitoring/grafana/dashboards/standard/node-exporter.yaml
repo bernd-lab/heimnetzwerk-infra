@@ -1,0 +1,292 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-node-exporter
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  node-exporter.json: |
+    {
+      "title": "Node Exporter Full",
+      "tags": [
+        "node",
+        "exporter",
+        "system"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 4,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "Node Exporter Metrics Overview",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Node Exporter Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht System-Metriken der Kubernetes-Nodes über Node Exporter.\n\n## Überwachte Komponenten\n\n- **CPU Usage**: CPU-Auslastung pro Node\n- **Memory Usage**: Speicherverbrauch pro Node (inkl. Swap)\n- **Disk I/O**: Lese-/Schreibgeschwindigkeit\n- **Network Traffic**: Ein-/Ausgehender Traffic\n- **System Load**: Systemlast\n- **Disk Space**: Verfügbarer Speicherplatz\n- **Filesystem**: Filesystem-Details\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "percent"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+              "legendFormat": "{{instance}} Memory",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "percent"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Swap Usage",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 14
+          },
+          "targets": [
+            {
+              "expr": "(1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100",
+              "legendFormat": "{{instance}} Swap",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "percent"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Disk I/O Rate",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 14
+          },
+          "targets": [
+            {
+              "expr": "rate(node_disk_read_bytes_total[5m])",
+              "legendFormat": "{{instance}} {{device}} Read",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(node_disk_written_bytes_total[5m])",
+              "legendFormat": "{{instance}} {{device}} Write",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "Bps"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Network Traffic",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 22
+          },
+          "targets": [
+            {
+              "expr": "rate(node_network_receive_bytes_total[5m])",
+              "legendFormat": "{{instance}} {{device}} Receive",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(node_network_transmit_bytes_total[5m])",
+              "legendFormat": "{{instance}} {{device}} Transmit",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "Bps"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "System Load",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 22
+          },
+          "targets": [
+            {
+              "expr": "node_load1",
+              "legendFormat": "1m Load",
+              "refId": "A"
+            },
+            {
+              "expr": "node_load5",
+              "legendFormat": "5m Load",
+              "refId": "B"
+            },
+            {
+              "expr": "node_load15",
+              "legendFormat": "15m Load",
+              "refId": "C"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Disk Space Usage",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 30
+          },
+          "targets": [
+            {
+              "expr": "(1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100",
+              "legendFormat": "{{instance}} {{mountpoint}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "percent"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "Filesystem Size",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 30
+          },
+          "targets": [
+            {
+              "expr": "node_filesystem_size_bytes",
+              "legendFormat": "{{instance}} {{mountpoint}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 9,
+          "title": "Filesystem Available",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 30
+          },
+          "targets": [
+            {
+              "expr": "node_filesystem_avail_bytes",
+              "legendFormat": "{{instance}} {{mountpoint}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        }
+      ]
+    }

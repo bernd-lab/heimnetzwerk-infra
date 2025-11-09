@@ -6,37 +6,190 @@ metadata:
   labels:
     grafana_dashboard: '1'
 data:
-  infrastructure-overview.json: "{\n  \"dashboard\": {\n    \"title\": \"Infrastructure\
-    \ Overview\",\n    \"tags\": [\n      \"infrastructure\",\n      \"overview\"\n\
-    \    ],\n    \"timezone\": \"browser\",\n    \"schemaVersion\": 16,\n    \"version\"\
-    : 1,\n    \"refresh\": \"30s\",\n    \"panels\": [\n      {\n        \"id\": 1,\n\
-    \        \"title\": \"Cluster Health\",\n        \"type\": \"stat\",\n       \
-    \ \"gridPos\": {\n          \"h\": 4,\n          \"w\": 6,\n          \"x\": 0,\n\
-    \          \"y\": 0\n        },\n        \"targets\": [\n          {\n       \
-    \     \"expr\": \"count(up{job=\\\"kubernetes-pods\\\"} == 1)\",\n           \
-    \ \"legendFormat\": \"Running Pods\",\n            \"refId\": \"A\"\n        \
-    \  }\n        ],\n        \"fieldConfig\": {\n          \"defaults\": {\n    \
-    \        \"color\": {\n              \"mode\": \"thresholds\"\n            },\n\
-    \            \"thresholds\": {\n              \"mode\": \"absolute\",\n      \
-    \        \"steps\": [\n                {\n                  \"value\": 0,\n  \
-    \                \"color\": \"red\"\n                },\n                {\n \
-    \                 \"value\": 1,\n                  \"color\": \"green\"\n    \
-    \            }\n              ]\n            }\n          }\n        }\n     \
-    \ },\n      {\n        \"id\": 2,\n        \"title\": \"Node Status\",\n     \
-    \   \"type\": \"stat\",\n        \"gridPos\": {\n          \"h\": 4,\n       \
-    \   \"w\": 6,\n          \"x\": 6,\n          \"y\": 0\n        },\n        \"\
-    targets\": [\n          {\n            \"expr\": \"count(kube_node_status_condition{condition=\\\
-    \"Ready\\\",status=\\\"true\\\"} == 1)\",\n            \"legendFormat\": \"Ready\
-    \ Nodes\",\n            \"refId\": \"A\"\n          }\n        ]\n      },\n \
-    \     {\n        \"id\": 3,\n        \"title\": \"CPU Usage\",\n        \"type\"\
-    : \"graph\",\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n\
-    \          \"x\": 0,\n          \"y\": 4\n        },\n        \"targets\": [\n\
-    \          {\n            \"expr\": \"100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\\\
-    \"idle\\\"}[5m])) * 100)\",\n            \"legendFormat\": \"{{instance}}\",\n\
-    \            \"refId\": \"A\"\n          }\n        ]\n      },\n      {\n   \
-    \     \"id\": 4,\n        \"title\": \"Memory Usage\",\n        \"type\": \"graph\"\
-    ,\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n       \
-    \   \"x\": 12,\n          \"y\": 4\n        },\n        \"targets\": [\n     \
-    \     {\n            \"expr\": \"(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))\
-    \ * 100\",\n            \"legendFormat\": \"{{instance}}\",\n            \"refId\"\
-    : \"A\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+  infrastructure-overview.json: |
+    {
+      "title": "Infrastructure Overview",
+      "tags": ["infrastructure", "overview"],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 2,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "Infrastructure Overview",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+          "options": {
+            "content": "# Infrastructure Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard bietet einen Überblick über die gesamte Infrastruktur, insbesondere den Prometheus Monitoring-Stack.\n\n## Überwachte Komponenten\n\n```\n┌─────────────────────────────────────────────────────────┐\n│              Kubernetes Cluster                         │\n├─────────────────────────────────────────────────────────┤\n│                                                         │\n│  ┌──────────────┐  ┌──────────────┐                  │\n│  │  Prometheus  │  │   Grafana    │                  │\n│  │   (Metrics)  │  │ (Dashboards) │                  │\n│  └──────┬───────┘  └──────┬───────┘                  │\n│         │                  │                           │\n│         └────────┬─────────┘                           │\n│                  │                                     │\n│         ┌────────▼─────────┐                         │\n│         │  Alertmanager    │                         │\n│         │   (Alerts)       │                         │\n│         └──────────────────┘                         │\n│                                                         │\n│  ┌──────────────┐  ┌──────────────┐                  │\n│  │ Node         │  │ Kube-State   │                  │\n│  │ Exporter     │  │ Metrics      │                  │\n│  └──────────────┘  └──────────────┘                  │\n│                                                         │\n└─────────────────────────────────────────────────────────┘\n```\n\n## Key Metrics\n\n### Prometheus Status\n- **Status**: Verfügbarkeit des Prometheus-Servers\n- **Time Series**: Anzahl gespeicherter Time Series\n- **Config Reload**: Status des letzten Config-Reloads\n\n### Performance Metrics\n- **HTTP Request Rate**: Rate der HTTP-Anfragen an Prometheus\n- **Memory Usage**: Speicherverbrauch von Prometheus\n- **Go Goroutines**: Anzahl aktiver Goroutines\n\n## Metriken Details\n\n| Metrik | Beschreibung | Einheit |\n|--------|--------------|---------|\n| `up{job=\"prometheus\"}` | Prometheus Server Status (1=Up, 0=Down) | Boolean |\n| `prometheus_tsdb_head_series` | Anzahl Time Series in TSDB | Count |\n| `prometheus_config_last_reload_successful` | Config Reload Status | Boolean |\n| `prometheus_http_requests_total` | HTTP Requests nach Handler und Code | Requests |\n| `process_resident_memory_bytes` | Resident Memory | Bytes |\n| `go_memstats_heap_alloc_bytes` | Go Heap Allocated | Bytes |\n| `go_goroutines` | Anzahl Goroutines | Count |\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Prometheus Status",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 0, "y": 8},
+          "targets": [
+            {
+              "expr": "up{job=\"prometheus\"}",
+              "legendFormat": "Prometheus",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"value": null, "color": "red"},
+                  {"value": 1, "color": "green"}
+                ]
+              },
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "Down"}, "1": {"text": "Up"}}}
+              ]
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Time Series",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 6, "y": 8},
+          "targets": [
+            {
+              "expr": "prometheus_tsdb_head_series",
+              "legendFormat": "Series",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Config Reload Status",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 12, "y": 8},
+          "targets": [
+            {
+              "expr": "prometheus_config_last_reload_successful",
+              "legendFormat": "Config Reload",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"value": null, "color": "red"},
+                  {"value": 1, "color": "green"}
+                ]
+              },
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "Failed"}, "1": {"text": "Success"}}}
+              ]
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "HTTP Request Rate",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+          "targets": [
+            {
+              "expr": "rate(prometheus_http_requests_total[5m])",
+              "legendFormat": "{{handler}} ({{code}})",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes",
+              "legendFormat": "Resident Memory",
+              "refId": "A"
+            },
+            {
+              "expr": "go_memstats_alloc_bytes",
+              "legendFormat": "Go Allocated",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Go Goroutines",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
+          "targets": [
+            {
+              "expr": "go_goroutines",
+              "legendFormat": "Goroutines",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Go Memory Stats",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
+          "targets": [
+            {
+              "expr": "go_memstats_heap_alloc_bytes",
+              "legendFormat": "Heap Allocated",
+              "refId": "A"
+            },
+            {
+              "expr": "go_memstats_heap_sys_bytes",
+              "legendFormat": "Heap Sys",
+              "refId": "B"
+            },
+            {
+              "expr": "go_memstats_heap_idle_bytes",
+              "legendFormat": "Heap Idle",
+              "refId": "C"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "bytes"
+            }
+          }
+        }
+      ]
+    }

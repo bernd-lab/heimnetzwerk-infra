@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-argocd-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  argocd-overview.json: |
+    {
+      "title": "ArgoCD Overview",
+      "tags": [
+        "argocd",
+        "gitops"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 4,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "ArgoCD Metrics Overview",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# ArgoCD Overview Dashboard\n\n## ⚠️ WICHTIGER HINWEIS\n\n**Die ArgoCD Metriken sind aktuell nicht verfügbar!**\n\nPrometheus scraped ArgoCD nicht, da die Metriken nicht exportiert werden.\n\n### Verfügbare Metriken\n- ❌ `argocd_app_info`: Nicht verfügbar (0 Samples)\n- ❌ `argocd_app_k8s_request_total`: Nicht verfügbar (0 Samples)\n\n### Lösung\n1. ArgoCD ServiceMonitor prüfen\n2. ArgoCD Metrics-Endpoint prüfen: `/metrics`\n3. Prometheus Targets prüfen: `/api/v1/targets`\n\n## Visualisierung\n\n```\n┌─────────────────────────────────────────────────────────┐\n│              ArgoCD GitOps Platform                    │\n├─────────────────────────────────────────────────────────┤\n│                                                         │\n│  ┌──────────────┐  ┌──────────────┐                  │\n│  │   ArgoCD     │  │  Application │                  │\n│  │   Server     │  │  Controller  │                  │\n│  └──────┬───────┘  └──────┬───────┘                  │\n│         │                  │                           │\n│         └────────┬─────────┘                           │\n│                  │                                     │\n│         ┌────────▼─────────┐                         │\n│         │  Repo Server     │                         │\n│         │  (Git Sync)      │                         │\n│         └──────────────────┘                         │\n│                  │                                     │\n│         ┌────────▼─────────┐                         │\n│         │  Kubernetes API  │                         │\n│         │  (Deployments)   │                         │\n│         └──────────────────┘                         │\n│                                                         │\n└─────────────────────────────────────────────────────────┘\n```\n",
+            "mode": "markdown"
+          }
+        }
+      ]
+    }

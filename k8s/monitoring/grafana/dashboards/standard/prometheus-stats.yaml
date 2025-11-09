@@ -6,284 +6,268 @@ metadata:
   labels:
     grafana_dashboard: '1'
 data:
-  prometheus-stats.json: "{\n  \"__inputs\": [\n    {\n      \"name\": \"DS_PROMETHEUS\"\
-    ,\n      \"label\": \"Prometheus\",\n      \"description\": \"\",\n      \"type\"\
-    : \"datasource\",\n      \"pluginId\": \"prometheus\",\n      \"pluginName\":\
-    \ \"Prometheus\"\n    }\n  ],\n  \"__requires\": [\n    {\n      \"type\": \"\
-    panel\",\n      \"id\": \"singlestat\",\n      \"name\": \"Singlestat\",\n   \
-    \   \"version\": \"\"\n    },\n    {\n      \"type\": \"panel\",\n      \"id\"\
-    : \"text\",\n      \"name\": \"Text\",\n      \"version\": \"\"\n    },\n    {\n\
-    \      \"type\": \"panel\",\n      \"id\": \"graph\",\n      \"name\": \"Graph\"\
-    ,\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"grafana\",\n    \
-    \  \"id\": \"grafana\",\n      \"name\": \"Grafana\",\n      \"version\": \"3.1.0\"\
-    \n    },\n    {\n      \"type\": \"datasource\",\n      \"id\": \"prometheus\"\
-    ,\n      \"name\": \"Prometheus\",\n      \"version\": \"1.0.0\"\n    }\n  ],\n\
-    \  \"id\": null,\n  \"title\": \"Prometheus Stats\",\n  \"tags\": [],\n  \"style\"\
-    : \"dark\",\n  \"timezone\": \"browser\",\n  \"editable\": true,\n  \"hideControls\"\
-    : true,\n  \"sharedCrosshair\": false,\n  \"rows\": [\n    {\n      \"collapse\"\
-    : false,\n      \"editable\": true,\n      \"height\": 178,\n      \"panels\"\
-    : [\n        {\n          \"cacheTimeout\": null,\n          \"colorBackground\"\
-    : false,\n          \"colorValue\": false,\n          \"colors\": [\n        \
-    \    \"rgba(245, 54, 54, 0.9)\",\n            \"rgba(237, 129, 40, 0.89)\",\n\
-    \            \"rgba(50, 172, 45, 0.97)\"\n          ],\n          \"datasource\"\
-    : \"${DS_PROMETHEUS}\",\n          \"decimals\": 1,\n          \"editable\": true,\n\
-    \          \"error\": false,\n          \"format\": \"s\",\n          \"id\":\
-    \ 5,\n          \"interval\": null,\n          \"links\": [],\n          \"maxDataPoints\"\
-    : 100,\n          \"nullPointMode\": \"connected\",\n          \"nullText\": null,\n\
-    \          \"postfix\": \"\",\n          \"postfixFontSize\": \"50%\",\n     \
-    \     \"prefix\": \"\",\n          \"prefixFontSize\": \"50%\",\n          \"\
-    span\": 3,\n          \"sparkline\": {\n            \"fillColor\": \"rgba(31,\
-    \ 118, 189, 0.18)\",\n            \"full\": false,\n            \"lineColor\"\
-    : \"rgb(31, 120, 193)\",\n            \"show\": false\n          },\n        \
-    \  \"targets\": [\n            {\n              \"expr\": \"(time() - process_start_time_seconds{job=\\\
-    \"prometheus\\\"})\",\n              \"intervalFactor\": 2,\n              \"\
-    refId\": \"A\",\n              \"step\": 4\n            }\n          ],\n    \
-    \      \"thresholds\": \"\",\n          \"title\": \"Uptime\",\n          \"type\"\
-    : \"singlestat\",\n          \"valueFontSize\": \"80%\",\n          \"valueMaps\"\
-    : [\n            {\n              \"op\": \"=\",\n              \"text\": \"N/A\"\
-    ,\n              \"value\": \"null\"\n            }\n          ],\n          \"\
-    valueName\": \"current\",\n          \"mappingTypes\": [\n            {\n    \
-    \          \"name\": \"value to text\",\n              \"value\": 1\n        \
-    \    },\n            {\n              \"name\": \"range to text\",\n         \
-    \     \"value\": 2\n            }\n          ],\n          \"rangeMaps\": [\n\
-    \            {\n              \"from\": \"null\",\n              \"to\": \"null\"\
-    ,\n              \"text\": \"N/A\"\n            }\n          ],\n          \"\
-    mappingType\": 1,\n          \"gauge\": {\n            \"show\": false,\n    \
-    \        \"minValue\": 0,\n            \"maxValue\": 100,\n            \"thresholdMarkers\"\
-    : true,\n            \"thresholdLabels\": false\n          }\n        },\n   \
-    \     {\n          \"cacheTimeout\": null,\n          \"colorBackground\": false,\n\
-    \          \"colorValue\": false,\n          \"colors\": [\n            \"rgba(50,\
-    \ 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"\
-    rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_PROMETHEUS}\"\
-    ,\n          \"editable\": true,\n          \"error\": false,\n          \"format\"\
-    : \"none\",\n          \"id\": 6,\n          \"interval\": null,\n          \"\
-    links\": [],\n          \"maxDataPoints\": 100,\n          \"nullPointMode\":\
-    \ \"connected\",\n          \"nullText\": null,\n          \"postfix\": \"\",\n\
-    \          \"postfixFontSize\": \"50%\",\n          \"prefix\": \"\",\n      \
-    \    \"prefixFontSize\": \"50%\",\n          \"span\": 3,\n          \"sparkline\"\
-    : {\n            \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n            \"\
-    full\": false,\n            \"lineColor\": \"rgb(31, 120, 193)\",\n          \
-    \  \"show\": true\n          },\n          \"targets\": [\n            {\n   \
-    \           \"expr\": \"prometheus_local_storage_memory_series\",\n          \
-    \    \"intervalFactor\": 2,\n              \"refId\": \"A\",\n              \"\
-    step\": 4\n            }\n          ],\n          \"thresholds\": \"1,5\",\n \
-    \         \"title\": \"Local Storage Memory Series\",\n          \"type\": \"\
-    singlestat\",\n          \"valueFontSize\": \"70%\",\n          \"valueMaps\"\
-    : [],\n          \"valueName\": \"current\",\n          \"mappingTypes\": [\n\
-    \            {\n              \"name\": \"value to text\",\n              \"value\"\
-    : 1\n            },\n            {\n              \"name\": \"range to text\"\
-    ,\n              \"value\": 2\n            }\n          ],\n          \"rangeMaps\"\
-    : [\n            {\n              \"from\": \"null\",\n              \"to\": \"\
-    null\",\n              \"text\": \"N/A\"\n            }\n          ],\n      \
-    \    \"mappingType\": 1,\n          \"gauge\": {\n            \"show\": false,\n\
-    \            \"minValue\": 0,\n            \"maxValue\": 100,\n            \"\
-    thresholdMarkers\": true,\n            \"thresholdLabels\": false\n          }\n\
-    \        },\n        {\n          \"cacheTimeout\": null,\n          \"colorBackground\"\
-    : false,\n          \"colorValue\": true,\n          \"colors\": [\n         \
-    \   \"rgba(50, 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n\
-    \            \"rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\"\
-    : \"${DS_PROMETHEUS}\",\n          \"editable\": true,\n          \"error\": false,\n\
-    \          \"format\": \"none\",\n          \"id\": 7,\n          \"interval\"\
-    : null,\n          \"links\": [],\n          \"maxDataPoints\": 100,\n       \
-    \   \"nullPointMode\": \"connected\",\n          \"nullText\": null,\n       \
-    \   \"postfix\": \"\",\n          \"postfixFontSize\": \"50%\",\n          \"\
-    prefix\": \"\",\n          \"prefixFontSize\": \"50%\",\n          \"span\": 3,\n\
-    \          \"sparkline\": {\n            \"fillColor\": \"rgba(31, 118, 189, 0.18)\"\
-    ,\n            \"full\": false,\n            \"lineColor\": \"rgb(31, 120, 193)\"\
-    ,\n            \"show\": true\n          },\n          \"targets\": [\n      \
-    \      {\n              \"expr\": \"prometheus_local_storage_indexing_queue_length\"\
-    ,\n              \"intervalFactor\": 2,\n              \"refId\": \"A\",\n   \
-    \           \"step\": 4\n            }\n          ],\n          \"thresholds\"\
-    : \"500,4000\",\n          \"title\": \"Interal Storage Queue Length\",\n    \
-    \      \"type\": \"singlestat\",\n          \"valueFontSize\": \"70%\",\n    \
-    \      \"valueMaps\": [\n            {\n              \"op\": \"=\",\n       \
-    \       \"text\": \"Empty\",\n              \"value\": \"0\"\n            }\n\
-    \          ],\n          \"valueName\": \"current\",\n          \"mappingTypes\"\
-    : [\n            {\n              \"name\": \"value to text\",\n             \
-    \ \"value\": 1\n            },\n            {\n              \"name\": \"range\
-    \ to text\",\n              \"value\": 2\n            }\n          ],\n      \
-    \    \"rangeMaps\": [\n            {\n              \"from\": \"null\",\n    \
-    \          \"to\": \"null\",\n              \"text\": \"N/A\"\n            }\n\
-    \          ],\n          \"mappingType\": 1,\n          \"gauge\": {\n       \
-    \     \"show\": false,\n            \"minValue\": 0,\n            \"maxValue\"\
-    : 100,\n            \"thresholdMarkers\": true,\n            \"thresholdLabels\"\
-    : false\n          }\n        },\n        {\n          \"content\": \"<img src=\\\
-    \"http://prometheus.io/assets/prometheus_logo_grey.svg\\\" alt=\\\"Prometheus\
-    \ logo\\\" style=\\\"height: 40px;\\\">\\n<span style=\\\"font-family: 'Open Sans',\
-    \ 'Helvetica Neue', Helvetica; font-size: 25px;vertical-align: text-top;color:\
-    \ #bbbfc2;margin-left: 10px;\\\">Prometheus</span>\\n\\n<p style=\\\"margin-top:\
-    \ 10px;\\\">You're using Prometheus, an open-source systems monitoring and alerting\
-    \ toolkit originally built at SoundCloud. For more information, check out the\
-    \ <a href=\\\"http://www.grafana.org/\\\">Grafana</a> and <a href=\\\"http://prometheus.io/\\\
-    \">Prometheus</a> projects.</p>\",\n          \"editable\": true,\n          \"\
-    error\": false,\n          \"id\": 9,\n          \"links\": [],\n          \"\
-    mode\": \"html\",\n          \"span\": 3,\n          \"style\": {},\n        \
-    \  \"title\": \"\",\n          \"transparent\": true,\n          \"type\": \"\
-    text\"\n        }\n      ],\n      \"title\": \"New row\"\n    },\n    {\n   \
-    \   \"collapse\": false,\n      \"editable\": true,\n      \"height\": 227,\n\
-    \      \"panels\": [\n        {\n          \"aliasColors\": {\n            \"\
-    prometheus\": \"#C15C17\",\n            \"{instance=\\\"localhost:9090\\\",job=\\\
-    \"prometheus\\\"}\": \"#C15C17\"\n          },\n          \"bars\": false,\n \
-    \         \"datasource\": \"${DS_PROMETHEUS}\",\n          \"editable\": true,\n\
-    \          \"error\": false,\n          \"fill\": 1,\n          \"grid\": {\n\
-    \            \"threshold1\": null,\n            \"threshold1Color\": \"rgba(216,\
-    \ 200, 27, 0.27)\",\n            \"threshold2\": null,\n            \"threshold2Color\"\
-    : \"rgba(234, 112, 112, 0.22)\"\n          },\n          \"id\": 3,\n        \
-    \  \"legend\": {\n            \"avg\": false,\n            \"current\": false,\n\
-    \            \"max\": false,\n            \"min\": false,\n            \"show\"\
-    : true,\n            \"total\": false,\n            \"values\": false\n      \
-    \    },\n          \"lines\": true,\n          \"linewidth\": 2,\n          \"\
-    links\": [],\n          \"nullPointMode\": \"connected\",\n          \"percentage\"\
-    : false,\n          \"pointradius\": 2,\n          \"points\": false,\n      \
-    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
-    span\": 9,\n          \"stack\": false,\n          \"steppedLine\": false,\n \
-    \         \"targets\": [\n            {\n              \"expr\": \"rate(prometheus_local_storage_ingested_samples_total[5m])\"\
-    ,\n              \"interval\": \"\",\n              \"intervalFactor\": 2,\n \
-    \             \"legendFormat\": \"{{job}}\",\n              \"metric\": \"\",\n\
-    \              \"refId\": \"A\",\n              \"step\": 2\n            }\n \
-    \         ],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n\
-    \          \"title\": \"Samples ingested (rate-5m)\",\n          \"tooltip\":\
-    \ {\n            \"shared\": true,\n            \"value_type\": \"cumulative\"\
-    ,\n            \"ordering\": \"alphabetical\",\n            \"msResolution\":\
-    \ false\n          },\n          \"type\": \"graph\",\n          \"yaxes\": [\n\
-    \            {\n              \"show\": true,\n              \"min\": null,\n\
-    \              \"max\": null,\n              \"logBase\": 1,\n              \"\
-    format\": \"short\"\n            },\n            {\n              \"show\": true,\n\
-    \              \"min\": null,\n              \"max\": null,\n              \"\
-    logBase\": 1,\n              \"format\": \"short\"\n            }\n          ],\n\
-    \          \"xaxis\": {\n            \"show\": true\n          }\n        },\n\
-    \        {\n          \"content\": \"#### Samples Ingested\\nThis graph displays\
-    \ the count of samples ingested by the Prometheus server, as measured over the\
-    \ last 5 minutes, per time series in the range vector. When troubleshooting an\
-    \ issue on IRC or Github, this is often the first stat requested by the Prometheus\
-    \ team. \",\n          \"editable\": true,\n          \"error\": false,\n    \
-    \      \"id\": 8,\n          \"links\": [],\n          \"mode\": \"markdown\"\
-    ,\n          \"span\": 2.995914043583536,\n          \"style\": {},\n        \
-    \  \"title\": \"\",\n          \"transparent\": true,\n          \"type\": \"\
-    text\"\n        }\n      ],\n      \"title\": \"New row\"\n    },\n    {\n   \
-    \   \"collapse\": false,\n      \"editable\": true,\n      \"height\": \"250px\"\
-    ,\n      \"panels\": [\n        {\n          \"aliasColors\": {\n            \"\
-    prometheus\": \"#F9BA8F\",\n            \"{instance=\\\"localhost:9090\\\",interval=\\\
-    \"5s\\\",job=\\\"prometheus\\\"}\": \"#F9BA8F\"\n          },\n          \"bars\"\
-    : false,\n          \"datasource\": \"${DS_PROMETHEUS}\",\n          \"editable\"\
-    : true,\n          \"error\": false,\n          \"fill\": 1,\n          \"grid\"\
-    : {\n            \"threshold1\": null,\n            \"threshold1Color\": \"rgba(216,\
-    \ 200, 27, 0.27)\",\n            \"threshold2\": null,\n            \"threshold2Color\"\
-    : \"rgba(234, 112, 112, 0.22)\"\n          },\n          \"id\": 2,\n        \
-    \  \"legend\": {\n            \"avg\": false,\n            \"current\": false,\n\
-    \            \"max\": false,\n            \"min\": false,\n            \"show\"\
-    : true,\n            \"total\": false,\n            \"values\": false\n      \
-    \    },\n          \"lines\": true,\n          \"linewidth\": 2,\n          \"\
-    links\": [],\n          \"nullPointMode\": \"connected\",\n          \"percentage\"\
-    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
-    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
-    span\": 5,\n          \"stack\": false,\n          \"steppedLine\": false,\n \
-    \         \"targets\": [\n            {\n              \"expr\": \"rate(prometheus_target_interval_length_seconds_count[5m])\"\
-    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"{{job}}\"\
-    ,\n              \"refId\": \"A\",\n              \"step\": 2\n            }\n\
-    \          ],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n\
-    \          \"title\": \"Target Scrapes (last 5m)\",\n          \"tooltip\": {\n\
-    \            \"shared\": true,\n            \"value_type\": \"cumulative\",\n\
-    \            \"ordering\": \"alphabetical\",\n            \"msResolution\": false\n\
-    \          },\n          \"type\": \"graph\",\n          \"yaxes\": [\n      \
-    \      {\n              \"show\": true,\n              \"min\": null,\n      \
-    \        \"max\": null,\n              \"logBase\": 1,\n              \"format\"\
-    : \"short\"\n            },\n            {\n              \"show\": true,\n  \
-    \            \"min\": null,\n              \"max\": null,\n              \"logBase\"\
-    : 1,\n              \"format\": \"short\"\n            }\n          ],\n     \
-    \     \"xaxis\": {\n            \"show\": true\n          }\n        },\n    \
-    \    {\n          \"aliasColors\": {},\n          \"bars\": false,\n         \
-    \ \"datasource\": \"${DS_PROMETHEUS}\",\n          \"editable\": true,\n     \
-    \     \"error\": false,\n          \"fill\": 1,\n          \"grid\": {\n     \
-    \       \"threshold1\": null,\n            \"threshold1Color\": \"rgba(216, 200,\
-    \ 27, 0.27)\",\n            \"threshold2\": null,\n            \"threshold2Color\"\
-    : \"rgba(234, 112, 112, 0.22)\"\n          },\n          \"id\": 14,\n       \
-    \   \"legend\": {\n            \"avg\": false,\n            \"current\": false,\n\
-    \            \"max\": false,\n            \"min\": false,\n            \"show\"\
-    : true,\n            \"total\": false,\n            \"values\": false\n      \
-    \    },\n          \"lines\": true,\n          \"linewidth\": 2,\n          \"\
-    links\": [],\n          \"nullPointMode\": \"connected\",\n          \"percentage\"\
-    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
-    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
-    span\": 4,\n          \"stack\": false,\n          \"steppedLine\": false,\n \
-    \         \"targets\": [\n            {\n              \"expr\": \"prometheus_target_interval_length_seconds{quantile!=\\\
-    \"0.01\\\", quantile!=\\\"0.05\\\"}\",\n              \"interval\": \"\",\n  \
-    \            \"intervalFactor\": 2,\n              \"legendFormat\": \"{{quantile}}\
-    \ ({{interval}})\",\n              \"metric\": \"\",\n              \"refId\"\
-    : \"A\",\n              \"step\": 2\n            }\n          ],\n          \"\
-    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Scrape\
-    \ Duration\",\n          \"tooltip\": {\n            \"shared\": true,\n     \
-    \       \"value_type\": \"cumulative\",\n            \"ordering\": \"alphabetical\"\
-    ,\n            \"msResolution\": false\n          },\n          \"type\": \"graph\"\
-    ,\n          \"yaxes\": [\n            {\n              \"show\": true,\n    \
-    \          \"min\": null,\n              \"max\": null,\n              \"logBase\"\
-    : 1,\n              \"format\": \"short\"\n            },\n            {\n   \
-    \           \"show\": true,\n              \"min\": null,\n              \"max\"\
-    : null,\n              \"logBase\": 1,\n              \"format\": \"short\"\n\
-    \            }\n          ],\n          \"xaxis\": {\n            \"show\": true\n\
-    \          }\n        },\n        {\n          \"content\": \"#### Scrapes\\nPrometheus\
-    \ scrapes metrics from instrumented jobs, either directly or via an intermediary\
-    \ push gateway for short-lived jobs. Target scrapes will show how frequently targets\
-    \ are scraped, as measured over the last 5 minutes, per time series in the range\
-    \ vector. Scrape Duration will show how long the scrapes are taking, with percentiles\
-    \ available as series. \",\n          \"editable\": true,\n          \"error\"\
-    : false,\n          \"id\": 11,\n          \"links\": [],\n          \"mode\"\
-    : \"markdown\",\n          \"span\": 3,\n          \"style\": {},\n          \"\
-    title\": \"\",\n          \"transparent\": true,\n          \"type\": \"text\"\
-    \n        }\n      ],\n      \"title\": \"New row\"\n    },\n    {\n      \"collapse\"\
-    : false,\n      \"editable\": true,\n      \"height\": \"250px\",\n      \"panels\"\
-    : [\n        {\n          \"aliasColors\": {},\n          \"bars\": false,\n \
-    \         \"datasource\": \"${DS_PROMETHEUS}\",\n          \"decimals\": null,\n\
-    \          \"editable\": true,\n          \"error\": false,\n          \"fill\"\
-    : 1,\n          \"grid\": {\n            \"threshold1\": null,\n            \"\
-    threshold1Color\": \"rgba(216, 200, 27, 0.27)\",\n            \"threshold2\":\
-    \ null,\n            \"threshold2Color\": \"rgba(234, 112, 112, 0.22)\"\n    \
-    \      },\n          \"id\": 12,\n          \"legend\": {\n            \"alignAsTable\"\
-    : false,\n            \"avg\": false,\n            \"current\": false,\n     \
-    \       \"hideEmpty\": true,\n            \"max\": false,\n            \"min\"\
-    : false,\n            \"show\": true,\n            \"total\": false,\n       \
-    \     \"values\": false\n          },\n          \"lines\": true,\n          \"\
-    linewidth\": 2,\n          \"links\": [],\n          \"nullPointMode\": \"connected\"\
-    ,\n          \"percentage\": false,\n          \"pointradius\": 5,\n         \
-    \ \"points\": false,\n          \"renderer\": \"flot\",\n          \"seriesOverrides\"\
-    : [],\n          \"span\": 9,\n          \"stack\": false,\n          \"steppedLine\"\
-    : false,\n          \"targets\": [\n            {\n              \"expr\": \"\
-    prometheus_evaluator_duration_milliseconds{quantile!=\\\"0.01\\\", quantile!=\\\
-    \"0.05\\\"}\",\n              \"interval\": \"\",\n              \"intervalFactor\"\
-    : 2,\n              \"legendFormat\": \"{{quantile}}\",\n              \"refId\"\
-    : \"A\",\n              \"step\": 2\n            }\n          ],\n          \"\
-    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Rule\
-    \ Eval Duration\",\n          \"tooltip\": {\n            \"shared\": true,\n\
-    \            \"value_type\": \"cumulative\",\n            \"ordering\": \"alphabetical\"\
-    ,\n            \"msResolution\": false\n          },\n          \"type\": \"graph\"\
-    ,\n          \"yaxes\": [\n            {\n              \"show\": true,\n    \
-    \          \"min\": null,\n              \"max\": null,\n              \"logBase\"\
-    : 1,\n              \"format\": \"percentunit\",\n              \"label\": \"\"\
-    \n            },\n            {\n              \"show\": true,\n             \
-    \ \"min\": null,\n              \"max\": null,\n              \"logBase\": 1,\n\
-    \              \"format\": \"short\"\n            }\n          ],\n          \"\
-    xaxis\": {\n            \"show\": true\n          }\n        },\n        {\n \
-    \         \"content\": \"#### Rule Evaluation Duration\\nThis graph panel plots\
-    \ the duration for all evaluations to execute. The 50th percentile, 90th percentile\
-    \ and 99th percentile are shown as three separate series to help identify outliers\
-    \ that may be skewing the data.\",\n          \"editable\": true,\n          \"\
-    error\": false,\n          \"id\": 15,\n          \"links\": [],\n          \"\
-    mode\": \"markdown\",\n          \"span\": 3,\n          \"style\": {},\n    \
-    \      \"title\": \"\",\n          \"transparent\": true,\n          \"type\"\
-    : \"text\"\n        }\n      ],\n      \"title\": \"New row\"\n    }\n  ],\n \
-    \ \"time\": {\n    \"from\": \"now-5m\",\n    \"to\": \"now\"\n  },\n  \"timepicker\"\
-    : {\n    \"now\": true,\n    \"refresh_intervals\": [\n      \"5s\",\n      \"\
-    10s\",\n      \"30s\",\n      \"1m\",\n      \"5m\",\n      \"15m\",\n      \"\
-    30m\",\n      \"1h\",\n      \"2h\",\n      \"1d\"\n    ],\n    \"time_options\"\
-    : [\n      \"5m\",\n      \"15m\",\n      \"1h\",\n      \"6h\",\n      \"12h\"\
-    ,\n      \"24h\",\n      \"2d\",\n      \"7d\",\n      \"30d\"\n    ]\n  },\n\
-    \  \"templating\": {\n    \"list\": []\n  },\n  \"annotations\": {\n    \"list\"\
-    : []\n  },\n  \"refresh\": false,\n  \"schemaVersion\": 12,\n  \"version\": 0,\n\
-    \  \"links\": [\n    {\n      \"icon\": \"info\",\n      \"tags\": [],\n     \
-    \ \"targetBlank\": true,\n      \"title\": \"Grafana Docs\",\n      \"tooltip\"\
-    : \"\",\n      \"type\": \"link\",\n      \"url\": \"http://www.grafana.org/docs\"\
-    \n    },\n    {\n      \"icon\": \"info\",\n      \"tags\": [],\n      \"targetBlank\"\
-    : true,\n      \"title\": \"Prometheus Docs\",\n      \"type\": \"link\",\n  \
-    \    \"url\": \"http://prometheus.io/docs/introduction/overview/\"\n    }\n  ],\n\
-    \  \"gnetId\": null,\n  \"description\": \"The  official, pre-built Prometheus\
-    \ Stats Dashboard.\"\n}"
+  prometheus-stats.json: |
+    {
+      "title": "Prometheus Stats",
+      "tags": ["prometheus", "monitoring"],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 2,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "Prometheus Metrics Overview",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+          "options": {
+            "content": "# Prometheus Stats Dashboard\n\n## Overview\n\nThis dashboard monitors the health and performance of the Prometheus server itself.\n\n## Key Metrics\n\n### Overview Section\n- **Uptime**: Time since Prometheus server started\n- **Time Series**: Number of active time series in TSDB\n- **Active Queries**: Currently executing queries\n- **Config Reload**: Status of last configuration reload\n\n### Ingestion Section\n- **Samples Ingested Rate**: Rate of samples being written to TSDB\n- **Target Scrapes Rate**: Rate of target scrapes by job\n\n### HTTP Section\n- **HTTP Request Rate**: Request rate by handler and status code\n- **HTTP Request Duration**: Average request duration by handler\n\n### Performance Section\n- **Rule Evaluation Duration**: Time spent evaluating alerting rules\n- **Query Duration**: Time spent executing PromQL queries\n\n### System Section\n- **Memory Usage**: Resident memory and Go heap allocations\n- **Go Goroutines**: Number of active goroutines\n\n## Metric Details\n\n| Metric | Description | Unit |\n|--------|-------------|------|\n| `prometheus_tsdb_head_series` | Number of time series in TSDB head | count |\n| `prometheus_config_last_reload_successful` | Config reload success (1=success, 0=failed) | boolean |\n| `prometheus_http_requests_total` | Total HTTP requests | requests |\n| `prometheus_tsdb_head_samples_appended_total` | Total samples appended to TSDB | samples |\n| `go_memstats_heap_alloc_bytes` | Go heap memory allocated | bytes |\n| `go_goroutines` | Number of goroutines | count |\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Uptime",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 0, "y": 8},
+          "targets": [
+            {
+              "expr": "(time() - process_start_time_seconds{job=\"prometheus\"})",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "unit": "s",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"value": null, "color": "green"}
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Time Series",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 6, "y": 8},
+          "targets": [
+            {
+              "expr": "prometheus_tsdb_head_series",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Active Queries",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 12, "y": 8},
+          "targets": [
+            {
+              "expr": "prometheus_engine_queries",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Config Reload",
+          "type": "stat",
+          "gridPos": {"h": 4, "w": 6, "x": 18, "y": 8},
+          "targets": [
+            {
+              "expr": "prometheus_config_last_reload_successful",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "Failed"}, "1": {"text": "Success"}}}
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"value": null, "color": "red"},
+                  {"value": 1, "color": "green"}
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Samples Ingested Rate",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+          "targets": [
+            {
+              "expr": "rate(prometheus_tsdb_head_samples_appended_total[5m])",
+              "legendFormat": "Samples/sec",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Target Scrapes Rate",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+          "targets": [
+            {
+              "expr": "rate(prometheus_target_interval_length_seconds_count[5m])",
+              "legendFormat": "{{job}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "HTTP Request Rate",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
+          "targets": [
+            {
+              "expr": "rate(prometheus_http_requests_total[5m])",
+              "legendFormat": "{{handler}} ({{code}})",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "HTTP Request Duration",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
+          "targets": [
+            {
+              "expr": "rate(prometheus_http_request_duration_seconds_sum[5m]) / rate(prometheus_http_request_duration_seconds_count[5m])",
+              "legendFormat": "{{handler}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "s"
+            }
+          }
+        },
+        {
+          "id": 9,
+          "title": "Rule Evaluation Duration",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28},
+          "targets": [
+            {
+              "expr": "rate(prometheus_rule_evaluation_duration_seconds_sum[5m]) / rate(prometheus_rule_evaluation_duration_seconds_count[5m])",
+              "legendFormat": "{{rule_group}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "s"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "title": "Query Duration",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28},
+          "targets": [
+            {
+              "expr": "rate(prometheus_engine_query_duration_seconds_sum[5m]) / rate(prometheus_engine_query_duration_seconds_count[5m])",
+              "legendFormat": "Query Duration",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "s"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 36},
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes",
+              "legendFormat": "Resident Memory",
+              "refId": "A"
+            },
+            {
+              "expr": "go_memstats_heap_alloc_bytes",
+              "legendFormat": "Heap Allocated",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "title": "Go Goroutines",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 36},
+          "targets": [
+            {
+              "expr": "go_goroutines",
+              "legendFormat": "Goroutines",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "palette-classic"},
+              "unit": "short"
+            }
+          }
+        }
+      ]
+    }

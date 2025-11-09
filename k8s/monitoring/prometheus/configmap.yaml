@@ -12,9 +12,6 @@ data:
         cluster: 'k8s-single-node'
         environment: 'production'
     
-    # Retention: 30 days
-    retention: 30d
-    
     # Alertmanager configuration
     alerting:
       alertmanagers:
@@ -232,6 +229,20 @@ data:
           action: keep
         - source_labels: [__meta_kubernetes_endpoint_port_name]
           regex: 'metrics'
+          action: keep
+        - source_labels: [__meta_kubernetes_namespace]
+          target_label: kubernetes_namespace
+      
+      # Alertmanager
+      - job_name: 'alertmanager'
+        kubernetes_sd_configs:
+        - role: endpoints
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_endpoints_name]
+          regex: 'alertmanager'
+          action: keep
+        - source_labels: [__meta_kubernetes_endpoint_port_name]
+          regex: 'web'
           action: keep
         - source_labels: [__meta_kubernetes_namespace]
           target_label: kubernetes_namespace

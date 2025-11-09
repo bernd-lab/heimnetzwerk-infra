@@ -1,0 +1,246 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-resource-usage
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  resource-usage.json: |
+    {
+      "title": "Kubernetes Resource Usage",
+      "tags": [
+        "kubernetes",
+        "resources",
+        "usage"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 1,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "Resource Usage Overview",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Kubernetes Resource Usage Dashboard\n\n## Beschreibung\n\nDieses Dashboard zeigt die Resource-Anforderungen (Requests) und Limits aller Pods im Cluster.\n\n## Visualisierung\n\n```\n┌─────────────────────────────────────────────────────────┐\n│              Kubernetes Cluster                         │\n├─────────────────────────────────────────────────────────┤\n│                                                         │\n│  ┌──────────────┐  ┌──────────────┐                  │\n│  │   Requests   │  │    Limits    │                  │\n│  │  (Minimum)   │  │  (Maximum)   │                  │\n│  └──────┬───────┘  └──────┬───────┘                  │\n│         │                  │                           │\n│         └────────┬─────────┘                           │\n│                  │                                     │\n│         ┌────────▼─────────┐                         │\n│         │  Resource Usage  │                         │\n│         │   (Actual)       │                         │\n│         └──────────────────┘                         │\n│                                                         │\n└─────────────────────────────────────────────────────────┘\n```\n\n## Metriken\n\n- **CPU Requests**: Angeforderte CPU-Ressourcen pro Pod\n- **Memory Requests**: Angeforderte Memory-Ressourcen pro Pod\n- **CPU Limits**: Maximale CPU-Ressourcen pro Pod\n- **Memory Limits**: Maximale Memory-Ressourcen pro Pod\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "CPU Requests by Pod",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{resource=\"cpu\"})",
+              "legendFormat": "{{namespace}}/{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "cores"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Memory Requests by Pod",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{resource=\"memory\"})",
+              "legendFormat": "{{namespace}}/{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "CPU Limits by Pod",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "targets": [
+            {
+              "expr": "sum by (namespace, pod) (kube_pod_container_resource_limits{resource=\"cpu\"})",
+              "legendFormat": "{{namespace}}/{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "cores"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Memory Limits by Pod",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "targets": [
+            {
+              "expr": "sum by (namespace, pod) (kube_pod_container_resource_limits{resource=\"memory\"})",
+              "legendFormat": "{{namespace}}/{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Total CPU Requests",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 24
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\"})",
+              "legendFormat": "Total CPU Requests",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "cores"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Total Memory Requests",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 24
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\"})",
+              "legendFormat": "Total Memory Requests",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Total CPU Limits",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 24
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_resource_limits{resource=\"cpu\"})",
+              "legendFormat": "Total CPU Limits",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "cores"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "Total Memory Limits",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 24
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_pod_container_resource_limits{resource=\"memory\"})",
+              "legendFormat": "Total Memory Limits",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "bytes"
+            }
+          }
+        }
+      ]
+    }

@@ -1,23 +1,30 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: monitoring
-
 resources:
+- prometheus/serviceaccount.yaml
+- prometheus/clusterrole.yaml
+- prometheus/clusterrolebinding.yaml
 - prometheus/configmap.yaml
 - prometheus/servicemonitors/kustomization.yaml
 - prometheus/prometheusrules/kustomization.yaml
 - grafana/dashboard-provisioning.yaml
-- grafana/dashboards/standard/k8s-cluster-monitoring.yaml
-- grafana/dashboards/standard/node-exporter-full.yaml
-- grafana/dashboards/standard/k8s-pods.yaml
-- grafana/dashboards/standard/k8s-deployment.yaml
-- grafana/dashboards/standard/k8s-kubelet.yaml
 - grafana/dashboards/standard/prometheus-stats.yaml
-- grafana/dashboards/standard/prometheus-2-stats.yaml
 - grafana/dashboards/standard/alertmanager.yaml
-- grafana/dashboards/standard/nginx-ingress.yaml
+- grafana/dashboards/standard/node-exporter.yaml
+- grafana/dashboards/standard/kubernetes-cluster.yaml
 - grafana/dashboards/custom/infrastructure-overview.yaml
+- grafana/dashboards/custom/argocd-overview.yaml
+- grafana/dashboards/custom/coredns-overview.yaml
+- grafana/dashboards/custom/nginx-ingress.yaml
+- grafana/dashboards/custom/cert-manager.yaml
+- grafana/dashboards/custom/velero.yaml
+- grafana/dashboards/custom/resource-usage.yaml
+- grafana/dashboards/custom/services-overview.yaml
+- grafana/dashboards/custom/replicaset-overview.yaml
+- grafana/dashboards/custom/daemonset-overview.yaml
+- grafana/dashboards/custom/statefulset-overview.yaml
+- grafana/dashboards/custom/pvc-overview.yaml
 - alertmanager/kustomization.yaml
 - node-exporter/kustomization.yaml
 - kube-state-metrics/kustomization.yaml

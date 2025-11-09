@@ -1,18 +1,19 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: argocd
+  name: kube-state-metrics
   namespace: monitoring
   labels:
-    app: argocd
+    app: kube-state-metrics
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: argocd-server
+      app: kube-state-metrics
   endpoints:
-  - port: http
+  - port: http-metrics
     interval: 30s
     path: /metrics
   namespaceSelector:
     matchNames:
-    - argocd
+    - monitoring
+

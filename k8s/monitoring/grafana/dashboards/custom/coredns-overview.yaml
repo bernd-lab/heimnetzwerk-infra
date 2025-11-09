@@ -1,0 +1,262 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-coredns-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  coredns-overview.json: |
+    {
+      "title": "CoreDNS Overview",
+      "tags": [
+        "coredns",
+        "dns"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 4,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "CoreDNS Metrics Overview",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# CoreDNS Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht CoreDNS, den DNS-Server des Kubernetes-Clusters.\n\n## Überwachte Komponenten\n\n- **DNS Requests Rate**: Anzahl DNS-Anfragen pro Sekunde\n- **DNS Responses Rate**: Anzahl DNS-Antworten pro Sekunde\n- **Cache Hits/Misses**: Cache-Treffer und -Fehlschläge\n- **DNS Request Duration**: Dauer der DNS-Anfragen\n- **Cache Entries**: Anzahl Cache-Einträge\n- **Panic Count**: Anzahl Panics (Fehler)\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "DNS Requests Rate",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_dns_requests_total[5m])",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "DNS Responses Rate",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_dns_responses_total[5m])",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Cache Hits Rate",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 14
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_cache_hits_total[5m])",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Cache Misses Rate",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 14
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_cache_misses_total[5m])",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "reqps"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "DNS Request Duration",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 22
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_dns_request_duration_seconds_sum[5m]) / rate(coredns_dns_request_duration_seconds_count[5m])",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "s"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "Cache Entries",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 22
+          },
+          "targets": [
+            {
+              "expr": "coredns_cache_entries",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Panic Count",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 22
+          },
+          "targets": [
+            {
+              "expr": "sum(coredns_panics_total)",
+              "legendFormat": "Panics",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 1,
+                    "color": "yellow"
+                  },
+                  {
+                    "value": 5,
+                    "color": "red"
+                  }
+                ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 8,
+          "title": "Cache Hit Ratio",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 30
+          },
+          "targets": [
+            {
+              "expr": "rate(coredns_cache_hits_total[5m]) / (rate(coredns_cache_hits_total[5m]) + rate(coredns_cache_misses_total[5m])) * 100",
+              "legendFormat": "{{instance}} Hit Ratio",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "percent"
+            }
+          }
+        }
+      ]
+    }

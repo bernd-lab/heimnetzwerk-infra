@@ -1,0 +1,188 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-velero
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  velero.json: |
+    {
+      "title": "Velero",
+      "tags": [
+        "velero",
+        "backup"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 4,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "Velero Metrics Overview",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Velero Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht Velero, das Backup- und Disaster-Recovery-Tool für Kubernetes.\n\n## Visualisierung\n\n```\n┌─────────────────────────────────────────────────────────┐\n│              Velero Backup System                        │\n├─────────────────────────────────────────────────────────┤\n│                                                         │\n│  ┌──────────────┐  ┌──────────────┐                  │\n│  │   Backup     │  │   Restore    │                  │\n│  │   Creation   │  │   Process    │                  │\n│  └──────┬───────┘  └──────┬───────┘                  │\n│         │                  │                           │\n│         └────────┬─────────┘                           │\n│                  │                                     │\n│         ┌────────▼─────────┐                         │\n│         │  Object Storage  │                         │\n│         │  (S3/MinIO)      │                         │\n│         └──────────────────┘                         │\n│                                                         │\n└─────────────────────────────────────────────────────────┘\n```\n\n## Metriken\n\n- **Successful Backups**: Anzahl erfolgreicher Backups\n- **Failed Backups**: Anzahl fehlgeschlagener Backups\n- **Total Backups**: Gesamtanzahl Backups\n- **Backup Success Rate**: Erfolgsquote der Backups\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Successful Backups",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "sum(velero_backup_success_total)",
+              "legendFormat": "Successful",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 1,
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Failed Backups",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "sum(velero_backup_failure_total)",
+              "legendFormat": "Failed",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "green"
+                  },
+                  {
+                    "value": 1,
+                    "color": "yellow"
+                  },
+                  {
+                    "value": 2,
+                    "color": "red"
+                  }
+                ]
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Total Backups",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "sum(velero_backup_success_total) + sum(velero_backup_failure_total)",
+              "legendFormat": "Total",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Backup Success Rate",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 8
+          },
+          "targets": [
+            {
+              "expr": "(sum(velero_backup_success_total) / (sum(velero_backup_success_total) + sum(velero_backup_failure_total))) * 100",
+              "legendFormat": "Success Rate",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "value": null,
+                    "color": "red"
+                  },
+                  {
+                    "value": 50,
+                    "color": "yellow"
+                  },
+                  {
+                    "value": 90,
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "percent"
+            }
+          }
+        }
+      ]
+    }

@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboard-alertmanager
+  name: grafana-dashboard-kubernetes-cluster
   namespace: monitoring
   labels:
     grafana_dashboard: '1'
 data:
-  alertmanager.json: |
+  kubernetes-cluster.json: |
     {
-      "title": "Alertmanager Overview",
+      "title": "Kubernetes Cluster Monitoring",
       "tags": [
-        "alertmanager",
-        "alerts"
+        "kubernetes",
+        "cluster"
       ],
       "timezone": "browser",
       "schemaVersion": 16,
@@ -21,7 +21,7 @@ data:
         {
           "id": 100,
           "type": "text",
-          "title": "Alertmanager Metrics Overview",
+          "title": "Kubernetes Cluster Metrics Overview",
           "gridPos": {
             "h": 6,
             "w": 24,
@@ -29,13 +29,13 @@ data:
             "y": 0
           },
           "options": {
-            "content": "# Alertmanager Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht Alertmanager, den Alerting-Service.\n\n## Überwachte Komponenten\n\n- **Alertmanager Status**: Up/Down Status\n- **Alerts Received/Sent**: Anzahl empfangener und gesendeter Alerts\n- **Notifications**: Anzahl Benachrichtigungen (Total/Failed)\n- **Silences**: Aktive Stillezeiten\n- **Config Reload**: Status des letzten Config-Reloads\n- **Cluster**: Cluster-Mitglieder (falls HA)\n",
+            "content": "# Kubernetes Cluster Monitoring Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht den Kubernetes-Cluster über kube-state-metrics.\n\n## Überwachte Komponenten\n\n- **Node Status**: Status aller Nodes\n- **Pod Status**: Status aller Pods nach Phase\n- **Deployment Status**: Status der Deployments\n- **Container Restarts**: Anzahl Container-Neustarts\n- **Resource Requests/Limits**: Resource-Anforderungen und Limits\n- **Namespace Overview**: Übersicht nach Namespaces\n",
             "mode": "markdown"
           }
         },
         {
           "id": 1,
-          "title": "Alertmanager Status",
+          "title": "Total Nodes",
           "type": "stat",
           "gridPos": {
             "h": 4,
@@ -45,35 +45,23 @@ data:
           },
           "targets": [
             {
-              "expr": "up{job=\"alertmanager\"}",
-              "legendFormat": "Alertmanager",
+              "expr": "count(kube_node_info)",
+              "legendFormat": "Total Nodes",
               "refId": "A"
             }
           ],
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "thresholds"
+                "mode": "palette-classic"
               },
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "value": null,
-                    "color": "red"
-                  },
-                  {
-                    "value": 1,
-                    "color": "green"
-                  }
-                ]
-              }
+              "unit": "short"
             }
           }
         },
         {
           "id": 2,
-          "title": "Config Reload Status",
+          "title": "Total Pods",
           "type": "stat",
           "gridPos": {
             "h": 4,
@@ -83,8 +71,8 @@ data:
           },
           "targets": [
             {
-              "expr": "alertmanager_config_last_reload_success_timestamp_seconds",
-              "legendFormat": "Last Reload",
+              "expr": "count(kube_pod_info)",
+              "legendFormat": "Total Pods",
               "refId": "A"
             }
           ],
@@ -93,13 +81,13 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
-              "unit": "s"
+              "unit": "short"
             }
           }
         },
         {
           "id": 3,
-          "title": "Cluster Members",
+          "title": "Total Deployments",
           "type": "stat",
           "gridPos": {
             "h": 4,
@@ -109,8 +97,8 @@ data:
           },
           "targets": [
             {
-              "expr": "alertmanager_cluster_members",
-              "legendFormat": "Members",
+              "expr": "count(kube_deployment_created)",
+              "legendFormat": "Total Deployments",
               "refId": "A"
             }
           ],
@@ -125,18 +113,43 @@ data:
         },
         {
           "id": 4,
-          "title": "Active Silences",
-          "type": "stat",
+          "title": "Pod Status Distribution",
+          "type": "piechart",
           "gridPos": {
-            "h": 4,
-            "w": 6,
-            "x": 18,
-            "y": 6
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
           },
           "targets": [
             {
-              "expr": "alertmanager_silences",
-              "legendFormat": "Silences",
+              "expr": "count by (phase) (kube_pod_status_phase)",
+              "legendFormat": "{{phase}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              }
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Pods by Namespace",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "count by (namespace) (kube_pod_info)",
+              "legendFormat": "{{namespace}}",
               "refId": "A"
             }
           ],
@@ -150,20 +163,25 @@ data:
           }
         },
         {
-          "id": 5,
-          "title": "Alerts Received Rate",
+          "id": 6,
+          "title": "Deployment Replicas",
           "type": "timeseries",
           "gridPos": {
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 10
+            "y": 18
           },
           "targets": [
             {
-              "expr": "rate(alertmanager_alerts_received_total[5m])",
-              "legendFormat": "Received",
+              "expr": "kube_deployment_spec_replicas",
+              "legendFormat": "{{namespace}}/{{deployment}} Desired",
               "refId": "A"
+            },
+            {
+              "expr": "kube_deployment_status_replicas_available",
+              "legendFormat": "{{namespace}}/{{deployment}} Available",
+              "refId": "B"
             }
           ],
           "fieldConfig": {
@@ -171,65 +189,13 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 6,
-          "title": "Cluster Messages Sent Rate",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 10
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_cluster_messages_sent_total[5m])",
-              "legendFormat": "Sent",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
+              "unit": "short"
             }
           }
         },
         {
           "id": 7,
-          "title": "Notifications Total",
-          "type": "timeseries",
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 18
-          },
-          "targets": [
-            {
-              "expr": "rate(alertmanager_notifications_total[5m])",
-              "legendFormat": "{{integration}}",
-              "refId": "A"
-            }
-          ],
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "unit": "reqps"
-            }
-          }
-        },
-        {
-          "id": 8,
-          "title": "Notifications Failed",
+          "title": "Container Restarts",
           "type": "timeseries",
           "gridPos": {
             "h": 8,
@@ -239,8 +205,8 @@ data:
           },
           "targets": [
             {
-              "expr": "rate(alertmanager_notifications_failed_total[5m])",
-              "legendFormat": "{{integration}}",
+              "expr": "sum by (namespace, pod) (increase(kube_pod_container_status_restarts_total[1h]))",
+              "legendFormat": "{{namespace}}/{{pod}}",
               "refId": "A"
             }
           ],
@@ -249,13 +215,13 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
-              "unit": "reqps"
+              "unit": "short"
             }
           }
         },
         {
-          "id": 9,
-          "title": "HTTP Request Rate",
+          "id": 8,
+          "title": "Pod Conditions",
           "type": "timeseries",
           "gridPos": {
             "h": 8,
@@ -265,8 +231,8 @@ data:
           },
           "targets": [
             {
-              "expr": "rate(alertmanager_http_requests_total[5m])",
-              "legendFormat": "{{handler}} {{code}}",
+              "expr": "count by (condition, status) (kube_pod_status_condition)",
+              "legendFormat": "{{condition}}={{status}}",
               "refId": "A"
             }
           ],
@@ -275,7 +241,7 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
-              "unit": "reqps"
+              "unit": "short"
             }
           }
         }

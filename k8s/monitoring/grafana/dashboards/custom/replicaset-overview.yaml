@@ -1,0 +1,198 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-replicaset-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  replicaset-overview.json: |
+    {
+      "title": "Kubernetes ReplicaSet Overview",
+      "tags": [
+        "kubernetes",
+        "replicaset"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 1,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 100,
+          "type": "text",
+          "title": "ReplicaSet Metrics Overview",
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "options": {
+            "content": "# Kubernetes ReplicaSet Overview Dashboard\n\n## Beschreibung\n\nDieses Dashboard überwacht ReplicaSets im Kubernetes-Cluster.\n\n## Überwachte Komponenten\n\n- **Total ReplicaSets**: Gesamtanzahl der ReplicaSets\n- **Desired vs Labeled Replicas**: Vergleich von gewünschten und vollständig gelabelten Replicas\n- **ReplicaSet by Namespace**: Verteilung nach Namespace\n- **ReplicaSet Age**: Alter der ReplicaSets\n",
+            "mode": "markdown"
+          }
+        },
+        {
+          "id": 1,
+          "title": "Total ReplicaSets",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "count(kube_replicaset_created)",
+              "legendFormat": "ReplicaSets",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Desired Replicas",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_replicaset_spec_replicas)",
+              "legendFormat": "Desired",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "title": "Fully Labeled Replicas",
+          "type": "stat",
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 6
+          },
+          "targets": [
+            {
+              "expr": "sum(kube_replicaset_status_fully_labeled_replicas)",
+              "legendFormat": "Labeled",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "title": "ReplicaSets by Namespace",
+          "type": "table",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "count by (namespace) (kube_replicaset_created)",
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              }
+            }
+          }
+        },
+        {
+          "id": 5,
+          "title": "Desired vs Labeled Replicas",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "targets": [
+            {
+              "expr": "kube_replicaset_spec_replicas",
+              "legendFormat": "{{namespace}}/{{replicaset}} Desired",
+              "refId": "A"
+            },
+            {
+              "expr": "kube_replicaset_status_fully_labeled_replicas",
+              "legendFormat": "{{namespace}}/{{replicaset}} Labeled",
+              "refId": "B"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "short"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "title": "ReplicaSet Age",
+          "type": "timeseries",
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 18
+          },
+          "targets": [
+            {
+              "expr": "time() - kube_replicaset_created",
+              "legendFormat": "{{namespace}}/{{replicaset}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "unit": "s"
+            }
+          }
+        }
+      ]
+    }
+
