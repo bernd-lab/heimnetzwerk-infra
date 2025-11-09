@@ -222,7 +222,8 @@ kubectl logs -n monitoring -l app=grafana --tail=100 | grep -i dashboard
 
 **Dateien:**
 - `k8s/monitoring/alertmanager/configmap.yaml`
-- `k8s/monitoring/alertmanager/secret.yaml`
+- `k8s/monitoring/alertmanager/secret.yaml.template` (⚠️ NICHT anwenden! Nur Dokumentation)
+- `k8s/monitoring/alertmanager/README-SECRET.md` (Anleitung für manuelle Secret-Erstellung)
 
 **Discord Webhook URL:**
 ⚠️ **SICHERHEITSHINWEIS**: Die Webhook-URL darf nicht im Repository gespeichert werden!
@@ -378,7 +379,7 @@ curl -k https://prometheus.k8sops.online/api/v1/targets | jq '.data.activeTarget
 
 ### TODO 5: ArgoCD Application für Monitoring-Stack
 
-**Status:** ⚠️ Nicht erstellt  
+**Status:** ✅ Erstellt  
 **Priorität:** Mittel  
 **Agent:** `/gitops-expert`
 
@@ -512,7 +513,8 @@ k8s/monitoring/
 │           └── infrastructure-overview.yaml
 ├── alertmanager/
 │   ├── namespace.yaml
-│   ├── secret.yaml
+│   ├── secret.yaml.template (⚠️ NICHT anwenden! Nur Dokumentation)
+│   ├── README-SECRET.md (Anleitung für manuelle Secret-Erstellung)
 │   ├── configmap.yaml
 │   ├── pvc.yaml
 │   ├── deployment.yaml
@@ -537,9 +539,9 @@ k8s/monitoring/
 
 ### Fehlende Dateien:
 
-- `k8s/monitoring/argocd-application.yaml`
-- `k8s/monitoring/kustomization.yaml`
-- `k8s/monitoring/alertmanager/webhook-template.yaml`
+- ~~`k8s/monitoring/argocd-application.yaml`~~ ✅ Erstellt
+- ~~`k8s/monitoring/kustomization.yaml`~~ ✅ Erstellt
+- `k8s/monitoring/alertmanager/webhook-template.yaml` (optional, für Discord-Format)
 - `k8s/monitoring/grafana/dashboards/custom/pihole-dashboard.yaml`
 - `k8s/monitoring/grafana/dashboards/custom/argocd-dashboard.yaml`
 - `k8s/monitoring/grafana/dashboards/custom/gitlab-dashboard.yaml`

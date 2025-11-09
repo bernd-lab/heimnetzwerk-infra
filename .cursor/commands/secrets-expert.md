@@ -40,6 +40,7 @@ Lese diese Dateien für vollständigen Kontext:
 - **Rotation**: Bei Bedarf (Webhook-URL ändert sich selten)
 - **Status**: ⚠️ Muss manuell erstellt werden (siehe `k8s/monitoring/alertmanager/README-SECRET.md`)
 - **WICHTIG**: Webhook-URL darf NICHT im Git-Repository gespeichert werden!
+- **Template**: `secret.yaml.template` existiert als Dokumentation, darf NICHT angewendet werden!
 
 ### Cloudflare
 - `CLOUDFLARE_API_TOKEN` - DNS-Management

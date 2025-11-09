@@ -47,6 +47,7 @@ Lese diese Dateien für vollständigen Kontext:
 - **Discord Integration**: ⚠️ Konfiguriert, aber Secret muss manuell erstellt werden
 - **Secret**: `alertmanager-discord-webhook` (muss manuell erstellt werden, siehe README-SECRET.md)
 - **Init-Container**: Generiert Config zur Laufzeit aus Secret
+- **Template**: `secret.yaml.template` existiert als Dokumentation, ist aus Kustomization ausgeschlossen
 
 ### Node Exporter
 - **Namespace**: `monitoring`
