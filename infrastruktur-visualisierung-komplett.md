@@ -50,12 +50,6 @@ Diese Dokumentation visualisiert die komplette Infrastruktur-Landschaft mit:
 
 ## 1. PlantUML Visualisierung
 
-### ⚠️ Wichtig: GitHub rendert PlantUML nicht nativ!
-
-GitHub unterstützt **keine** native PlantUML-Rendering. PlantUML-Code-Blöcke werden als Code angezeigt, nicht als Diagramm.
-
-**Lösung**: PlantUML-Diagramme müssen als **Bilder** eingebunden werden.
-
 ### Komplettes Infrastruktur-Diagramm
 
 **PlantUML-Code** (siehe `infrastruktur-plantuml.puml` für vollständigen Code):
@@ -89,20 +83,20 @@ package "Internet" {
   component "Let's Encrypt" as letsencrypt #00BCD4
 }
 
-fritzbox --> pihole : DNS
-pihole --> cloudflare : Upstream
-ingress --> argocd : HTTPS
-ingress --> gitlab : HTTPS
-ingress --> jellyfin : HTTPS
+fritzbox --> pihole
+pihole --> cloudflare
+ingress --> argocd
+ingress --> gitlab
+ingress --> jellyfin
 
 @enduml
 ```
 
 **Gerendertes Diagramm** (als Bild eingebunden):
 
-![Infrastruktur-Diagramm](https://plantuml.k8sops.online/png/eJyFV91y2zYWvudTnLVmmnS3Ukj90LIudipRkuNGdhQrTjo7uoFISEJFASoI2nE6ue0D9Bn6Jn2TPskegBRFWpBqjz0ADojz4fx--DFRRKp0G8MNX0qSKJluVCrrE8KjJFyTpXL-pdZ0S2EXE8adZMP4jkiyhQUJNyspUh4FIhYSamPzU9oR0SVJYzUWXM3YVwqe6ziKqZjCO7HdxVQpelJrD95StuVUfX2icgObbiJ2SUPwmHHqOK_gLZHRE5G0ro8SnHJFubNDSGRF4WIvvYDfHIBwvwUuxpKprwPxBS47Vy70f74AksBSLy5wEa_Q77iu-QiAC8Qn2WqNYO5Fqqh8c00UfSLPc-5dNRue3214l_g358O3wRRmVD5SiZO7GYyFRP0RlXjSN_yroniXLqjEu9EE7kREDQi8Iccx1NqefzXyLBjeigT_f03XJE3onN9Me1CG0WnP-ftZD4Z0wQgHrznn77pJDx69Rqvd8KxAPjMeiaekfkvQ6mhZg-QpW4Sa6_a7o64FyefZpGngzHl-AuhLBzHDU-f879__gMLQ2jRW3ROyU2JnNMZmCLXuZTAaDSwKs5Pr11T-9ScqGNNISALt5ild33SI3OXBU5_h3cK1OoTHXlKxn_um2T6KF32igRitw92Z-LiZ1gdUUlTTm_OmW--4P4Dv1puua-LhpaesBqnETaaUJ8unvdbsUqXQCeI0waA8XOtYlt3nlfZOXYcnC2mCC8UXZl3h7CK_UwnOlNXXIs5CYsf0EGrN0eWw1cz3vrTAcThOhURJpwWv1xgsaPUnITffY_Z0YBCLcBMzBMlx3vBvYSi2WGASWGgJo1IZJd_M_5fYAiEpYjfYQhyjoaDmdfxO4J4G5zau_Ibb8NAluZl7kF_SpArkFoIhS0KBqfxcIMid9QrL1UrSJIHv4ONkVrZkRWCxJl8x_qXOsl0Gdz6G2ujKG_ktK-6JINGAxISHurCcNnHXfdNut84ZDO2JWc4RaxZaeKDarrBqB02v2xnYtVP1KoERD-XzDrMuiEUaLWMsqzqeXCx7eNX6__AgtmQbrIzH5rpm6v1OGyW4eRMMy_aqSiwG68uV0ALESnAYRmiocRt_rFDz46YxUUsht3Pehf5uF7OQKCZ4Muf9VIn67JmHQDaKPf5DfOFxE7IwylfYsMgCkzDwh03_lHK4pzuRMCXks_ZJotC3sw8T-A8KIob674XAnYOfR176RH75tdFo_KN66K9wVgJB9HyP5MQ39ynnuYuzj6RZKH1VOOcWkRGwlYWqxOKcn2gcPy8ZN3p-ySdQ6_c7QWCP5MOROpI995rh0taYC_sTBNMHtNSvKU1UcsYw2OxXJGuXegS11qDbHNu9EogtCwuNzY6PhVtny3GUjhnWNh0b1XqsVxR2xZVRmOxnL5SWVRYHzTlWVUWXaTyjqkjSVrddsb_gOmD0kd9hpq-wQqwqXijkFg9cS7LEdM4cnY3Rx22_69orYEnZkCTrhcDyh1kRbRk3QkVW_tUZy0-l2FIkgmlWvHbFFNPS7zSbwQmvK8lCbEcijmmoUxGNkS4wL6EfYmid8_VEbFjGDnCA3GDQCU54Gm2HuYIZtyKZijsBn-mi_nBz7Ovi8rpSCxFX2-FLocXwmpZGJI4NtHU-ORuIRVs52B0BImhMGR3zDPvXuZg_dPXihD1jjHABdTf9YNSxJ0HGAyAr_VtDz_Z40API3hXedIPc-Yzrsf-oh9tJnkuZ__WafjXUPHdw1fWsyoeMrPQ74JpiBSIYfYd21XXPGaHw1gA9k-6qafmJxlQKg-LRDKHmt3x_bKPM2feYkmgEbAq3jN-8h1kLZggG7XHgiqMvShv5UA1Ljd1I1BE1rLbDrKkelpC0-WMrVXzY4XOHolnwK138zO8P4CE1cc1bAmkgZtsji3Tdqj58rDy63KWzhKEqodlck_hBMGxbcPSD21FRHo87-bGiB6wgNNrzNKMpNUtRztxqnWHbbV1adGXfoKNXyPgksd7L-OETlQt8UaQcW51TvMvq9f9mBLwHpZeWY5aMzPDkHlRfXtmqluf0NdvwIUVmB691JCI1_d5x9u8dvbNQmWvKe5KTv1DObXFyLXpPKRCqDi9v2hNAXcBCEhtwr__dqFgG4e35beUi-S3NkfuXo1Gcb-6BJrTmxAPvxcP2OvXenFbhw_Ljx-msIspJj01UdHubMOvKNsmhfVr15R3MJiu1Gpu4KMFWPHmJtJ67L2FW4d7QmcjZ02UtK6dXnkbBGhFQDNrKxkoUGMp8YuMhEjAPIcjyEKkr1iEn91LFK1XC6ZTZYWWfIZDYfJEBmubrVChhZauh4Tl7xOsekOtd1TTvwR3Z0iTLwRc7DzfRsXdPMR6jxBbVP1LM8m38f4aawcU=)
+![Infrastruktur-Diagramm](https://plantuml.k8sops.online/png/eJx1U01z2jAQvetXbPGhJ3eAgIEeOjHCJGlopjM9tFdhr42KWHkkeUjS6X-vLJMEk6lOT2_efujt6to6YVxzUHBHpRHWmWbvGhNvBBU234nSsQ9uhweEWglJzO4l1cKIA2xFvq-MbqjgWmkD0Tocxpx0CuFeH2qFzuF_E3-GW5QHQvd8RLOH_dzq2n7SpCQhY7VPLyqEwa0wxVEYHMAfBpD7tJqQHAzWRrrnpX6E2XQxhPTXAISFsiW3nvTtpNPhsB9y32zR-Ipo4UEXGCJ8XfIYoskoWWSjfsBPSYU-2vib8D37vkLEsSMhGg7TeTbvR2xE7XQddCpAiOYznmVL9vfsUWeNcNVYh-bd877LeKdVV7GWLYRonM1WV-O-jmuDq4cfQZd7XJDvbDRNpvzi8VRJeowlVQatDfIThihbjLLkqi9PTaX5KuiEh3nhZeuJP33ZjXQbsQ2yyg9ebL3zPFmNk77sKyr1VEoKwt-nC0RpOuX8ovCNEaUg0aXssM85SeZ-muce3pELHr5zjivdFKXyOwOvxrxRfjGS9eVibNB9tJBRbp5q1w0PncXu3g56yVeTtvrrfsXxl9NY2Gk6LfNWh72Y29KdgT2qM6tHvdjC2DVS4f_kP_ZZL68=)
 
-**Hinweis**: Dieses Bild wird von deinem PlantUML-Server (`plantuml.k8sops.online`) gerendert. Für GitHub Public Repos würde das nicht funktionieren, da GitHub nicht auf private Server zugreifen kann.
+**Hinweis**: Dieses Bild wird von deinem PlantUML-Server (`plantuml.k8sops.online`) gerendert. Die URL funktioniert sowohl in GitLab als auch lokal.
 
 **Vorteile**:
 - ✅ Läuft auf eigenem Server
@@ -476,4 +470,3 @@ graph LR
 ---
 
 **Ende der Dokumentation**
-
