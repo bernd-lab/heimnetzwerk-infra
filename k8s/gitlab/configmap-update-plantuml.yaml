@@ -1,0 +1,11 @@
+# PlantUML-Konfiguration für GitLab
+# Diese Datei zeigt die notwendigen Änderungen an der gitlab.rb
+# Die ConfigMap muss manuell aktualisiert werden, da sie dynamisch ist
+
+# Hinzufügen zu gitlab.rb:
+# gitlab_rails['plantuml_url'] = 'https://plantuml.k8sops.online'
+# gitlab_rails['plantuml_enabled'] = true
+# nginx['custom_gitlab_server_config'] = "location /-/plantuml/ { \n    rewrite ^/-/plantuml/(.*) /$1 break;\n    proxy_cache off; \n    proxy_pass  https://plantuml.k8sops.online/; \n}\n"
+
+# Nach der Aktualisierung:
+# kubectl rollout restart deployment/gitlab -n gitlab

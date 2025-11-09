@@ -1,0 +1,1047 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-prometheus-2-stats
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  prometheus-2-stats.json: "{\n  \"__inputs\": [\n    {\n      \"name\": \"DS_THEMIS\"\
+    ,\n      \"label\": \"Prometheus\",\n      \"description\": \"A prometheus server\
+    \ with prometheus server metrics\",\n      \"type\": \"datasource\",\n      \"\
+    pluginId\": \"prometheus\",\n      \"pluginName\": \"Prometheus\"\n    }\n  ],\n\
+    \  \"__requires\": [\n    {\n      \"type\": \"grafana\",\n      \"id\": \"grafana\"\
+    ,\n      \"name\": \"Grafana\",\n      \"version\": \"4.5.0-beta1\"\n    },\n\
+    \    {\n      \"type\": \"panel\",\n      \"id\": \"graph\",\n      \"name\":\
+    \ \"Graph\",\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"datasource\"\
+    ,\n      \"id\": \"prometheus\",\n      \"name\": \"Prometheus\",\n      \"version\"\
+    : \"1.0.0\"\n    },\n    {\n      \"type\": \"panel\",\n      \"id\": \"singlestat\"\
+    ,\n      \"name\": \"Singlestat\",\n      \"version\": \"\"\n    },\n    {\n \
+    \     \"type\": \"panel\",\n      \"id\": \"table\",\n      \"name\": \"Table\"\
+    ,\n      \"version\": \"\"\n    }\n  ],\n  \"annotations\": {\n    \"list\": []\n\
+    \  },\n  \"editable\": true,\n  \"gnetId\": 3662,\n  \"graphTooltip\": 0,\n  \"\
+    hideControls\": false,\n  \"id\": null,\n  \"links\": [],\n  \"refresh\": \"30s\"\
+    ,\n  \"rows\": [\n    {\n      \"collapse\": false,\n      \"height\": 250,\n\
+    \      \"panels\": [\n        {\n          \"cacheTimeout\": null,\n         \
+    \ \"colorBackground\": false,\n          \"colorValue\": true,\n          \"colors\"\
+    : [\n            \"rgba(245, 54, 54, 0.9)\",\n            \"rgba(237, 129, 40,\
+    \ 0.89)\",\n            \"rgba(50, 172, 45, 0.97)\"\n          ],\n          \"\
+    datasource\": \"${DS_THEMIS}\",\n          \"decimals\": 3,\n          \"description\"\
+    : \"Percentage of uptime during the most recent $interval period.  Change the\
+    \ period with the 'interval' dropdown above.\",\n          \"format\": \"none\"\
+    ,\n          \"gauge\": {\n            \"maxValue\": 100,\n            \"minValue\"\
+    : 0,\n            \"show\": false,\n            \"thresholdLabels\": false,\n\
+    \            \"thresholdMarkers\": false\n          },\n          \"id\": 2,\n\
+    \          \"interval\": null,\n          \"links\": [],\n          \"mappingType\"\
+    : 1,\n          \"mappingTypes\": [\n            {\n              \"name\": \"\
+    value to text\",\n              \"value\": 1\n            },\n            {\n\
+    \              \"name\": \"range to text\",\n              \"value\": 2\n    \
+    \        }\n          ],\n          \"maxDataPoints\": 100,\n          \"nullPointMode\"\
+    : \"connected\",\n          \"nullText\": null,\n          \"postfix\": \"%\"\
+    ,\n          \"postfixFontSize\": \"100%\",\n          \"prefix\": \"\",\n   \
+    \       \"prefixFontSize\": \"50%\",\n          \"rangeMaps\": [\n           \
+    \ {\n              \"from\": \"null\",\n              \"text\": \"N/A\",\n   \
+    \           \"to\": \"null\"\n            }\n          ],\n          \"span\"\
+    : 3,\n          \"sparkline\": {\n            \"fillColor\": \"rgba(31, 118, 189,\
+    \ 0.18)\",\n            \"full\": true,\n            \"lineColor\": \"rgb(31,\
+    \ 120, 193)\",\n            \"show\": false\n          },\n          \"tableColumn\"\
+    : \"\",\n          \"targets\": [\n            {\n              \"expr\": \"avg(avg_over_time(up{instance=~\\\
+    \"$instance\\\",job=~\\\"$job\\\"}[$interval]) * 100)\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"\",\n              \"refId\": \"A\",\n              \"step\": 240\n      \
+    \      }\n          ],\n          \"thresholds\": \"90, 99\",\n          \"title\"\
+    : \"Uptime [$interval]\",\n          \"type\": \"singlestat\",\n          \"valueFontSize\"\
+    : \"100%\",\n          \"valueMaps\": [\n            {\n              \"op\":\
+    \ \"=\",\n              \"text\": \"N/A\",\n              \"value\": \"null\"\n\
+    \            }\n          ],\n          \"valueName\": \"current\"\n        },\n\
+    \        {\n          \"columns\": [],\n          \"datasource\": \"${DS_THEMIS}\"\
+    ,\n          \"description\": \"Servers which are DOWN RIGHT NOW! \\nFIX THEM!!\"\
+    ,\n          \"fontSize\": \"100%\",\n          \"hideTimeOverride\": true,\n\
+    \          \"id\": 25,\n          \"links\": [],\n          \"pageSize\": null,\n\
+    \          \"scroll\": true,\n          \"showHeader\": true,\n          \"sort\"\
+    : {\n            \"col\": 0,\n            \"desc\": true\n          },\n     \
+    \     \"span\": 3,\n          \"styles\": [\n            {\n              \"alias\"\
+    : \"Time\",\n              \"dateFormat\": \"YYYY-MM-DD HH:mm:ss\",\n        \
+    \      \"pattern\": \"Time\",\n              \"type\": \"hidden\"\n          \
+    \  },\n            {\n              \"alias\": \"\",\n              \"colorMode\"\
+    : null,\n              \"colors\": [\n                \"rgba(245, 54, 54, 0.9)\"\
+    ,\n                \"rgba(237, 129, 40, 0.89)\",\n                \"rgba(50, 172,\
+    \ 45, 0.97)\"\n              ],\n              \"dateFormat\": \"YYYY-MM-DD HH:mm:ss\"\
+    ,\n              \"decimals\": 2,\n              \"pattern\": \"/__name__|job|Value/\"\
+    ,\n              \"thresholds\": [],\n              \"type\": \"hidden\",\n  \
+    \            \"unit\": \"short\"\n            },\n            {\n            \
+    \  \"alias\": \"   \",\n              \"colorMode\": \"cell\",\n             \
+    \ \"colors\": [\n                \"rgba(255, 0, 0, 0.9)\",\n                \"\
+    rgba(237, 129, 40, 0.89)\",\n                \"rgba(255, 0, 0, 0.97)\"\n     \
+    \         ],\n              \"dateFormat\": \"YYYY-MM-DD HH:mm:ss\",\n       \
+    \       \"decimals\": 2,\n              \"link\": false,\n              \"pattern\"\
+    : \"instance\",\n              \"thresholds\": [\n                \"\",\n    \
+    \            \"\",\n                \"\"\n              ],\n              \"type\"\
+    : \"string\",\n              \"unit\": \"short\"\n            }\n          ],\n\
+    \          \"targets\": [\n            {\n              \"expr\": \"up{instance=~\\\
+    \"$instance\\\",job=~\\\"$job\\\"} < 1\",\n              \"format\": \"table\"\
+    ,\n              \"intervalFactor\": 2,\n              \"refId\": \"A\",\n   \
+    \           \"step\": 2\n            }\n          ],\n          \"timeFrom\":\
+    \ \"1s\",\n          \"title\": \"Currently Down\",\n          \"transform\":\
+    \ \"table\",\n          \"type\": \"table\"\n        },\n        {\n         \
+    \ \"cacheTimeout\": null,\n          \"colorBackground\": false,\n          \"\
+    colorValue\": true,\n          \"colors\": [\n            \"rgba(50, 172, 45,\
+    \ 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"rgba(245,\
+    \ 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_THEMIS}\",\n\
+    \          \"description\": \"Total number of time series in prometheus\",\n \
+    \         \"format\": \"none\",\n          \"gauge\": {\n            \"maxValue\"\
+    : 100,\n            \"minValue\": 0,\n            \"show\": false,\n         \
+    \   \"thresholdLabels\": false,\n            \"thresholdMarkers\": true\n    \
+    \      },\n          \"id\": 12,\n          \"interval\": null,\n          \"\
+    links\": [],\n          \"mappingType\": 1,\n          \"mappingTypes\": [\n \
+    \           {\n              \"name\": \"value to text\",\n              \"value\"\
+    : 1\n            },\n            {\n              \"name\": \"range to text\"\
+    ,\n              \"value\": 2\n            }\n          ],\n          \"maxDataPoints\"\
+    : 100,\n          \"nullPointMode\": \"connected\",\n          \"nullText\": null,\n\
+    \          \"postfix\": \"\",\n          \"postfixFontSize\": \"50%\",\n     \
+    \     \"prefix\": \"\",\n          \"prefixFontSize\": \"50%\",\n          \"\
+    rangeMaps\": [\n            {\n              \"from\": \"null\",\n           \
+    \   \"text\": \"N/A\",\n              \"to\": \"null\"\n            }\n      \
+    \    ],\n          \"span\": 3,\n          \"sparkline\": {\n            \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n            \"full\": true,\n            \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n            \"show\": true\n          },\n         \
+    \ \"tableColumn\": \"\",\n          \"targets\": [\n            {\n          \
+    \    \"expr\": \"sum(prometheus_tsdb_head_series{job=~\\\"$job\\\",instance=~\\\
+    \"$instance\\\"})\",\n              \"format\": \"time_series\",\n           \
+    \   \"intervalFactor\": 2,\n              \"refId\": \"B\",\n              \"\
+    step\": 240\n            }\n          ],\n          \"thresholds\": \"1000000,2000000\"\
+    ,\n          \"title\": \"Total Series\",\n          \"type\": \"singlestat\"\
+    ,\n          \"valueFontSize\": \"100%\",\n          \"valueMaps\": [\n      \
+    \      {\n              \"op\": \"=\",\n              \"text\": \"N/A\",\n   \
+    \           \"value\": \"null\"\n            }\n          ],\n          \"valueName\"\
+    : \"current\"\n        },\n        {\n          \"cacheTimeout\": null,\n    \
+    \      \"colorBackground\": false,\n          \"colorValue\": false,\n       \
+    \   \"colors\": [\n            \"rgba(245, 54, 54, 0.9)\",\n            \"rgba(237,\
+    \ 129, 40, 0.89)\",\n            \"rgba(50, 172, 45, 0.97)\"\n          ],\n \
+    \         \"datasource\": \"${DS_THEMIS}\",\n          \"format\": \"none\",\n\
+    \          \"gauge\": {\n            \"maxValue\": 100,\n            \"minValue\"\
+    : 0,\n            \"show\": false,\n            \"thresholdLabels\": false,\n\
+    \            \"thresholdMarkers\": true\n          },\n          \"id\": 14,\n\
+    \          \"interval\": null,\n          \"links\": [],\n          \"mappingType\"\
+    : 1,\n          \"mappingTypes\": [\n            {\n              \"name\": \"\
+    value to text\",\n              \"value\": 1\n            },\n            {\n\
+    \              \"name\": \"range to text\",\n              \"value\": 2\n    \
+    \        }\n          ],\n          \"maxDataPoints\": 100,\n          \"nullPointMode\"\
+    : \"connected\",\n          \"nullText\": null,\n          \"postfix\": \"\",\n\
+    \          \"postfixFontSize\": \"50%\",\n          \"prefix\": \"\",\n      \
+    \    \"prefixFontSize\": \"50%\",\n          \"rangeMaps\": [\n            {\n\
+    \              \"from\": \"null\",\n              \"text\": \"N/A\",\n       \
+    \       \"to\": \"null\"\n            }\n          ],\n          \"span\": 3,\n\
+    \          \"sparkline\": {\n            \"fillColor\": \"rgba(31, 118, 189, 0.18)\"\
+    ,\n            \"full\": true,\n            \"lineColor\": \"rgb(31, 120, 193)\"\
+    ,\n            \"show\": true\n          },\n          \"tableColumn\": \"\",\n\
+    \          \"targets\": [\n            {\n              \"expr\": \"sum(prometheus_tsdb_head_chunks{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"refId\": \"B\",\n   \
+    \           \"step\": 240\n            }\n          ],\n          \"thresholds\"\
+    : \"\",\n          \"title\": \"Memory Chunks\",\n          \"type\": \"singlestat\"\
+    ,\n          \"valueFontSize\": \"100%\",\n          \"valueMaps\": [\n      \
+    \      {\n              \"op\": \"=\",\n              \"text\": \"N/A\",\n   \
+    \           \"value\": \"null\"\n            }\n          ],\n          \"valueName\"\
+    : \"current\"\n        }\n      ],\n      \"repeat\": null,\n      \"repeatIteration\"\
+    : null,\n      \"repeatRowId\": null,\n      \"showTitle\": false,\n      \"title\"\
+    : \"at a glance\",\n      \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\"\
+    : false,\n      \"height\": 236,\n      \"panels\": [\n        {\n          \"\
+    cacheTimeout\": null,\n          \"colorBackground\": false,\n          \"colorValue\"\
+    : true,\n          \"colors\": [\n            \"rgba(50, 172, 45, 0.97)\",\n \
+    \           \"rgba(237, 129, 40, 0.89)\",\n            \"rgba(245, 54, 54, 0.9)\"\
+    \n          ],\n          \"datasource\": \"${DS_THEMIS}\",\n          \"description\"\
+    : \"The total number of rule group evaluations missed due to slow rule group evaluation.\"\
+    ,\n          \"format\": \"none\",\n          \"gauge\": {\n            \"maxValue\"\
+    : 100,\n            \"minValue\": 0,\n            \"show\": false,\n         \
+    \   \"thresholdLabels\": false,\n            \"thresholdMarkers\": true\n    \
+    \      },\n          \"id\": 16,\n          \"interval\": null,\n          \"\
+    links\": [],\n          \"mappingType\": 1,\n          \"mappingTypes\": [\n \
+    \           {\n              \"name\": \"value to text\",\n              \"value\"\
+    : 1\n            },\n            {\n              \"name\": \"range to text\"\
+    ,\n              \"value\": 2\n            }\n          ],\n          \"maxDataPoints\"\
+    : 100,\n          \"nullPointMode\": \"connected\",\n          \"nullText\": null,\n\
+    \          \"postfix\": \"\",\n          \"postfixFontSize\": \"50%\",\n     \
+    \     \"prefix\": \"\",\n          \"prefixFontSize\": \"50%\",\n          \"\
+    rangeMaps\": [\n            {\n              \"from\": \"null\",\n           \
+    \   \"text\": \"N/A\",\n              \"to\": \"null\"\n            }\n      \
+    \    ],\n          \"span\": 2,\n          \"sparkline\": {\n            \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n            \"full\": false,\n            \"\
+    lineColor\": \"rgb(31, 120, 193)\",\n            \"show\": false\n          },\n\
+    \          \"tableColumn\": \"\",\n          \"targets\": [\n            {\n \
+    \             \"expr\": \"sum(sum_over_time(prometheus_evaluator_iterations_missed_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval]))\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"refId\"\
+    : \"A\",\n              \"step\": 240\n            }\n          ],\n         \
+    \ \"thresholds\": \"1,10\",\n          \"title\": \"Missed Iterations [$interval]\"\
+    ,\n          \"type\": \"singlestat\",\n          \"valueFontSize\": \"100%\"\
+    ,\n          \"valueMaps\": [\n            {\n              \"op\": \"=\",\n \
+    \             \"text\": \"N/A\",\n              \"value\": \"null\"\n        \
+    \    }\n          ],\n          \"valueName\": \"current\"\n        },\n     \
+    \   {\n          \"cacheTimeout\": null,\n          \"colorBackground\": false,\n\
+    \          \"colorValue\": true,\n          \"colors\": [\n            \"rgba(50,\
+    \ 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"\
+    rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_THEMIS}\"\
+    ,\n          \"description\": \"The total number of rule group evaluations skipped\
+    \ due to throttled metric storage.\",\n          \"format\": \"none\",\n     \
+    \     \"gauge\": {\n            \"maxValue\": 100,\n            \"minValue\":\
+    \ 0,\n            \"show\": false,\n            \"thresholdLabels\": false,\n\
+    \            \"thresholdMarkers\": true\n          },\n          \"id\": 18,\n\
+    \          \"interval\": null,\n          \"links\": [],\n          \"mappingType\"\
+    : 1,\n          \"mappingTypes\": [\n            {\n              \"name\": \"\
+    value to text\",\n              \"value\": 1\n            },\n            {\n\
+    \              \"name\": \"range to text\",\n              \"value\": 2\n    \
+    \        }\n          ],\n          \"maxDataPoints\": 100,\n          \"nullPointMode\"\
+    : \"connected\",\n          \"nullText\": null,\n          \"postfix\": \"\",\n\
+    \          \"postfixFontSize\": \"50%\",\n          \"prefix\": \"\",\n      \
+    \    \"prefixFontSize\": \"50%\",\n          \"rangeMaps\": [\n            {\n\
+    \              \"from\": \"null\",\n              \"text\": \"N/A\",\n       \
+    \       \"to\": \"null\"\n            }\n          ],\n          \"span\": 2,\n\
+    \          \"sparkline\": {\n            \"fillColor\": \"rgba(31, 118, 189, 0.18)\"\
+    ,\n            \"full\": false,\n            \"lineColor\": \"rgb(31, 120, 193)\"\
+    ,\n            \"show\": false\n          },\n          \"tableColumn\": \"\"\
+    ,\n          \"targets\": [\n            {\n              \"expr\": \"sum(sum_over_time(prometheus_evaluator_iterations_skipped_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval]))\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"refId\"\
+    : \"A\",\n              \"step\": 240\n            }\n          ],\n         \
+    \ \"thresholds\": \"1,10\",\n          \"title\": \"Skipped Iterations [$interval]\"\
+    ,\n          \"type\": \"singlestat\",\n          \"valueFontSize\": \"100%\"\
+    ,\n          \"valueMaps\": [\n            {\n              \"op\": \"=\",\n \
+    \             \"text\": \"N/A\",\n              \"value\": \"null\"\n        \
+    \    }\n          ],\n          \"valueName\": \"current\"\n        },\n     \
+    \   {\n          \"cacheTimeout\": null,\n          \"colorBackground\": false,\n\
+    \          \"colorValue\": true,\n          \"colors\": [\n            \"rgba(50,\
+    \ 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"\
+    rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_THEMIS}\"\
+    ,\n          \"description\": \"Total number of scrapes that hit the sample limit\
+    \ and were rejected.\",\n          \"format\": \"none\",\n          \"gauge\"\
+    : {\n            \"maxValue\": 100,\n            \"minValue\": 0,\n          \
+    \  \"show\": false,\n            \"thresholdLabels\": false,\n            \"thresholdMarkers\"\
+    : true\n          },\n          \"id\": 19,\n          \"interval\": null,\n \
+    \         \"links\": [],\n          \"mappingType\": 1,\n          \"mappingTypes\"\
+    : [\n            {\n              \"name\": \"value to text\",\n             \
+    \ \"value\": 1\n            },\n            {\n              \"name\": \"range\
+    \ to text\",\n              \"value\": 2\n            }\n          ],\n      \
+    \    \"maxDataPoints\": 100,\n          \"nullPointMode\": \"connected\",\n  \
+    \        \"nullText\": null,\n          \"postfix\": \"\",\n          \"postfixFontSize\"\
+    : \"50%\",\n          \"prefix\": \"\",\n          \"prefixFontSize\": \"50%\"\
+    ,\n          \"rangeMaps\": [\n            {\n              \"from\": \"null\"\
+    ,\n              \"text\": \"N/A\",\n              \"to\": \"null\"\n        \
+    \    }\n          ],\n          \"span\": 2,\n          \"sparkline\": {\n   \
+    \         \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n            \"full\":\
+    \ false,\n            \"lineColor\": \"rgb(31, 120, 193)\",\n            \"show\"\
+    : false\n          },\n          \"tableColumn\": \"\",\n          \"targets\"\
+    : [\n            {\n              \"expr\": \"sum(sum_over_time(prometheus_target_scrapes_exceeded_sample_limit_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval]))\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"refId\"\
+    : \"A\",\n              \"step\": 240\n            }\n          ],\n         \
+    \ \"thresholds\": \"1,10\",\n          \"title\": \"Tardy Scrapes [$interval]\"\
+    ,\n          \"type\": \"singlestat\",\n          \"valueFontSize\": \"100%\"\
+    ,\n          \"valueMaps\": [\n            {\n              \"op\": \"=\",\n \
+    \             \"text\": \"N/A\",\n              \"value\": \"null\"\n        \
+    \    }\n          ],\n          \"valueName\": \"current\"\n        },\n     \
+    \   {\n          \"cacheTimeout\": null,\n          \"colorBackground\": false,\n\
+    \          \"colorValue\": true,\n          \"colors\": [\n            \"rgba(50,\
+    \ 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"\
+    rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_THEMIS}\"\
+    ,\n          \"description\": \"Number of times the database failed to reload\
+    \ block data from disk.\",\n          \"format\": \"none\",\n          \"gauge\"\
+    : {\n            \"maxValue\": 100,\n            \"minValue\": 0,\n          \
+    \  \"show\": false,\n            \"thresholdLabels\": false,\n            \"thresholdMarkers\"\
+    : true\n          },\n          \"id\": 13,\n          \"interval\": null,\n \
+    \         \"links\": [],\n          \"mappingType\": 1,\n          \"mappingTypes\"\
+    : [\n            {\n              \"name\": \"value to text\",\n             \
+    \ \"value\": 1\n            },\n            {\n              \"name\": \"range\
+    \ to text\",\n              \"value\": 2\n            }\n          ],\n      \
+    \    \"maxDataPoints\": 100,\n          \"nullPointMode\": \"connected\",\n  \
+    \        \"nullText\": null,\n          \"postfix\": \"\",\n          \"postfixFontSize\"\
+    : \"50%\",\n          \"prefix\": \"\",\n          \"prefixFontSize\": \"50%\"\
+    ,\n          \"rangeMaps\": [\n            {\n              \"from\": \"null\"\
+    ,\n              \"text\": \"N/A\",\n              \"to\": \"null\"\n        \
+    \    }\n          ],\n          \"span\": 2,\n          \"sparkline\": {\n   \
+    \         \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n            \"full\":\
+    \ false,\n            \"lineColor\": \"rgb(31, 120, 193)\",\n            \"show\"\
+    : false\n          },\n          \"tableColumn\": \"\",\n          \"targets\"\
+    : [\n            {\n              \"expr\": \"sum(sum_over_time(prometheus_tsdb_reloads_failures_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval]))\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"refId\"\
+    : \"A\",\n              \"step\": 240\n            }\n          ],\n         \
+    \ \"thresholds\": \"1,10\",\n          \"title\": \"Reload Failures [$interval]\"\
+    ,\n          \"type\": \"singlestat\",\n          \"valueFontSize\": \"100%\"\
+    ,\n          \"valueMaps\": [\n            {\n              \"op\": \"=\",\n \
+    \             \"text\": \"N/A\",\n              \"value\": \"null\"\n        \
+    \    }\n          ],\n          \"valueName\": \"current\"\n        },\n     \
+    \   {\n          \"cacheTimeout\": null,\n          \"colorBackground\": false,\n\
+    \          \"colorValue\": true,\n          \"colors\": [\n            \"rgba(50,\
+    \ 172, 45, 0.97)\",\n            \"rgba(237, 129, 40, 0.89)\",\n            \"\
+    rgba(245, 54, 54, 0.9)\"\n          ],\n          \"datasource\": \"${DS_THEMIS}\"\
+    ,\n          \"description\": \"Sum of all skipped scrapes\",\n          \"format\"\
+    : \"none\",\n          \"gauge\": {\n            \"maxValue\": 100,\n        \
+    \    \"minValue\": 0,\n            \"show\": false,\n            \"thresholdLabels\"\
+    : false,\n            \"thresholdMarkers\": true\n          },\n          \"id\"\
+    : 20,\n          \"interval\": null,\n          \"links\": [],\n          \"mappingType\"\
+    : 1,\n          \"mappingTypes\": [\n            {\n              \"name\": \"\
+    value to text\",\n              \"value\": 1\n            },\n            {\n\
+    \              \"name\": \"range to text\",\n              \"value\": 2\n    \
+    \        }\n          ],\n          \"maxDataPoints\": 100,\n          \"nullPointMode\"\
+    : \"connected\",\n          \"nullText\": null,\n          \"postfix\": \"\",\n\
+    \          \"postfixFontSize\": \"50%\",\n          \"prefix\": \"\",\n      \
+    \    \"prefixFontSize\": \"50%\",\n          \"rangeMaps\": [\n            {\n\
+    \              \"from\": \"null\",\n              \"text\": \"N/A\",\n       \
+    \       \"to\": \"null\"\n            }\n          ],\n          \"span\": 4,\n\
+    \          \"sparkline\": {\n            \"fillColor\": \"rgba(31, 118, 189, 0.18)\"\
+    ,\n            \"full\": false,\n            \"lineColor\": \"rgb(31, 120, 193)\"\
+    ,\n            \"show\": false\n          },\n          \"tableColumn\": \"\"\
+    ,\n          \"targets\": [\n            {\n              \"expr\": \"sum(sum_over_time(prometheus_target_scrapes_exceeded_sample_limit_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval])) + \\nsum(sum_over_time(prometheus_target_scrapes_sample_duplicate_timestamp_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval])) + \\nsum(sum_over_time(prometheus_target_scrapes_sample_out_of_bounds_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval])) + \\nsum(sum_over_time(prometheus_target_scrapes_sample_out_of_order_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[$interval])) \",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"refId\"\
+    : \"A\",\n              \"step\": 240\n            }\n          ],\n         \
+    \ \"thresholds\": \"1,10\",\n          \"title\": \"Skipped Scrapes [$interval]\"\
+    ,\n          \"type\": \"singlestat\",\n          \"valueFontSize\": \"100%\"\
+    ,\n          \"valueMaps\": [\n            {\n              \"op\": \"=\",\n \
+    \             \"text\": \"N/A\",\n              \"value\": \"null\"\n        \
+    \    }\n          ],\n          \"valueName\": \"current\"\n        }\n      ],\n\
+    \      \"repeat\": null,\n      \"repeatIteration\": null,\n      \"repeatRowId\"\
+    : null,\n      \"showTitle\": false,\n      \"title\": \"quick numbers\",\n  \
+    \    \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\": false,\n      \"\
+    height\": \"250px\",\n      \"panels\": [\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"fill\"\
+    : 1,\n          \"id\": 1,\n          \"legend\": {\n            \"avg\": false,\n\
+    \            \"current\": false,\n            \"max\": false,\n            \"\
+    min\": false,\n            \"show\": true,\n            \"total\": false,\n  \
+    \          \"values\": false\n          },\n          \"lines\": true,\n     \
+    \     \"linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\"\
+    : \"null\",\n          \"percentage\": false,\n          \"pointradius\": 5,\n\
+    \          \"points\": false,\n          \"renderer\": \"flot\",\n          \"\
+    seriesOverrides\": [],\n          \"spaceLength\": 10,\n          \"span\": 12,\n\
+    \          \"stack\": true,\n          \"steppedLine\": false,\n          \"targets\"\
+    : [\n            {\n              \"expr\": \"up{instance=~\\\"$instance\\\",job=~\\\
+    \"$job\\\"}\",\n              \"format\": \"time_series\",\n              \"interval\"\
+    : \"\",\n              \"intervalFactor\": 1,\n              \"legendFormat\"\
+    : \"{{instance}}\",\n              \"refId\": \"A\",\n              \"step\":\
+    \ 10\n            }\n          ],\n          \"thresholds\": [],\n          \"\
+    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Upness\
+    \ (stacked)\",\n          \"tooltip\": {\n            \"shared\": true,\n    \
+    \        \"sort\": 0,\n            \"value_type\": \"individual\"\n          },\n\
+    \          \"type\": \"graph\",\n          \"xaxis\": {\n            \"buckets\"\
+    : null,\n            \"mode\": \"time\",\n            \"name\": null,\n      \
+    \      \"show\": true,\n            \"values\": []\n          },\n          \"\
+    yaxes\": [\n            {\n              \"decimals\": 0,\n              \"format\"\
+    : \"none\",\n              \"label\": \"Up\",\n              \"logBase\": 1,\n\
+    \              \"max\": null,\n              \"min\": \"0\",\n              \"\
+    show\": true\n            },\n            {\n              \"format\": \"short\"\
+    ,\n              \"label\": null,\n              \"logBase\": 1,\n           \
+    \   \"max\": null,\n              \"min\": null,\n              \"show\": false\n\
+    \            }\n          ]\n        }\n      ],\n      \"repeat\": null,\n  \
+    \    \"repeatIteration\": null,\n      \"repeatRowId\": null,\n      \"showTitle\"\
+    : false,\n      \"title\": \"up\",\n      \"titleSize\": \"h6\"\n    },\n    {\n\
+    \      \"collapse\": false,\n      \"height\": 250,\n      \"panels\": [\n   \
+    \     {\n          \"aliasColors\": {},\n          \"bars\": false,\n        \
+    \  \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"fill\": 1,\n          \"id\": 3,\n          \"\
+    legend\": {\n            \"avg\": false,\n            \"current\": false,\n  \
+    \          \"max\": false,\n            \"min\": false,\n            \"show\"\
+    : true,\n            \"total\": false,\n            \"values\": false\n      \
+    \    },\n          \"lines\": true,\n          \"linewidth\": 1,\n          \"\
+    links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"prometheus_tsdb_head_series{job=~\\\"$job\\\",instance=~\\\
+    \"$instance\\\"}\",\n              \"format\": \"time_series\",\n            \
+    \  \"intervalFactor\": 2,\n              \"legendFormat\": \"{{instance}}\",\n\
+    \              \"refId\": \"A\",\n              \"step\": 30\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"Series Count\",\n    \
+    \      \"tooltip\": {\n            \"shared\": true,\n            \"sort\": 0,\n\
+    \            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"format\": \"short\",\n              \"label\": \"\
+    Series\",\n              \"logBase\": 1,\n              \"max\": null,\n     \
+    \         \"min\": \"0\",\n              \"show\": true\n            },\n    \
+    \        {\n              \"format\": \"short\",\n              \"label\": null,\n\
+    \              \"logBase\": 1,\n              \"max\": null,\n              \"\
+    min\": null,\n              \"show\": true\n            }\n          ]\n     \
+    \   },\n        {\n          \"aliasColors\": {},\n          \"bars\": false,\n\
+    \          \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"fill\": 1,\n          \"id\": 5,\n          \"\
+    legend\": {\n            \"avg\": false,\n            \"current\": false,\n  \
+    \          \"max\": false,\n            \"min\": false,\n            \"show\"\
+    : true,\n            \"total\": false,\n            \"values\": false\n      \
+    \    },\n          \"lines\": true,\n          \"linewidth\": 1,\n          \"\
+    links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"prometheus_tsdb_head_chunks{job=~\\\"$job\\\",instance=~\\\
+    \"$instance\\\"}\",\n              \"format\": \"time_series\",\n            \
+    \  \"intervalFactor\": 2,\n              \"legendFormat\": \"{{instance}}\",\n\
+    \              \"refId\": \"A\",\n              \"step\": 30\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"Storage Memory Chunks\"\
+    ,\n          \"tooltip\": {\n            \"shared\": true,\n            \"sort\"\
+    : 0,\n            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"format\": \"short\",\n              \"label\": \"\
+    Chunks\",\n              \"logBase\": 1,\n              \"max\": null,\n     \
+    \         \"min\": \"0\",\n              \"show\": true\n            },\n    \
+    \        {\n              \"format\": \"short\",\n              \"label\": null,\n\
+    \              \"logBase\": 1,\n              \"max\": null,\n              \"\
+    min\": null,\n              \"show\": true\n            }\n          ]\n     \
+    \   }\n      ],\n      \"repeat\": null,\n      \"repeatIteration\": null,\n \
+    \     \"repeatRowId\": null,\n      \"showTitle\": false,\n      \"title\": \"\
+    series & storage\",\n      \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\"\
+    : false,\n      \"height\": 250,\n      \"panels\": [\n        {\n          \"\
+    aliasColors\": {\n            \"10.58.3.10:80\": \"#BA43A9\"\n          },\n \
+    \         \"bars\": false,\n          \"dashLength\": 10,\n          \"dashes\"\
+    : false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"description\"\
+    : \"Rate of total number of appended samples\",\n          \"fill\": 1,\n    \
+    \      \"id\": 4,\n          \"legend\": {\n            \"avg\": false,\n    \
+    \        \"current\": false,\n            \"max\": false,\n            \"min\"\
+    : false,\n            \"show\": true,\n            \"total\": false,\n       \
+    \     \"values\": false\n          },\n          \"lines\": true,\n          \"\
+    linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\": \"null\"\
+    ,\n          \"percentage\": false,\n          \"pointradius\": 5,\n         \
+    \ \"points\": false,\n          \"renderer\": \"flot\",\n          \"seriesOverrides\"\
+    : [],\n          \"spaceLength\": 10,\n          \"span\": 12,\n          \"stack\"\
+    : false,\n          \"steppedLine\": false,\n          \"targets\": [\n      \
+    \      {\n              \"expr\": \"rate(prometheus_tsdb_head_samples_appended_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[1m])\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"{{instance}}\",\n              \"refId\": \"A\",\n              \"step\":\
+    \ 20\n            }\n          ],\n          \"thresholds\": [],\n          \"\
+    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Appended\
+    \ Samples per Second\",\n          \"tooltip\": {\n            \"shared\": true,\n\
+    \            \"sort\": 0,\n            \"value_type\": \"individual\"\n      \
+    \    },\n          \"type\": \"graph\",\n          \"xaxis\": {\n            \"\
+    buckets\": null,\n            \"mode\": \"time\",\n            \"name\": null,\n\
+    \            \"show\": true,\n            \"values\": []\n          },\n     \
+    \     \"yaxes\": [\n            {\n              \"format\": \"short\",\n    \
+    \          \"label\": \"Samples / Second\",\n              \"logBase\": 1,\n \
+    \             \"max\": null,\n              \"min\": \"0\",\n              \"\
+    show\": true\n            },\n            {\n              \"format\": \"short\"\
+    ,\n              \"label\": null,\n              \"logBase\": 1,\n           \
+    \   \"max\": null,\n              \"min\": null,\n              \"show\": true\n\
+    \            }\n          ]\n        }\n      ],\n      \"repeat\": null,\n  \
+    \    \"repeatIteration\": null,\n      \"repeatRowId\": null,\n      \"showTitle\"\
+    : false,\n      \"title\": \"appended samples\",\n      \"titleSize\": \"h6\"\n\
+    \    },\n    {\n      \"collapse\": false,\n      \"height\": 250,\n      \"panels\"\
+    : [\n        {\n          \"aliasColors\": {},\n          \"bars\": false,\n \
+    \         \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"description\": \"Total number of syncs that were\
+    \ executed on a scrape pool.\",\n          \"fill\": 1,\n          \"id\": 6,\n\
+    \          \"legend\": {\n            \"avg\": false,\n            \"current\"\
+    : false,\n            \"max\": false,\n            \"min\": false,\n         \
+    \   \"show\": true,\n            \"total\": false,\n            \"values\": false\n\
+    \          },\n          \"lines\": true,\n          \"linewidth\": 1,\n     \
+    \     \"links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"sum(prometheus_target_scrape_pool_sync_total{job=~\\\"\
+    $job\\\",instance=~\\\"$instance\\\"}) by (scrape_job)\",\n              \"format\"\
+    : \"time_series\",\n              \"hide\": false,\n              \"intervalFactor\"\
+    : 2,\n              \"legendFormat\": \"{{scrape_job}}\",\n              \"refId\"\
+    : \"B\",\n              \"step\": 30\n            }\n          ],\n          \"\
+    thresholds\": [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n\
+    \          \"title\": \"Scrape Sync Total\",\n          \"tooltip\": {\n     \
+    \       \"shared\": true,\n            \"sort\": 0,\n            \"value_type\"\
+    : \"individual\"\n          },\n          \"type\": \"graph\",\n          \"xaxis\"\
+    : {\n            \"buckets\": null,\n            \"mode\": \"time\",\n       \
+    \     \"name\": null,\n            \"show\": true,\n            \"values\": []\n\
+    \          },\n          \"yaxes\": [\n            {\n              \"format\"\
+    : \"short\",\n              \"label\": \"Syncs\",\n              \"logBase\":\
+    \ 1,\n              \"max\": null,\n              \"min\": \"0\",\n          \
+    \    \"show\": true\n            },\n            {\n              \"format\":\
+    \ \"short\",\n              \"label\": null,\n              \"logBase\": 1,\n\
+    \              \"max\": null,\n              \"min\": null,\n              \"\
+    show\": true\n            }\n          ]\n        },\n        {\n          \"\
+    aliasColors\": {},\n          \"bars\": false,\n          \"dashLength\": 10,\n\
+    \          \"dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n \
+    \         \"description\": \"Actual interval to sync the scrape pool.\",\n   \
+    \       \"fill\": 1,\n          \"id\": 21,\n          \"legend\": {\n       \
+    \     \"avg\": false,\n            \"current\": false,\n            \"max\": false,\n\
+    \            \"min\": false,\n            \"show\": true,\n            \"total\"\
+    : false,\n            \"values\": false\n          },\n          \"lines\": true,\n\
+    \          \"linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\"\
+    : \"null\",\n          \"percentage\": false,\n          \"pointradius\": 5,\n\
+    \          \"points\": false,\n          \"renderer\": \"flot\",\n          \"\
+    seriesOverrides\": [],\n          \"spaceLength\": 10,\n          \"span\": 6,\n\
+    \          \"stack\": false,\n          \"steppedLine\": false,\n          \"\
+    targets\": [\n            {\n              \"expr\": \"sum(rate(prometheus_target_sync_length_seconds_sum{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[2m])) by (scrape_job) * 1000\",\n    \
+    \          \"format\": \"time_series\",\n              \"intervalFactor\": 2,\n\
+    \              \"legendFormat\": \"{{scrape_job}}\",\n              \"refId\"\
+    : \"A\",\n              \"step\": 30\n            }\n          ],\n          \"\
+    thresholds\": [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n\
+    \          \"title\": \"Target Sync\",\n          \"tooltip\": {\n           \
+    \ \"shared\": true,\n            \"sort\": 0,\n            \"value_type\": \"\
+    individual\"\n          },\n          \"type\": \"graph\",\n          \"xaxis\"\
+    : {\n            \"buckets\": null,\n            \"mode\": \"time\",\n       \
+    \     \"name\": null,\n            \"show\": true,\n            \"values\": []\n\
+    \          },\n          \"yaxes\": [\n            {\n              \"format\"\
+    : \"short\",\n              \"label\": \"Milliseconds\",\n              \"logBase\"\
+    : 1,\n              \"max\": null,\n              \"min\": \"0\",\n          \
+    \    \"show\": true\n            },\n            {\n              \"format\":\
+    \ \"short\",\n              \"label\": null,\n              \"logBase\": 1,\n\
+    \              \"max\": null,\n              \"min\": null,\n              \"\
+    show\": true\n            }\n          ]\n        }\n      ],\n      \"repeat\"\
+    : null,\n      \"repeatIteration\": null,\n      \"repeatRowId\": null,\n    \
+    \  \"showTitle\": false,\n      \"title\": \"sync\",\n      \"titleSize\": \"\
+    h6\"\n    },\n    {\n      \"collapse\": false,\n      \"height\": 250,\n    \
+    \  \"panels\": [\n        {\n          \"aliasColors\": {},\n          \"bars\"\
+    : false,\n          \"dashLength\": 10,\n          \"dashes\": false,\n      \
+    \    \"datasource\": \"${DS_THEMIS}\",\n          \"fill\": 1,\n          \"id\"\
+    : 29,\n          \"legend\": {\n            \"avg\": false,\n            \"current\"\
+    : false,\n            \"max\": false,\n            \"min\": false,\n         \
+    \   \"show\": true,\n            \"total\": false,\n            \"values\": false\n\
+    \          },\n          \"lines\": true,\n          \"linewidth\": 1,\n     \
+    \     \"links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"scrape_duration_seconds{instance=~\\\"$instance\\\"}\"\
+    ,\n              \"format\": \"time_series\",\n              \"intervalFactor\"\
+    : 2,\n              \"legendFormat\": \"{{instance}}\",\n              \"refId\"\
+    : \"A\",\n              \"step\": 30\n            }\n          ],\n          \"\
+    thresholds\": [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n\
+    \          \"title\": \"Scrape Duration\",\n          \"tooltip\": {\n       \
+    \     \"shared\": true,\n            \"sort\": 0,\n            \"value_type\"\
+    : \"individual\"\n          },\n          \"type\": \"graph\",\n          \"xaxis\"\
+    : {\n            \"buckets\": null,\n            \"mode\": \"time\",\n       \
+    \     \"name\": null,\n            \"show\": true,\n            \"values\": []\n\
+    \          },\n          \"yaxes\": [\n            {\n              \"format\"\
+    : \"short\",\n              \"label\": \"Seconds\",\n              \"logBase\"\
+    : 1,\n              \"max\": null,\n              \"min\": null,\n           \
+    \   \"show\": true\n            },\n            {\n              \"format\": \"\
+    short\",\n              \"label\": null,\n              \"logBase\": 1,\n    \
+    \          \"max\": null,\n              \"min\": null,\n              \"show\"\
+    : true\n            }\n          ]\n        },\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"description\"\
+    : \"Total number of rejected scrapes\",\n          \"fill\": 1,\n          \"\
+    id\": 30,\n          \"legend\": {\n            \"avg\": false,\n            \"\
+    current\": false,\n            \"max\": false,\n            \"min\": false,\n\
+    \            \"show\": true,\n            \"total\": false,\n            \"values\"\
+    : false\n          },\n          \"lines\": true,\n          \"linewidth\": 1,\n\
+    \          \"links\": [],\n          \"nullPointMode\": \"null\",\n          \"\
+    percentage\": false,\n          \"pointradius\": 5,\n          \"points\": false,\n\
+    \          \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n     \
+    \     \"spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n\
+    \          \"steppedLine\": false,\n          \"targets\": [\n            {\n\
+    \              \"expr\": \"sum(prometheus_target_scrapes_exceeded_sample_limit_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"exceeded\
+    \ sample limit\",\n              \"refId\": \"A\",\n              \"step\": 30\n\
+    \            },\n            {\n              \"expr\": \"sum(prometheus_target_scrapes_sample_duplicate_timestamp_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"hide\": false,\n              \"intervalFactor\": 2,\n    \
+    \          \"legendFormat\": \"duplicate timestamp\",\n              \"refId\"\
+    : \"B\",\n              \"step\": 30\n            },\n            {\n        \
+    \      \"expr\": \"sum(prometheus_target_scrapes_sample_out_of_bounds_total{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"hide\": false,\n              \"intervalFactor\": 2,\n    \
+    \          \"legendFormat\": \"out of bounds\",\n              \"refId\": \"C\"\
+    ,\n              \"step\": 30\n            },\n            {\n              \"\
+    expr\": \"sum(prometheus_target_scrapes_sample_out_of_order_total{job=~\\\"$job\\\
+    \",instance=~\\\"$instance\\\"}) \",\n              \"format\": \"time_series\"\
+    ,\n              \"hide\": false,\n              \"intervalFactor\": 2,\n    \
+    \          \"legendFormat\": \"out of order\",\n              \"refId\": \"D\"\
+    ,\n              \"step\": 30\n            }\n          ],\n          \"thresholds\"\
+    : [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n       \
+    \   \"title\": \"Rejected Scrapes\",\n          \"tooltip\": {\n            \"\
+    shared\": true,\n            \"sort\": 0,\n            \"value_type\": \"individual\"\
+    \n          },\n          \"type\": \"graph\",\n          \"xaxis\": {\n     \
+    \       \"buckets\": null,\n            \"mode\": \"time\",\n            \"name\"\
+    : null,\n            \"show\": true,\n            \"values\": []\n          },\n\
+    \          \"yaxes\": [\n            {\n              \"decimals\": 0,\n     \
+    \         \"format\": \"short\",\n              \"label\": \"Scrapes\",\n    \
+    \          \"logBase\": 1,\n              \"max\": null,\n              \"min\"\
+    : \"0\",\n              \"show\": true\n            },\n            {\n      \
+    \        \"format\": \"short\",\n              \"label\": null,\n            \
+    \  \"logBase\": 1,\n              \"max\": null,\n              \"min\": null,\n\
+    \              \"show\": true\n            }\n          ]\n        }\n      ],\n\
+    \      \"repeat\": null,\n      \"repeatIteration\": null,\n      \"repeatRowId\"\
+    : null,\n      \"showTitle\": false,\n      \"title\": \"scrapes\",\n      \"\
+    titleSize\": \"h6\"\n    },\n    {\n      \"collapse\": false,\n      \"height\"\
+    : 250,\n      \"panels\": [\n        {\n          \"aliasColors\": {},\n     \
+    \     \"bars\": false,\n          \"dashLength\": 10,\n          \"dashes\": false,\n\
+    \          \"datasource\": \"${DS_THEMIS}\",\n          \"description\": \"The\
+    \ duration of rule group evaluations\",\n          \"fill\": 1,\n          \"\
+    id\": 10,\n          \"legend\": {\n            \"avg\": false,\n            \"\
+    current\": false,\n            \"max\": false,\n            \"min\": false,\n\
+    \            \"show\": true,\n            \"total\": false,\n            \"values\"\
+    : false\n          },\n          \"lines\": true,\n          \"linewidth\": 1,\n\
+    \          \"links\": [],\n          \"nullPointMode\": \"null\",\n          \"\
+    percentage\": false,\n          \"pointradius\": 5,\n          \"points\": false,\n\
+    \          \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n     \
+    \     \"spaceLength\": 10,\n          \"span\": 6,\n          \"stack\": false,\n\
+    \          \"steppedLine\": false,\n          \"targets\": [\n            {\n\
+    \              \"expr\": \"1000 * rate(prometheus_evaluator_duration_seconds_sum{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[5m]) / rate(prometheus_evaluator_duration_seconds_count{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[5m])\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"{{instance}}\",\n              \"refId\": \"E\",\n              \"step\":\
+    \ 30\n            }\n          ],\n          \"thresholds\": [],\n          \"\
+    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Average\
+    \ Rule Evaluation Duration\",\n          \"tooltip\": {\n            \"shared\"\
+    : true,\n            \"sort\": 0,\n            \"value_type\": \"individual\"\n\
+    \          },\n          \"type\": \"graph\",\n          \"xaxis\": {\n      \
+    \      \"buckets\": null,\n            \"mode\": \"time\",\n            \"name\"\
+    : null,\n            \"show\": true,\n            \"values\": []\n          },\n\
+    \          \"yaxes\": [\n            {\n              \"format\": \"short\",\n\
+    \              \"label\": \"Milliseconds\",\n              \"logBase\": 1,\n \
+    \             \"max\": null,\n              \"min\": \"0\",\n              \"\
+    show\": true\n            },\n            {\n              \"format\": \"short\"\
+    ,\n              \"label\": null,\n              \"logBase\": 1,\n           \
+    \   \"max\": null,\n              \"min\": null,\n              \"show\": true\n\
+    \            }\n          ]\n        },\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"fill\"\
+    : 1,\n          \"id\": 11,\n          \"legend\": {\n            \"avg\": false,\n\
+    \            \"current\": false,\n            \"max\": false,\n            \"\
+    min\": false,\n            \"show\": true,\n            \"total\": false,\n  \
+    \          \"values\": false\n          },\n          \"lines\": true,\n     \
+    \     \"linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\"\
+    : \"null\",\n          \"percentage\": false,\n          \"pointradius\": 5,\n\
+    \          \"points\": false,\n          \"renderer\": \"flot\",\n          \"\
+    seriesOverrides\": [],\n          \"spaceLength\": 10,\n          \"span\": 6,\n\
+    \          \"stack\": false,\n          \"steppedLine\": false,\n          \"\
+    targets\": [\n            {\n              \"expr\": \"sum(rate(http_request_duration_microseconds_count{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[1m])) by (handler) > 0\",\n          \
+    \    \"format\": \"time_series\",\n              \"intervalFactor\": 2,\n    \
+    \          \"legendFormat\": \"{{handler}}\",\n              \"refId\": \"A\"\
+    ,\n              \"step\": 30\n            }\n          ],\n          \"thresholds\"\
+    : [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n       \
+    \   \"title\": \"HTTP Request Duration\",\n          \"tooltip\": {\n        \
+    \    \"shared\": true,\n            \"sort\": 0,\n            \"value_type\":\
+    \ \"individual\"\n          },\n          \"type\": \"graph\",\n          \"xaxis\"\
+    : {\n            \"buckets\": null,\n            \"mode\": \"time\",\n       \
+    \     \"name\": null,\n            \"show\": true,\n            \"values\": []\n\
+    \          },\n          \"yaxes\": [\n            {\n              \"format\"\
+    : \"short\",\n              \"label\": \"Microseconds\",\n              \"logBase\"\
+    : 1,\n              \"max\": null,\n              \"min\": null,\n           \
+    \   \"show\": true\n            },\n            {\n              \"format\": \"\
+    short\",\n              \"label\": null,\n              \"logBase\": 1,\n    \
+    \          \"max\": null,\n              \"min\": null,\n              \"show\"\
+    : true\n            }\n          ]\n        },\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"fill\"\
+    : 1,\n          \"id\": 15,\n          \"legend\": {\n            \"avg\": false,\n\
+    \            \"current\": false,\n            \"max\": false,\n            \"\
+    min\": false,\n            \"show\": true,\n            \"total\": false,\n  \
+    \          \"values\": false\n          },\n          \"lines\": true,\n     \
+    \     \"linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\"\
+    : \"null\",\n          \"percentage\": false,\n          \"pointradius\": 5,\n\
+    \          \"points\": false,\n          \"renderer\": \"flot\",\n          \"\
+    seriesOverrides\": [],\n          \"spaceLength\": 10,\n          \"span\": 6,\n\
+    \          \"stack\": false,\n          \"steppedLine\": false,\n          \"\
+    targets\": [\n            {\n              \"expr\": \"sum(prometheus_engine_query_duration_seconds_sum{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}) by (slice)\",\n              \"format\"\
+    : \"time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"{{slice}}\",\n              \"refId\": \"A\",\n              \"step\": 30\n\
+    \            }\n          ],\n          \"thresholds\": [],\n          \"timeFrom\"\
+    : null,\n          \"timeShift\": null,\n          \"title\": \"Prometheus Engine\
+    \ Query Duration Seconds\",\n          \"tooltip\": {\n            \"shared\"\
+    : true,\n            \"sort\": 0,\n            \"value_type\": \"individual\"\n\
+    \          },\n          \"type\": \"graph\",\n          \"xaxis\": {\n      \
+    \      \"buckets\": null,\n            \"mode\": \"time\",\n            \"name\"\
+    : null,\n            \"show\": true,\n            \"values\": []\n          },\n\
+    \          \"yaxes\": [\n            {\n              \"format\": \"short\",\n\
+    \              \"label\": \"Seconds\",\n              \"logBase\": 1,\n      \
+    \        \"max\": null,\n              \"min\": \"0\",\n              \"show\"\
+    : true\n            },\n            {\n              \"format\": \"short\",\n\
+    \              \"label\": null,\n              \"logBase\": 1,\n             \
+    \ \"max\": null,\n              \"min\": null,\n              \"show\": true\n\
+    \            }\n          ]\n        },\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"description\"\
+    : \"Rule-group evaluations \\n - total\\n - missed due to slow rule group evaluation\\\
+    n - skipped due to throttled metric storage\",\n          \"fill\": 1,\n     \
+    \     \"id\": 31,\n          \"legend\": {\n            \"avg\": false,\n    \
+    \        \"current\": false,\n            \"max\": false,\n            \"min\"\
+    : false,\n            \"show\": true,\n            \"total\": false,\n       \
+    \     \"values\": false\n          },\n          \"lines\": true,\n          \"\
+    linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\": \"null\"\
+    ,\n          \"percentage\": false,\n          \"pointradius\": 5,\n         \
+    \ \"points\": false,\n          \"renderer\": \"flot\",\n          \"seriesOverrides\"\
+    : [],\n          \"spaceLength\": 10,\n          \"span\": 6,\n          \"stack\"\
+    : false,\n          \"steppedLine\": false,\n          \"targets\": [\n      \
+    \      {\n              \"expr\": \"sum(rate(prometheus_evaluator_iterations_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[5m]))\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"Total\",\n              \"refId\": \"B\",\n              \"step\": 30\n  \
+    \          },\n            {\n              \"expr\": \"sum(rate(prometheus_evaluator_iterations_missed_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[5m]))\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"Missed\",\n              \"refId\": \"A\",\n              \"step\": 30\n \
+    \           },\n            {\n              \"expr\": \"sum(rate(prometheus_evaluator_iterations_skipped_total{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"}[5m]))\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"Skipped\",\n              \"refId\": \"C\",\n              \"step\": 30\n\
+    \            }\n          ],\n          \"thresholds\": [],\n          \"timeFrom\"\
+    : null,\n          \"timeShift\": null,\n          \"title\": \"Rule Evaluator\
+    \ Iterations\",\n          \"tooltip\": {\n            \"shared\": true,\n   \
+    \         \"sort\": 0,\n            \"value_type\": \"individual\"\n         \
+    \ },\n          \"type\": \"graph\",\n          \"xaxis\": {\n            \"buckets\"\
+    : null,\n            \"mode\": \"time\",\n            \"name\": null,\n      \
+    \      \"show\": true,\n            \"values\": []\n          },\n          \"\
+    yaxes\": [\n            {\n              \"format\": \"short\",\n            \
+    \  \"label\": \"iterations\",\n              \"logBase\": 1,\n              \"\
+    max\": null,\n              \"min\": \"0\",\n              \"show\": true\n  \
+    \          },\n            {\n              \"format\": \"short\",\n         \
+    \     \"label\": null,\n              \"logBase\": 1,\n              \"max\":\
+    \ null,\n              \"min\": null,\n              \"show\": true\n        \
+    \    }\n          ]\n        }\n      ],\n      \"repeat\": null,\n      \"repeatIteration\"\
+    : null,\n      \"repeatRowId\": null,\n      \"showTitle\": false,\n      \"title\"\
+    : \"durations\",\n      \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\"\
+    : false,\n      \"height\": 250,\n      \"panels\": [\n        {\n          \"\
+    aliasColors\": {},\n          \"bars\": false,\n          \"dashLength\": 10,\n\
+    \          \"dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n \
+    \         \"fill\": 1,\n          \"id\": 22,\n          \"legend\": {\n     \
+    \       \"avg\": false,\n            \"current\": false,\n            \"max\"\
+    : false,\n            \"min\": false,\n            \"show\": true,\n         \
+    \   \"total\": false,\n            \"values\": false\n          },\n         \
+    \ \"lines\": true,\n          \"linewidth\": 1,\n          \"links\": [],\n  \
+    \        \"nullPointMode\": \"null\",\n          \"percentage\": false,\n    \
+    \      \"pointradius\": 5,\n          \"points\": false,\n          \"renderer\"\
+    : \"flot\",\n          \"seriesOverrides\": [],\n          \"spaceLength\": 10,\n\
+    \          \"span\": 12,\n          \"stack\": false,\n          \"steppedLine\"\
+    : false,\n          \"targets\": [\n            {\n              \"expr\": \"\
+    rate(prometheus_notifications_sent_total[5m])\",\n              \"format\": \"\
+    time_series\",\n              \"intervalFactor\": 2,\n              \"legendFormat\"\
+    : \"{{instance}}\",\n              \"refId\": \"A\",\n              \"step\":\
+    \ 20\n            }\n          ],\n          \"thresholds\": [],\n          \"\
+    timeFrom\": null,\n          \"timeShift\": null,\n          \"title\": \"Notifications\
+    \ Sent\",\n          \"tooltip\": {\n            \"shared\": true,\n         \
+    \   \"sort\": 0,\n            \"value_type\": \"individual\"\n          },\n \
+    \         \"type\": \"graph\",\n          \"xaxis\": {\n            \"buckets\"\
+    : null,\n            \"mode\": \"time\",\n            \"name\": null,\n      \
+    \      \"show\": true,\n            \"values\": []\n          },\n          \"\
+    yaxes\": [\n            {\n              \"format\": \"short\",\n            \
+    \  \"label\": \"Notifications\",\n              \"logBase\": 1,\n            \
+    \  \"max\": null,\n              \"min\": \"0\",\n              \"show\": true\n\
+    \            },\n            {\n              \"format\": \"short\",\n       \
+    \       \"label\": null,\n              \"logBase\": 1,\n              \"max\"\
+    : null,\n              \"min\": null,\n              \"show\": true\n        \
+    \    }\n          ]\n        }\n      ],\n      \"repeat\": null,\n      \"repeatIteration\"\
+    : null,\n      \"repeatRowId\": null,\n      \"showTitle\": false,\n      \"title\"\
+    : \"notifications\",\n      \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\"\
+    : false,\n      \"height\": 250,\n      \"panels\": [\n        {\n          \"\
+    aliasColors\": {},\n          \"bars\": false,\n          \"dashLength\": 10,\n\
+    \          \"dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n \
+    \         \"fill\": 1,\n          \"id\": 23,\n          \"legend\": {\n     \
+    \       \"avg\": false,\n            \"current\": false,\n            \"max\"\
+    : false,\n            \"min\": false,\n            \"show\": true,\n         \
+    \   \"total\": false,\n            \"values\": false\n          },\n         \
+    \ \"lines\": true,\n          \"linewidth\": 1,\n          \"links\": [],\n  \
+    \        \"nullPointMode\": \"null\",\n          \"percentage\": false,\n    \
+    \      \"pointradius\": 5,\n          \"points\": false,\n          \"renderer\"\
+    : \"flot\",\n          \"seriesOverrides\": [],\n          \"spaceLength\": 10,\n\
+    \          \"span\": 6,\n          \"stack\": false,\n          \"steppedLine\"\
+    : false,\n          \"targets\": [\n            {\n              \"expr\": \"\
+    (time() - prometheus_config_last_reload_success_timestamp_seconds{job=~\\\"$job\\\
+    \",instance=~\\\"$instance\\\"}) / 60\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"{{instance}}\"\
+    ,\n              \"refId\": \"A\",\n              \"step\": 30\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"Minutes Since Successful\
+    \ Config Reload\",\n          \"tooltip\": {\n            \"shared\": true,\n\
+    \            \"sort\": 0,\n            \"value_type\": \"individual\"\n      \
+    \    },\n          \"type\": \"graph\",\n          \"xaxis\": {\n            \"\
+    buckets\": null,\n            \"mode\": \"time\",\n            \"name\": null,\n\
+    \            \"show\": true,\n            \"values\": []\n          },\n     \
+    \     \"yaxes\": [\n            {\n              \"format\": \"short\",\n    \
+    \          \"label\": \"Minutes\",\n              \"logBase\": 1,\n          \
+    \    \"max\": null,\n              \"min\": \"0\",\n              \"show\": true\n\
+    \            },\n            {\n              \"format\": \"short\",\n       \
+    \       \"label\": null,\n              \"logBase\": 1,\n              \"max\"\
+    : null,\n              \"min\": null,\n              \"show\": true\n        \
+    \    }\n          ]\n        },\n        {\n          \"aliasColors\": {},\n \
+    \         \"bars\": false,\n          \"dashLength\": 10,\n          \"dashes\"\
+    : false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"fill\": 1,\n\
+    \          \"id\": 24,\n          \"legend\": {\n            \"avg\": false,\n\
+    \            \"current\": false,\n            \"max\": false,\n            \"\
+    min\": false,\n            \"show\": true,\n            \"total\": false,\n  \
+    \          \"values\": false\n          },\n          \"lines\": true,\n     \
+    \     \"linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\"\
+    : \"null\",\n          \"percentage\": false,\n          \"pointradius\": 5,\n\
+    \          \"points\": false,\n          \"renderer\": \"flot\",\n          \"\
+    seriesOverrides\": [],\n          \"spaceLength\": 10,\n          \"span\": 6,\n\
+    \          \"stack\": false,\n          \"steppedLine\": false,\n          \"\
+    targets\": [\n            {\n              \"expr\": \"prometheus_config_last_reload_successful{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"{{instance}}\"\
+    ,\n              \"refId\": \"A\",\n              \"step\": 30\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"Successful Config Reload\"\
+    ,\n          \"tooltip\": {\n            \"shared\": true,\n            \"sort\"\
+    : 0,\n            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"decimals\": 0,\n              \"format\": \"short\"\
+    ,\n              \"label\": \"Success\",\n              \"logBase\": 1,\n    \
+    \          \"max\": \"1\",\n              \"min\": \"0\",\n              \"show\"\
+    : true\n            },\n            {\n              \"format\": \"short\",\n\
+    \              \"label\": null,\n              \"logBase\": 1,\n             \
+    \ \"max\": null,\n              \"min\": null,\n              \"show\": true\n\
+    \            }\n          ]\n        }\n      ],\n      \"repeat\": null,\n  \
+    \    \"repeatIteration\": null,\n      \"repeatRowId\": null,\n      \"showTitle\"\
+    : false,\n      \"title\": \"config\",\n      \"titleSize\": \"h6\"\n    },\n\
+    \    {\n      \"collapse\": false,\n      \"height\": 250,\n      \"panels\":\
+    \ [\n        {\n          \"aliasColors\": {},\n          \"bars\": false,\n \
+    \         \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"description\": \"GC invocation durations\",\n\
+    \          \"fill\": 1,\n          \"id\": 28,\n          \"legend\": {\n    \
+    \        \"avg\": false,\n            \"current\": false,\n            \"max\"\
+    : false,\n            \"min\": false,\n            \"show\": true,\n         \
+    \   \"total\": false,\n            \"values\": false\n          },\n         \
+    \ \"lines\": true,\n          \"linewidth\": 1,\n          \"links\": [],\n  \
+    \        \"nullPointMode\": \"null\",\n          \"percentage\": false,\n    \
+    \      \"pointradius\": 5,\n          \"points\": false,\n          \"renderer\"\
+    : \"flot\",\n          \"seriesOverrides\": [],\n          \"spaceLength\": 10,\n\
+    \          \"span\": 12,\n          \"stack\": false,\n          \"steppedLine\"\
+    : false,\n          \"targets\": [\n            {\n              \"expr\": \"\
+    sum(rate(go_gc_duration_seconds_sum{instance=~\\\"$instance\\\",job=~\\\"$job\\\
+    \"}[2m])) by (instance)\",\n              \"format\": \"time_series\",\n     \
+    \         \"intervalFactor\": 2,\n              \"legendFormat\": \"{{instance}}\"\
+    ,\n              \"refId\": \"A\",\n              \"step\": 20\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"GC Rate / 2m\",\n    \
+    \      \"tooltip\": {\n            \"shared\": true,\n            \"sort\": 0,\n\
+    \            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"format\": \"short\",\n              \"label\": null,\n\
+    \              \"logBase\": 1,\n              \"max\": null,\n              \"\
+    min\": null,\n              \"show\": true\n            },\n            {\n  \
+    \            \"format\": \"short\",\n              \"label\": null,\n        \
+    \      \"logBase\": 1,\n              \"max\": null,\n              \"min\": null,\n\
+    \              \"show\": true\n            }\n          ]\n        }\n      ],\n\
+    \      \"repeat\": null,\n      \"repeatIteration\": null,\n      \"repeatRowId\"\
+    : null,\n      \"showTitle\": false,\n      \"title\": \"garbage collection\"\
+    ,\n      \"titleSize\": \"h6\"\n    },\n    {\n      \"collapse\": true,\n   \
+    \   \"height\": 250,\n      \"panels\": [\n        {\n          \"aliasColors\"\
+    : {},\n          \"bars\": false,\n          \"dashLength\": 10,\n          \"\
+    dashes\": false,\n          \"datasource\": \"${DS_THEMIS}\",\n          \"description\"\
+    : \"This is probably wrong!  Please help.\",\n          \"fill\": 1,\n       \
+    \   \"id\": 26,\n          \"legend\": {\n            \"avg\": false,\n      \
+    \      \"current\": false,\n            \"max\": false,\n            \"min\":\
+    \ false,\n            \"show\": true,\n            \"total\": false,\n       \
+    \     \"values\": false\n          },\n          \"lines\": true,\n          \"\
+    linewidth\": 1,\n          \"links\": [],\n          \"nullPointMode\": \"null\"\
+    ,\n          \"percentage\": false,\n          \"pointradius\": 5,\n         \
+    \ \"points\": false,\n          \"renderer\": \"flot\",\n          \"seriesOverrides\"\
+    : [\n            {\n              \"alias\": \"allocated\",\n              \"\
+    stack\": false\n            }\n          ],\n          \"spaceLength\": 10,\n\
+    \          \"span\": 6,\n          \"stack\": true,\n          \"steppedLine\"\
+    : false,\n          \"targets\": [\n            {\n              \"expr\": \"\
+    sum(go_memstats_alloc_bytes_total{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \"})\",\n              \"format\": \"time_series\",\n              \"hide\": true,\n\
+    \              \"intervalFactor\": 2,\n              \"legendFormat\": \"alloc_bytes_total\"\
+    ,\n              \"refId\": \"A\",\n              \"step\": 10\n            },\n\
+    \            {\n              \"expr\": \"sum(go_memstats_alloc_bytes{job=~\\\"\
+    $job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"hide\": false,\n              \"intervalFactor\": 2,\n    \
+    \          \"legendFormat\": \"allocated\",\n              \"refId\": \"B\",\n\
+    \              \"step\": 10\n            },\n            {\n              \"expr\"\
+    : \"sum(go_memstats_buck_hash_sys_bytes{job=~\\\"$job\\\", instance=~\\\"$instance\\\
+    \"})\",\n              \"format\": \"time_series\",\n              \"intervalFactor\"\
+    : 2,\n              \"legendFormat\": \"profiling bucket hash table\",\n     \
+    \         \"refId\": \"C\",\n              \"step\": 10\n            },\n    \
+    \        {\n              \"expr\": \"sum(go_memstats_gc_sys_bytes{job=~\\\"$job\\\
+    \", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"GC\
+    \ metadata\",\n              \"refId\": \"D\",\n              \"step\": 10\n \
+    \           },\n            {\n              \"expr\": \"sum(go_memstats_heap_alloc_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ in-use\",\n              \"refId\": \"E\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_heap_idle_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ idle\",\n              \"refId\": \"F\",\n              \"step\": 10\n     \
+    \       },\n            {\n              \"expr\": \"sum(go_memstats_heap_inuse_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ in use\",\n              \"refId\": \"G\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_heap_released_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ released\",\n              \"refId\": \"H\",\n              \"step\": 10\n \
+    \           },\n            {\n              \"expr\": \"sum(go_memstats_heap_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ system\",\n              \"refId\": \"I\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_mcache_inuse_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"mcache\
+    \ in use\",\n              \"refId\": \"J\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_mcache_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"mcache\
+    \ sys\",\n              \"refId\": \"K\",\n              \"step\": 10\n      \
+    \      },\n            {\n              \"expr\": \"sum(go_memstats_mspan_inuse_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"mspan\
+    \ in use\",\n              \"refId\": \"L\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_mspan_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"mspan\
+    \ sys\",\n              \"refId\": \"M\",\n              \"step\": 10\n      \
+    \      },\n            {\n              \"expr\": \"sum(go_memstats_next_gc_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"heap\
+    \ next gc\",\n              \"refId\": \"N\",\n              \"step\": 10\n  \
+    \          },\n            {\n              \"expr\": \"sum(go_memstats_other_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"other\
+    \ sys\",\n              \"refId\": \"O\",\n              \"step\": 10\n      \
+    \      },\n            {\n              \"expr\": \"sum(go_memstats_stack_inuse_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"stack\
+    \ in use\",\n              \"refId\": \"P\",\n              \"step\": 10\n   \
+    \         },\n            {\n              \"expr\": \"sum(go_memstats_stack_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"stack\
+    \ sys\",\n              \"refId\": \"Q\",\n              \"step\": 10\n      \
+    \      },\n            {\n              \"expr\": \"sum(go_memstats_sys_bytes{job=~\\\
+    \"$job\\\", instance=~\\\"$instance\\\"})\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"sys\"\
+    ,\n              \"refId\": \"R\",\n              \"step\": 10\n            }\n\
+    \          ],\n          \"thresholds\": [],\n          \"timeFrom\": null,\n\
+    \          \"timeShift\": null,\n          \"title\": \"Go Memory Usage (FIXME)\"\
+    ,\n          \"tooltip\": {\n            \"shared\": true,\n            \"sort\"\
+    : 0,\n            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"format\": \"bytes\",\n              \"label\": null,\n\
+    \              \"logBase\": 1,\n              \"max\": null,\n              \"\
+    min\": \"0\",\n              \"show\": true\n            },\n            {\n \
+    \             \"format\": \"short\",\n              \"label\": null,\n       \
+    \       \"logBase\": 1,\n              \"max\": null,\n              \"min\":\
+    \ null,\n              \"show\": true\n            }\n          ]\n        },\n\
+    \        {\n          \"aliasColors\": {},\n          \"bars\": false,\n     \
+    \     \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"fill\": 1,\n          \"id\": 9,\n          \"\
+    legend\": {\n            \"avg\": false,\n            \"current\": false,\n  \
+    \          \"max\": false,\n            \"min\": false,\n            \"show\"\
+    : true,\n            \"total\": false,\n            \"values\": false\n      \
+    \    },\n          \"lines\": true,\n          \"linewidth\": 1,\n          \"\
+    links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 3,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"prometheus_target_interval_length_seconds{instance=~\\\"\
+    $instance\\\", job=~\\\"$job\\\"}\",\n              \"format\": \"time_series\"\
+    ,\n              \"intervalFactor\": 2,\n              \"legendFormat\": \"{{quantile}}\
+    \ {{interval}}\",\n              \"refId\": \"A\",\n              \"step\": 20\n\
+    \            }\n          ],\n          \"thresholds\": [],\n          \"timeFrom\"\
+    : null,\n          \"timeShift\": null,\n          \"title\": \"Scrape Duration\"\
+    ,\n          \"tooltip\": {\n            \"shared\": true,\n            \"sort\"\
+    : 0,\n            \"value_type\": \"individual\"\n          },\n          \"type\"\
+    : \"graph\",\n          \"xaxis\": {\n            \"buckets\": null,\n       \
+    \     \"mode\": \"time\",\n            \"name\": null,\n            \"show\":\
+    \ true,\n            \"values\": []\n          },\n          \"yaxes\": [\n  \
+    \          {\n              \"format\": \"short\",\n              \"label\": \"\
+    Seconds\",\n              \"logBase\": 1,\n              \"max\": null,\n    \
+    \          \"min\": \"0\",\n              \"show\": true\n            },\n   \
+    \         {\n              \"format\": \"short\",\n              \"label\": null,\n\
+    \              \"logBase\": 1,\n              \"max\": null,\n              \"\
+    min\": null,\n              \"show\": true\n            }\n          ]\n     \
+    \   },\n        {\n          \"aliasColors\": {},\n          \"bars\": false,\n\
+    \          \"dashLength\": 10,\n          \"dashes\": false,\n          \"datasource\"\
+    : \"${DS_THEMIS}\",\n          \"fill\": 1,\n          \"id\": 7,\n          \"\
+    legend\": {\n            \"avg\": false,\n            \"current\": false,\n  \
+    \          \"max\": false,\n            \"min\": false,\n            \"show\"\
+    : true,\n            \"total\": false,\n            \"values\": false\n      \
+    \    },\n          \"lines\": true,\n          \"linewidth\": 1,\n          \"\
+    links\": [],\n          \"nullPointMode\": \"null\",\n          \"percentage\"\
+    : false,\n          \"pointradius\": 5,\n          \"points\": false,\n      \
+    \    \"renderer\": \"flot\",\n          \"seriesOverrides\": [],\n          \"\
+    spaceLength\": 10,\n          \"span\": 3,\n          \"stack\": false,\n    \
+    \      \"steppedLine\": false,\n          \"targets\": [\n            {\n    \
+    \          \"expr\": \"sum(rate(prometheus_target_interval_length_seconds_count{job=~\\\
+    \"$job\\\",instance=~\\\"$instance\\\"}[5m])) by (interval)\",\n             \
+    \ \"format\": \"time_series\",\n              \"intervalFactor\": 2,\n       \
+    \       \"legendFormat\": \"{{interval}}\",\n              \"refId\": \"A\",\n\
+    \              \"step\": 20\n            }\n          ],\n          \"thresholds\"\
+    : [],\n          \"timeFrom\": null,\n          \"timeShift\": null,\n       \
+    \   \"title\": \"Target Scrapes / 5m\",\n          \"tooltip\": {\n          \
+    \  \"shared\": true,\n            \"sort\": 0,\n            \"value_type\": \"\
+    individual\"\n          },\n          \"type\": \"graph\",\n          \"xaxis\"\
+    : {\n            \"buckets\": null,\n            \"mode\": \"time\",\n       \
+    \     \"name\": null,\n            \"show\": true,\n            \"values\": []\n\
+    \          },\n          \"yaxes\": [\n            {\n              \"format\"\
+    : \"short\",\n              \"label\": \"Scrapes\",\n              \"logBase\"\
+    : 1,\n              \"max\": null,\n              \"min\": \"0\",\n          \
+    \    \"show\": true\n            },\n            {\n              \"format\":\
+    \ \"short\",\n              \"label\": null,\n              \"logBase\": 1,\n\
+    \              \"max\": null,\n              \"min\": null,\n              \"\
+    show\": true\n            }\n          ]\n        }\n      ],\n      \"repeat\"\
+    : null,\n      \"repeatIteration\": null,\n      \"repeatRowId\": null,\n    \
+    \  \"showTitle\": false,\n      \"title\": \"Broken, ignore\",\n      \"titleSize\"\
+    : \"h6\"\n    }\n  ],\n  \"schemaVersion\": 14,\n  \"style\": \"dark\",\n  \"\
+    tags\": [],\n  \"templating\": {\n    \"list\": [\n      {\n        \"allValue\"\
+    : null,\n        \"current\": {},\n        \"datasource\": \"${DS_THEMIS}\",\n\
+    \        \"hide\": 0,\n        \"includeAll\": true,\n        \"label\": null,\n\
+    \        \"multi\": true,\n        \"name\": \"job\",\n        \"options\": [],\n\
+    \        \"query\": \"query_result(prometheus_tsdb_head_samples_appended_total)\"\
+    ,\n        \"refresh\": 2,\n        \"regex\": \"/.*job=\\\"([^\\\"]+)/\",\n \
+    \       \"sort\": 1,\n        \"tagValuesQuery\": \"\",\n        \"tags\": [],\n\
+    \        \"tagsQuery\": \"\",\n        \"type\": \"query\",\n        \"useTags\"\
+    : false\n      },\n      {\n        \"allValue\": null,\n        \"current\":\
+    \ {},\n        \"datasource\": \"${DS_THEMIS}\",\n        \"hide\": 0,\n     \
+    \   \"includeAll\": true,\n        \"label\": null,\n        \"multi\": true,\n\
+    \        \"name\": \"instance\",\n        \"options\": [],\n        \"query\"\
+    : \"query_result(up{job=~\\\"$job\\\"})\",\n        \"refresh\": 2,\n        \"\
+    regex\": \"/.*instance=\\\"([^\\\"]+).*/\",\n        \"sort\": 0,\n        \"\
+    tagValuesQuery\": \"\",\n        \"tags\": [],\n        \"tagsQuery\": \"\",\n\
+    \        \"type\": \"query\",\n        \"useTags\": false\n      },\n      {\n\
+    \        \"allValue\": null,\n        \"current\": {\n          \"tags\": [],\n\
+    \          \"text\": \"1h\",\n          \"value\": \"1h\"\n        },\n      \
+    \  \"hide\": 0,\n        \"includeAll\": false,\n        \"label\": null,\n  \
+    \      \"multi\": false,\n        \"name\": \"interval\",\n        \"options\"\
+    : [\n          {\n            \"selected\": true,\n            \"text\": \"1h\"\
+    ,\n            \"value\": \"1h\"\n          },\n          {\n            \"selected\"\
+    : false,\n            \"text\": \"3h\",\n            \"value\": \"3h\"\n     \
+    \     },\n          {\n            \"selected\": false,\n            \"text\"\
+    : \"6h\",\n            \"value\": \"6h\"\n          },\n          {\n        \
+    \    \"selected\": false,\n            \"text\": \"12h\",\n            \"value\"\
+    : \"12h\"\n          },\n          {\n            \"selected\": false,\n     \
+    \       \"text\": \"1d\",\n            \"value\": \"1d\"\n          },\n     \
+    \     {\n            \"selected\": false,\n            \"text\": \"2d\",\n   \
+    \         \"value\": \"2d\"\n          },\n          {\n            \"selected\"\
+    : false,\n            \"text\": \"7d\",\n            \"value\": \"7d\"\n     \
+    \     },\n          {\n            \"selected\": false,\n            \"text\"\
+    : \"30d\",\n            \"value\": \"30d\"\n          },\n          {\n      \
+    \      \"selected\": false,\n            \"text\": \"90d\",\n            \"value\"\
+    : \"90d\"\n          },\n          {\n            \"selected\": false,\n     \
+    \       \"text\": \"180d\",\n            \"value\": \"180d\"\n          }\n  \
+    \      ],\n        \"query\": \"1h, 3h, 6h, 12h, 1d, 2d, 7d, 30d, 90d, 180d\"\
+    ,\n        \"type\": \"custom\"\n      }\n    ]\n  },\n  \"time\": {\n    \"from\"\
+    : \"now-3h\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {\n    \"refresh_intervals\"\
+    : [\n      \"5s\",\n      \"10s\",\n      \"30s\",\n      \"1m\",\n      \"5m\"\
+    ,\n      \"15m\",\n      \"30m\",\n      \"1h\",\n      \"2h\",\n      \"1d\"\n\
+    \    ],\n    \"time_options\": [\n      \"5m\",\n      \"15m\",\n      \"1h\"\
+    ,\n      \"6h\",\n      \"12h\",\n      \"24h\",\n      \"2d\",\n      \"7d\"\
+    ,\n      \"30d\"\n    ]\n  },\n  \"timezone\": \"\",\n  \"title\": \"Prometheus\
+    \ 2.0 Overview\",\n  \"version\": 14,\n  \"description\": \"Overview of metrics\
+    \ from Prometheus 2.0.  \\r\\nUseful for using prometheus to monitor your prometheus.\\\
+    r\\nRevisions welcome!\"\n}"

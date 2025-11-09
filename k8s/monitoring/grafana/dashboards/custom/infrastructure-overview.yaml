@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-infrastructure-overview
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  infrastructure-overview.json: "{\n  \"dashboard\": {\n    \"title\": \"Infrastructure\
+    \ Overview\",\n    \"tags\": [\n      \"infrastructure\",\n      \"overview\"\n\
+    \    ],\n    \"timezone\": \"browser\",\n    \"schemaVersion\": 16,\n    \"version\"\
+    : 1,\n    \"refresh\": \"30s\",\n    \"panels\": [\n      {\n        \"id\": 1,\n\
+    \        \"title\": \"Cluster Health\",\n        \"type\": \"stat\",\n       \
+    \ \"gridPos\": {\n          \"h\": 4,\n          \"w\": 6,\n          \"x\": 0,\n\
+    \          \"y\": 0\n        },\n        \"targets\": [\n          {\n       \
+    \     \"expr\": \"count(up{job=\\\"kubernetes-pods\\\"} == 1)\",\n           \
+    \ \"legendFormat\": \"Running Pods\",\n            \"refId\": \"A\"\n        \
+    \  }\n        ],\n        \"fieldConfig\": {\n          \"defaults\": {\n    \
+    \        \"color\": {\n              \"mode\": \"thresholds\"\n            },\n\
+    \            \"thresholds\": {\n              \"mode\": \"absolute\",\n      \
+    \        \"steps\": [\n                {\n                  \"value\": 0,\n  \
+    \                \"color\": \"red\"\n                },\n                {\n \
+    \                 \"value\": 1,\n                  \"color\": \"green\"\n    \
+    \            }\n              ]\n            }\n          }\n        }\n     \
+    \ },\n      {\n        \"id\": 2,\n        \"title\": \"Node Status\",\n     \
+    \   \"type\": \"stat\",\n        \"gridPos\": {\n          \"h\": 4,\n       \
+    \   \"w\": 6,\n          \"x\": 6,\n          \"y\": 0\n        },\n        \"\
+    targets\": [\n          {\n            \"expr\": \"count(kube_node_status_condition{condition=\\\
+    \"Ready\\\",status=\\\"true\\\"} == 1)\",\n            \"legendFormat\": \"Ready\
+    \ Nodes\",\n            \"refId\": \"A\"\n          }\n        ]\n      },\n \
+    \     {\n        \"id\": 3,\n        \"title\": \"CPU Usage\",\n        \"type\"\
+    : \"graph\",\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n\
+    \          \"x\": 0,\n          \"y\": 4\n        },\n        \"targets\": [\n\
+    \          {\n            \"expr\": \"100 - (avg by(instance) (rate(node_cpu_seconds_total{mode=\\\
+    \"idle\\\"}[5m])) * 100)\",\n            \"legendFormat\": \"{{instance}}\",\n\
+    \            \"refId\": \"A\"\n          }\n        ]\n      },\n      {\n   \
+    \     \"id\": 4,\n        \"title\": \"Memory Usage\",\n        \"type\": \"graph\"\
+    ,\n        \"gridPos\": {\n          \"h\": 8,\n          \"w\": 12,\n       \
+    \   \"x\": 12,\n          \"y\": 4\n        },\n        \"targets\": [\n     \
+    \     {\n            \"expr\": \"(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))\
+    \ * 100\",\n            \"legendFormat\": \"{{instance}}\",\n            \"refId\"\
+    : \"A\"\n          }\n        ]\n      }\n    ]\n  }\n}"

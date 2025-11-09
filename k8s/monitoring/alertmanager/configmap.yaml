@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+    
+    # Discord webhook receiver (using webhook_configs with custom template)
+    receivers:
+    - name: 'discord-default'
+      webhook_configs:
+      - url: 'https://discord.com/api/webhooks/1434373123225948180/fI_jDJabe9f9DRy1WKAzL4E5CevlToCrprF7kb-_icM2DMa7sUFu6vVMJ4iZGxH47OUs'
+        send_resolved: true
+        http_config:
+          follow_redirects: true
+    
+    # Route all alerts to Discord
+    route:
+      receiver: 'discord-default'
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 12h
+    
+    # Inhibition rules
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'cluster', 'instance']
+

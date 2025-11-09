@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: services-alerts
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  groups:
+  - name: services.rules
+    interval: 30s
+    rules:
+    # Service down alerts
+    - alert: ServiceDown
+      expr: up{job=~"argocd|cert-manager|nginx-ingress|velero|coredns"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Service {{ $labels.job }} is down"
+        description: "Service {{ $labels.job }} has been down for more than 2 minutes"
+    
+    # DNS alerts
+    - alert: CoreDNSDown
+      expr: up{job="coredns"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "CoreDNS is down"
+        description: "CoreDNS service is not responding"
+    
+    # Ingress alerts
+    - alert: IngressHighErrorRate
+      expr: rate(nginx_ingress_controller_requests{status=~"5.."}[5m]) > 0.05
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High error rate on ingress {{ $labels.host }}"
+        description: "Error rate is {{ $value }} errors per second"
+    
+    # Certificate alerts
+    - alert: CertificateExpiringSoon
+      expr: (cert_manager_certificate_expiration_timestamp_seconds - time()) / 86400 < 30
+      for: 1h
+      labels:
+        severity: warning
+      annotations:
+        summary: "Certificate {{ $labels.name }} expiring soon"
+        description: "Certificate {{ $labels.name }} expires in {{ $value }} days"
+    
+    - alert: CertificateExpired
+      expr: cert_manager_certificate_expiration_timestamp_seconds < time()
+      labels:
+        severity: critical
+      annotations:
+        summary: "Certificate {{ $labels.name }} has expired"
+        description: "Certificate {{ $labels.name }} expired {{ $value }} seconds ago"
+

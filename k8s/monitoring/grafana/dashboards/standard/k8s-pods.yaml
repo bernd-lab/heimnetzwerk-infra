@@ -1,0 +1,863 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-pods
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  k8s-pods.json: "{\n  \"__inputs\": [\n    {\n      \"name\": \"DS_PROMETHEUS\",\n\
+    \      \"label\": \"prometheus\",\n      \"description\": \"\",\n      \"type\"\
+    : \"datasource\",\n      \"pluginId\": \"prometheus\",\n      \"pluginName\":\
+    \ \"Prometheus\"\n    }\n  ],\n  \"__requires\": [\n    {\n      \"type\": \"\
+    grafana\",\n      \"id\": \"grafana\",\n      \"name\": \"Grafana\",\n      \"\
+    version\": \"4.6.2\"\n    },\n    {\n      \"type\": \"panel\",\n      \"id\"\
+    : \"graph\",\n      \"name\": \"Graph\",\n      \"version\": \"\"\n    },\n  \
+    \  {\n      \"type\": \"datasource\",\n      \"id\": \"prometheus\",\n      \"\
+    name\": \"Prometheus\",\n      \"version\": \"1.0.0\"\n    },\n    {\n      \"\
+    type\": \"panel\",\n      \"id\": \"singlestat\",\n      \"name\": \"Singlestat\"\
+    ,\n      \"version\": \"\"\n    },\n    {\n      \"type\": \"panel\",\n      \"\
+    id\": \"text\",\n      \"name\": \"Text\",\n      \"version\": \"\"\n    }\n \
+    \ ],\n  \"annotations\": {\n    \"list\": [\n      {\n        \"$$hashKey\": \"\
+    object:3607\",\n        \"builtIn\": 1,\n        \"datasource\": \"-- Grafana\
+    \ --\",\n        \"enable\": true,\n        \"hide\": true,\n        \"iconColor\"\
+    : \"rgba(0, 211, 255, 1)\",\n        \"name\": \"Annotations & Alerts\",\n   \
+    \     \"type\": \"dashboard\"\n      }\n    ]\n  },\n  \"description\": \"Summary\
+    \ metrics about containers running on Kubernetes nodes.\\r\\n\\r\\nDashboard was\
+    \ taken from here.  This version does not reqiure you to\\r\\nsetup the Kubernetes-app\
+    \ plugin. (https://github.com/grafana/kubernetes-app)\\r\\n\\r\\nUse this Helm\
+    \ chart to launch Grafana into a Kubernetes cluster.  It will include this dashboard\
+    \ and many more dashboards to give you visibility into the Kubernetes Cluster.\
+    \ (https://github.com/sekka1/cloud-public/tree/master/kubernetes/pods/grafana-helm)\"\
+    ,\n  \"editable\": true,\n  \"gnetId\": 6417,\n  \"graphTooltip\": 1,\n  \"id\"\
+    : 10,\n  \"iteration\": 1528328092190,\n  \"links\": [\n    {\n      \"asDropdown\"\
+    : true,\n      \"icon\": \"external link\",\n      \"includeVars\": true,\n  \
+    \    \"keepTime\": false,\n      \"tags\": [\n        \"kubernetes-app\"\n   \
+    \   ],\n      \"title\": \"Dashboards\",\n      \"type\": \"dashboards\"\n   \
+    \ }\n  ],\n  \"panels\": [\n    {\n      \"collapsed\": false,\n      \"gridPos\"\
+    : {\n        \"h\": 1,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\":\
+    \ 0\n      },\n      \"id\": 2,\n      \"panels\": [],\n      \"title\": \"Cluster\
+    \ Health\",\n      \"type\": \"row\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    percentunit\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": true,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 4,\n\
+    \        \"w\": 6,\n        \"x\": 0,\n        \"y\": 1\n      },\n      \"id\"\
+    : 4,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\":\
+    \ 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_info{node=~\\\
+    \"$node\\\"}) / sum(kube_node_status_allocatable_pods{node=~\\\".*\\\"})\",\n\
+    \          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n  \
+    \        \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"80,90\"\
+    ,\n      \"title\": \"Cluster Pod Usage\",\n      \"type\": \"singlestat\",\n\
+    \      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n      \
+    \    \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"percentunit\",\n      \"gauge\": {\n        \"maxValue\"\
+    : 100,\n        \"minValue\": 0,\n        \"show\": true,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 4,\n        \"w\": 6,\n        \"x\": 6,\n        \"y\": 1\n \
+    \     },\n      \"id\": 5,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"sum(kube_pod_container_resource_requests_cpu_cores{node=~\\\"\
+    $node\\\"}) / sum(kube_node_status_allocatable_cpu_cores{node=~\\\"$node\\\"})\"\
+    ,\n          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"80,90\"\
+    ,\n      \"title\": \"Cluster CPU Usage\",\n      \"type\": \"singlestat\",\n\
+    \      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n      \
+    \    \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"percentunit\",\n      \"gauge\": {\n        \"maxValue\"\
+    : 100,\n        \"minValue\": 0,\n        \"show\": true,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 4,\n        \"w\": 6,\n        \"x\": 12,\n        \"y\": 1\n\
+    \      },\n      \"id\": 6,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"sum(kube_pod_container_resource_requests_memory_bytes{node=~\\\
+    \"$node\\\"}) / sum(kube_node_status_allocatable_memory_bytes{node=~\\\"$node\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    80,90\",\n      \"title\": \"Cluster Memory Usage\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"percentunit\",\n      \"gauge\": {\n        \"maxValue\"\
+    : 100,\n        \"minValue\": 0,\n        \"show\": true,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 4,\n        \"w\": 6,\n        \"x\": 18,\n        \"y\": 1\n\
+    \      },\n      \"id\": 7,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"(sum (node_filesystem_size{nodename=~\\\"$node\\\"}) - sum (node_filesystem_free{nodename=~\\\
+    \"$node\\\"})) / sum (node_filesystem_size{nodename=~\\\"$node\\\"})\",\n    \
+    \      \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n      \
+    \    \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"80,90\",\n\
+    \      \"title\": \"Cluster Disk Usage\",\n      \"type\": \"singlestat\",\n \
+    \     \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n       \
+    \   \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\": 10,\n  \
+    \    \"dashes\": false,\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"\
+    fill\": 1,\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\": 6,\n     \
+    \   \"x\": 0,\n        \"y\": 5\n      },\n      \"id\": 9,\n      \"legend\"\
+    : {\n        \"avg\": false,\n        \"current\": false,\n        \"max\": false,\n\
+    \        \"min\": false,\n        \"show\": true,\n        \"total\": false,\n\
+    \        \"values\": false\n      },\n      \"lines\": true,\n      \"linewidth\"\
+    : 1,\n      \"links\": [],\n      \"nullPointMode\": \"null\",\n      \"percentage\"\
+    : false,\n      \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\"\
+    : \"flot\",\n      \"seriesOverrides\": [],\n      \"spaceLength\": 10,\n    \
+    \  \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n  \
+    \      {\n          \"expr\": \"sum(kube_node_status_allocatable_pods{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"allocatable\",\n          \"refId\": \"A\"\
+    \n        },\n        {\n          \"expr\": \"sum(kube_node_status_capacity_pods{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"capacity\",\n          \"refId\": \"B\"\n\
+    \        },\n        {\n          \"expr\": \"sum(kube_pod_info{node=~\\\"$node\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"requested\",\n          \"refId\": \"C\"\n\
+    \        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n \
+    \     \"timeShift\": null,\n      \"title\": \"Cluster Pod Capacity\",\n     \
+    \ \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"\
+    value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
+    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
+    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
+    : [\n        {\n          \"format\": \"short\",\n          \"label\": \"pods\"\
+    ,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n\
+    \          \"show\": true\n        },\n        {\n          \"format\": \"short\"\
+    ,\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n\
+    \          \"min\": null,\n          \"show\": true\n        }\n      ],\n   \
+    \   \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n  \
+    \    }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n  \
+    \    \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"fill\": 1,\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\"\
+    : 6,\n        \"x\": 6,\n        \"y\": 5\n      },\n      \"id\": 10,\n     \
+    \ \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n      \
+    \  \"max\": false,\n        \"min\": false,\n        \"show\": true,\n       \
+    \ \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n\
+    \      \"linewidth\": 1,\n      \"links\": [],\n      \"nullPointMode\": \"null\"\
+    ,\n      \"percentage\": false,\n      \"pointradius\": 5,\n      \"points\":\
+    \ false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n    \
+    \  \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n\
+    \      \"targets\": [\n        {\n          \"expr\": \"sum(kube_node_status_capacity_cpu_cores{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"allocatable\",\n          \"refId\": \"A\"\
+    \n        },\n        {\n          \"expr\": \"sum(kube_node_status_allocatable_cpu_cores{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"capacity\",\n          \"refId\": \"B\"\n\
+    \        },\n        {\n          \"expr\": \"sum(kube_pod_container_resource_requests_cpu_cores{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"requested\",\n          \"refId\": \"C\"\n\
+    \        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n \
+    \     \"timeShift\": null,\n      \"title\": \"Cluster CPU Capacity\",\n     \
+    \ \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"\
+    value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
+    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
+    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
+    : [\n        {\n          \"decimals\": null,\n          \"format\": \"none\"\
+    ,\n          \"label\": \"cores\",\n          \"logBase\": 1,\n          \"max\"\
+    : null,\n          \"min\": null,\n          \"show\": true\n        },\n    \
+    \    {\n          \"format\": \"short\",\n          \"label\": null,\n       \
+    \   \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n    \
+    \      \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\"\
+    : false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\"\
+    : {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n\
+    \      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"fill\": 1,\n      \"gridPos\"\
+    : {\n        \"h\": 5,\n        \"w\": 6,\n        \"x\": 12,\n        \"y\":\
+    \ 5\n      },\n      \"id\": 11,\n      \"legend\": {\n        \"avg\": false,\n\
+    \        \"current\": false,\n        \"max\": false,\n        \"min\": false,\n\
+    \        \"show\": true,\n        \"total\": false,\n        \"values\": false\n\
+    \      },\n      \"lines\": true,\n      \"linewidth\": 1,\n      \"links\": [],\n\
+    \      \"nullPointMode\": \"null\",\n      \"percentage\": false,\n      \"pointradius\"\
+    : 5,\n      \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
+    : [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\"\
+    : false,\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_node_status_allocatable_memory_bytes{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"allocatable\",\n          \"refId\": \"A\"\
+    \n        },\n        {\n          \"expr\": \"sum(kube_node_status_capacity_memory_bytes{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"capacity\",\n          \"refId\": \"B\"\n\
+    \        },\n        {\n          \"expr\": \"sum(kube_pod_container_resource_requests_memory_bytes{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"requested\",\n          \"refId\": \"C\"\n\
+    \        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n \
+    \     \"timeShift\": null,\n      \"title\": \"Cluster Mem Capacity\",\n     \
+    \ \"tooltip\": {\n        \"shared\": true,\n        \"sort\": 0,\n        \"\
+    value_type\": \"individual\"\n      },\n      \"type\": \"graph\",\n      \"xaxis\"\
+    : {\n        \"buckets\": null,\n        \"mode\": \"time\",\n        \"name\"\
+    : null,\n        \"show\": true,\n        \"values\": []\n      },\n      \"yaxes\"\
+    : [\n        {\n          \"format\": \"decbytes\",\n          \"label\": null,\n\
+    \          \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n\
+    \          \"show\": true\n        },\n        {\n          \"format\": \"short\"\
+    ,\n          \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n\
+    \          \"min\": null,\n          \"show\": true\n        }\n      ],\n   \
+    \   \"yaxis\": {\n        \"align\": false,\n        \"alignLevel\": null\n  \
+    \    }\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n  \
+    \    \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"fill\": 1,\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\"\
+    : 6,\n        \"x\": 18,\n        \"y\": 5\n      },\n      \"id\": 12,\n    \
+    \  \"legend\": {\n        \"avg\": false,\n        \"current\": false,\n     \
+    \   \"max\": false,\n        \"min\": false,\n        \"show\": true,\n      \
+    \  \"total\": false,\n        \"values\": false\n      },\n      \"lines\": true,\n\
+    \      \"linewidth\": 1,\n      \"links\": [],\n      \"nullPointMode\": \"null\"\
+    ,\n      \"percentage\": false,\n      \"pointradius\": 5,\n      \"points\":\
+    \ false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n    \
+    \  \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n\
+    \      \"targets\": [\n        {\n          \"expr\": \"sum(node_filesystem_size{nodename=~\\\
+    \"$node\\\"}) - sum(node_filesystem_free{nodename=~\\\"$node\\\"})\",\n      \
+    \    \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n        \
+    \  \"legendFormat\": \"usage\",\n          \"refId\": \"A\"\n        },\n    \
+    \    {\n          \"expr\": \"sum(node_filesystem_size{nodename=~\\\"$node\\\"\
+    })\",\n          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n\
+    \          \"legendFormat\": \"limit\",\n          \"refId\": \"B\"\n        }\n\
+    \      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeShift\"\
+    : null,\n      \"title\": \"Cluster Disk Capacity\",\n      \"tooltip\": {\n \
+    \       \"shared\": true,\n        \"sort\": 0,\n        \"value_type\": \"individual\"\
+    \n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\"\
+    : null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\"\
+    : true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n   \
+    \       \"format\": \"decbytes\",\n          \"label\": null,\n          \"logBase\"\
+    : 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\":\
+    \ true\n        },\n        {\n          \"format\": \"short\",\n          \"\
+    label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n        \
+    \  \"min\": null,\n          \"show\": true\n        }\n      ],\n      \"yaxis\"\
+    : {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n\
+    \    {\n      \"collapsed\": false,\n      \"gridPos\": {\n        \"h\": 1,\n\
+    \        \"w\": 24,\n        \"x\": 0,\n        \"y\": 10\n      },\n      \"\
+    id\": 14,\n      \"panels\": [],\n      \"title\": \"Deployments\",\n      \"\
+    type\": \"row\"\n    },\n    {\n      \"columns\": [\n        {\n          \"\
+    text\": \"Current\",\n          \"value\": \"current\"\n        }\n      ],\n\
+    \      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"fontSize\": \"100%\",\n\
+    \      \"gridPos\": {\n        \"h\": 5,\n        \"w\": 6,\n        \"x\": 0,\n\
+    \        \"y\": 11\n      },\n      \"id\": 16,\n      \"links\": [],\n      \"\
+    pageSize\": null,\n      \"scroll\": true,\n      \"showHeader\": true,\n    \
+    \  \"sort\": {\n        \"col\": 1,\n        \"desc\": true\n      },\n      \"\
+    styles\": [\n        {\n          \"alias\": \"Time\",\n          \"dateFormat\"\
+    : \"YYYY-MM-DD HH:mm:ss\",\n          \"pattern\": \"Time\",\n          \"type\"\
+    : \"date\"\n        },\n        {\n          \"alias\": \"\",\n          \"colorMode\"\
+    : \"row\",\n          \"colors\": [\n            \"rgba(245, 54, 54, 0.9)\",\n\
+    \            \"rgba(237, 129, 40, 0.89)\",\n            \"rgba(50, 172, 45, 0.97)\"\
+    \n          ],\n          \"decimals\": 0,\n          \"pattern\": \"Metric\"\
+    ,\n          \"thresholds\": [\n            \"0\",\n            \"0\",\n     \
+    \       \".9\"\n          ],\n          \"type\": \"string\",\n          \"unit\"\
+    : \"none\"\n        },\n        {\n          \"alias\": \"\",\n          \"colorMode\"\
+    : \"row\",\n          \"colors\": [\n            \"rgba(245, 54, 54, 0.9)\",\n\
+    \            \"rgba(237, 129, 40, 0.89)\",\n            \"rgba(50, 172, 45, 0.97)\"\
+    \n          ],\n          \"dateFormat\": \"YYYY-MM-DD HH:mm:ss\",\n         \
+    \ \"decimals\": 0,\n          \"link\": false,\n          \"pattern\": \"Value\"\
+    ,\n          \"thresholds\": [\n            \"0\",\n            \"1\"\n      \
+    \    ],\n          \"type\": \"number\",\n          \"unit\": \"none\"\n     \
+    \   }\n      ],\n      \"targets\": [\n        {\n          \"expr\": \"kube_deployment_status_replicas{namespace=~\\\
+    \"$namespace\\\"}\",\n          \"format\": \"time_series\",\n          \"instant\"\
+    : true,\n          \"interval\": \"\",\n          \"intervalFactor\": 1,\n   \
+    \       \"legendFormat\": \"{{ deployment }}\",\n          \"refId\": \"A\"\n\
+    \        }\n      ],\n      \"title\": \"Deployment Replicas - Up To Date\",\n\
+    \      \"transform\": \"timeseries_to_rows\",\n      \"type\": \"table\"\n   \
+    \ },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\": false,\n\
+    \      \"colorValue\": false,\n      \"colors\": [\n        \"#299c46\",\n   \
+    \     \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\"\
+    : \"${DS_PROMETHEUS}\",\n      \"format\": \"none\",\n      \"gauge\": {\n   \
+    \     \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n\
+    \        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n   \
+    \   },\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\": 6,\n        \"\
+    x\": 6,\n        \"y\": 11\n      },\n      \"id\": 18,\n      \"interval\": null,\n\
+    \      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\": [\n\
+    \        {\n          \"name\": \"value to text\",\n          \"value\": 1\n \
+    \       },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": false\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum(kube_deployment_status_replicas{namespace=~\\\
+    \"$namespace\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Deployment Replicas\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"avg\"\n    },\n    {\n      \"cacheTimeout\"\
+    : null,\n      \"colorBackground\": false,\n      \"colorValue\": false,\n   \
+    \   \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\"\
+    ,\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n\
+    \      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 5,\n        \"w\": 6,\n        \"x\": 12,\n        \"y\": 11\n\
+    \      },\n      \"id\": 19,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"sum(kube_deployment_status_replicas_updated{namespace=~\\\"$namespace\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Deployment Replicas - Updated\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"avg\"\n    },\n    {\n      \"cacheTimeout\"\
+    : null,\n      \"colorBackground\": false,\n      \"colorValue\": false,\n   \
+    \   \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\"\
+    ,\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n\
+    \      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 5,\n        \"w\": 6,\n        \"x\": 18,\n        \"y\": 11\n\
+    \      },\n      \"id\": 20,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"sum(kube_deployment_status_replicas_unavailable{namespace=~\\\"\
+    $namespace\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Deployment Replicas - Unavailable\",\n      \"type\":\
+    \ \"singlestat\",\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n\
+    \        {\n          \"op\": \"=\",\n          \"text\": \"N/A\",\n         \
+    \ \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"avg\"\n   \
+    \ },\n    {\n      \"collapsed\": false,\n      \"gridPos\": {\n        \"h\"\
+    : 1,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\": 16\n      },\n   \
+    \   \"id\": 22,\n      \"panels\": [],\n      \"title\": \"Node\",\n      \"type\"\
+    : \"row\"\n    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\"\
+    : false,\n      \"colorValue\": false,\n      \"colors\": [\n        \"#299c46\"\
+    ,\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n    \
+    \  \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"none\",\n      \"\
+    gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\"\
+    : false,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n\
+    \      },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 8,\n      \
+    \  \"x\": 0,\n        \"y\": 17\n      },\n      \"id\": 24,\n      \"interval\"\
+    : null,\n      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\"\
+    : [\n        {\n          \"name\": \"value to text\",\n          \"value\": 1\n\
+    \        },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": false\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum(kube_node_info{node=~\\\"$node\\\"})\"\
+    ,\n          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n\
+    \      \"title\": \"Number Of Nodes\",\n      \"type\": \"singlestat\",\n    \
+    \  \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n          \"\
+    op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\n  \
+    \      }\n      ],\n      \"valueName\": \"avg\"\n    },\n    {\n      \"cacheTimeout\"\
+    : null,\n      \"colorBackground\": true,\n      \"colorValue\": false,\n    \
+    \  \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n\
+    \        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n\
+    \      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 8,\n        \"x\": 8,\n        \"y\": 17\n\
+    \      },\n      \"id\": 25,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n    \
+    \  },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n       \
+    \   \"expr\": \"sum(kube_node_status_condition{condition=\\\"OutOfDisk\\\", node=~\\\
+    \"$node\\\", status=\\\"true\\\"})\",\n          \"format\": \"time_series\",\n\
+    \          \"intervalFactor\": 1,\n          \"refId\": \"A\"\n        }\n   \
+    \   ],\n      \"thresholds\": \"1\",\n      \"title\": \"Nodes Out of Disk\",\n\
+    \      \"type\": \"singlestat\",\n      \"valueFontSize\": \"80%\",\n      \"\
+    valueMaps\": [\n        {\n          \"op\": \"=\",\n          \"text\": \"N/A\"\
+    ,\n          \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"\
+    current\"\n    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\"\
+    : true,\n      \"colorValue\": false,\n      \"colors\": [\n        \"#299c46\"\
+    ,\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n    \
+    \  \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"none\",\n      \"\
+    gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\"\
+    : false,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n\
+    \      },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 8,\n      \
+    \  \"x\": 16,\n        \"y\": 17\n      },\n      \"id\": 26,\n      \"interval\"\
+    : null,\n      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\"\
+    : [\n        {\n          \"name\": \"value to text\",\n          \"value\": 1\n\
+    \        },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": false\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum(kube_node_spec_unschedulable{node=~\\\
+    \"$node\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    1\",\n      \"title\": \"Nodes Unavailable\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"collapsed\": false,\n      \"gridPos\": {\n        \"h\": 1,\n        \"w\"\
+    : 24,\n        \"x\": 0,\n        \"y\": 20\n      },\n      \"id\": 28,\n   \
+    \   \"panels\": [],\n      \"title\": \"Pods\",\n      \"type\": \"row\"\n   \
+    \ },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\": false,\n\
+    \      \"colorValue\": false,\n      \"colors\": [\n        \"#299c46\",\n   \
+    \     \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\"\
+    : \"${DS_PROMETHEUS}\",\n      \"format\": \"none\",\n      \"gauge\": {\n   \
+    \     \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n\
+    \        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n   \
+    \   },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 12,\n        \"\
+    x\": 0,\n        \"y\": 21\n      },\n      \"id\": 30,\n      \"interval\": null,\n\
+    \      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\": [\n\
+    \        {\n          \"name\": \"value to text\",\n          \"value\": 1\n \
+    \       },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(78, 203, 42, 0.28)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"#629e51\",\n        \"show\"\
+    : true\n      },\n      \"tableColumn\": \"\",\n      \"targets\": [\n       \
+    \ {\n          \"expr\": \"sum(kube_pod_status_phase{namespace=~\\\"$namespace\\\
+    \", phase=\\\"Running\\\"})\",\n          \"format\": \"time_series\",\n     \
+    \     \"interval\": \"\",\n          \"intervalFactor\": 1,\n          \"refId\"\
+    : \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n      \"title\": \"\
+    Pods Running\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\": \"\
+    80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n        \
+    \  \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n  \
+    \    \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": false,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n\
+    \        \"w\": 12,\n        \"x\": 12,\n        \"y\": 21\n      },\n      \"\
+    id\": 31,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(78, 203, 42, 0.28)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"#629e51\",\n        \"show\": true\n      },\n      \"tableColumn\": \"\"\
+    ,\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_status_phase{namespace=~\\\
+    \"$namespace\\\", phase=\\\"Pending\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"interval\": \"\",\n          \"intervalFactor\": 1,\n         \
+    \ \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n      \"\
+    title\": \"Pods Pending\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\"\
+    : \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": false,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n\
+    \        \"w\": 8,\n        \"x\": 0,\n        \"y\": 24\n      },\n      \"id\"\
+    : 32,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(78, 203, 42, 0.28)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"#629e51\",\n        \"show\": true\n      },\n      \"tableColumn\": \"\"\
+    ,\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_status_phase{namespace=~\\\
+    \"$namespace\\\", phase=\\\"Failed\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"interval\": \"\",\n          \"intervalFactor\": 1,\n         \
+    \ \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n      \"\
+    title\": \"Pods Failed\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\"\
+    : \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": false,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n\
+    \        \"w\": 8,\n        \"x\": 8,\n        \"y\": 24\n      },\n      \"id\"\
+    : 33,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(78, 203, 42, 0.28)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"#629e51\",\n        \"show\": true\n      },\n      \"tableColumn\": \"\"\
+    ,\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_status_phase{namespace=~\\\
+    \"$namespace\\\", phase=\\\"Succeeded\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"interval\": \"\",\n          \"intervalFactor\": 1,\n         \
+    \ \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n      \"\
+    title\": \"Pods Succeeded\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\"\
+    : \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": false,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n\
+    \        \"w\": 8,\n        \"x\": 16,\n        \"y\": 24\n      },\n      \"\
+    id\": 34,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(78, 203, 42, 0.28)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"#629e51\",\n        \"show\": true\n      },\n      \"tableColumn\": \"\"\
+    ,\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_status_phase{namespace=~\\\
+    \"$namespace\\\", phase=\\\"Unknown\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"interval\": \"\",\n          \"intervalFactor\": 1,\n         \
+    \ \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n      \"\
+    title\": \"Pods Unknown\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\"\
+    : \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"collapsed\": false,\n\
+    \      \"gridPos\": {\n        \"h\": 1,\n        \"w\": 24,\n        \"x\": 0,\n\
+    \        \"y\": 27\n      },\n      \"id\": 36,\n      \"panels\": [],\n     \
+    \ \"title\": \"Containers\",\n      \"type\": \"row\"\n    },\n    {\n      \"\
+    cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 6,\n        \"x\": 0,\n        \"y\": 28\n\
+    \      },\n      \"id\": 38,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_pod_container_status_running{namespace=~\\\"$namespace\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Containers Running\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 6,\n        \"x\": 6,\n        \"y\": 28\n\
+    \      },\n      \"id\": 39,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_pod_container_status_waiting{namespace=~\\\"$namespace\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Containers Waiting\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 6,\n        \"x\": 12,\n        \"y\": 28\n\
+    \      },\n      \"id\": 40,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_pod_container_status_terminated{namespace=~\\\"$namespace\\\
+    \"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Containers Terminated\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 6,\n        \"x\": 18,\n        \"y\": 28\n\
+    \      },\n      \"id\": 41,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(delta(kube_pod_container_status_restarts{namespace=\\\"kube-system\\\
+    \"}[30m]))\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 1,\n          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\
+    \",\n      \"title\": \"Containers Restarts (Last 30 Minutes)\",\n      \"type\"\
+    : \"singlestat\",\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n\
+    \        {\n          \"op\": \"=\",\n          \"text\": \"N/A\",\n         \
+    \ \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"current\"\n\
+    \    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\": false,\n\
+    \      \"colorValue\": false,\n      \"colors\": [\n        \"#299c46\",\n   \
+    \     \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\"\
+    : \"${DS_PROMETHEUS}\",\n      \"format\": \"none\",\n      \"gauge\": {\n   \
+    \     \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n\
+    \        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n   \
+    \   },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 12,\n        \"\
+    x\": 0,\n        \"y\": 31\n      },\n      \"id\": 43,\n      \"interval\": null,\n\
+    \      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\": [\n\
+    \        {\n          \"name\": \"value to text\",\n          \"value\": 1\n \
+    \       },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": true\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum(kube_pod_container_resource_requests_cpu_cores{namespace=~\\\
+    \"$namespace\\\", node=~\\\"$node\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"intervalFactor\": 1,\n          \"refId\": \"A\"\n        }\n \
+    \     ],\n      \"thresholds\": \"\",\n      \"title\": \"CPU Cores Requested\
+    \ by Containers\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\":\
+    \ \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"#d44a3a\"\
+    \n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"format\": \"\
+    decbytes\",\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\"\
+    : 0,\n        \"show\": false,\n        \"thresholdLabels\": false,\n        \"\
+    thresholdMarkers\": true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n\
+    \        \"w\": 12,\n        \"x\": 12,\n        \"y\": 31\n      },\n      \"\
+    id\": 42,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": true\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"sum(kube_pod_container_resource_requests_memory_bytes{namespace=~\\\
+    \"$namespace\\\", node=~\\\"$node\\\"})\",\n          \"format\": \"time_series\"\
+    ,\n          \"intervalFactor\": 1,\n          \"refId\": \"A\"\n        }\n \
+    \     ],\n      \"thresholds\": \"\",\n      \"title\": \"Memory Requested By\
+    \ Containers\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\": \"\
+    80%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n        \
+    \  \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n  \
+    \    \"valueName\": \"current\"\n    },\n    {\n      \"collapsed\": false,\n\
+    \      \"gridPos\": {\n        \"h\": 1,\n        \"w\": 24,\n        \"x\": 0,\n\
+    \        \"y\": 34\n      },\n      \"id\": 45,\n      \"panels\": [],\n     \
+    \ \"title\": \"Jobs\",\n      \"type\": \"row\"\n    },\n    {\n      \"cacheTimeout\"\
+    : null,\n      \"colorBackground\": false,\n      \"colorValue\": false,\n   \
+    \   \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129, 40, 0.89)\"\
+    ,\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n\
+    \      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 8,\n        \"x\": 0,\n        \"y\": 35\n\
+    \      },\n      \"id\": 47,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_job_status_succeeded{namespace=~\\\"$namespace\\\"})\"\
+    ,\n          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n\
+    \          \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n\
+    \      \"title\": \"Jobs Succeeded\",\n      \"type\": \"singlestat\",\n     \
+    \ \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n          \"\
+    op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\n  \
+    \      }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n      \"\
+    cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 8,\n        \"x\": 8,\n        \"y\": 35\n\
+    \      },\n      \"id\": 48,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_job_status_active{namespace=~\\\"$namespace\\\"})\",\n\
+    \          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n  \
+    \        \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n\
+    \      \"title\": \"Jobs Succeeded\",\n      \"type\": \"singlestat\",\n     \
+    \ \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n          \"\
+    op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\n  \
+    \      }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n      \"\
+    cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"#299c46\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"#d44a3a\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"format\": \"none\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": false,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 3,\n        \"w\": 8,\n        \"x\": 16,\n        \"y\": 35\n\
+    \      },\n      \"id\": 49,\n      \"interval\": null,\n      \"links\": [],\n\
+    \      \"mappingType\": 1,\n      \"mappingTypes\": [\n        {\n          \"\
+    name\": \"value to text\",\n          \"value\": 1\n        },\n        {\n  \
+    \        \"name\": \"range to text\",\n          \"value\": 2\n        }\n   \
+    \   ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\": \"connected\"\
+    ,\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"postfixFontSize\"\
+    : \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n    \
+    \  \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n          \"text\"\
+    : \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n      \"sparkline\"\
+    : {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n\
+    \        \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": true\n     \
+    \ },\n      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n        \
+    \  \"expr\": \"sum(kube_job_status_failed{namespace=~\\\"$namespace\\\"})\",\n\
+    \          \"format\": \"time_series\",\n          \"intervalFactor\": 1,\n  \
+    \        \"refId\": \"A\"\n        }\n      ],\n      \"thresholds\": \"\",\n\
+    \      \"title\": \"Jobs Failed\",\n      \"type\": \"singlestat\",\n      \"\
+    valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\"\
+    : \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\n      \
+    \  }\n      ],\n      \"valueName\": \"current\"\n    }\n  ],\n  \"schemaVersion\"\
+    : 16,\n  \"style\": \"dark\",\n  \"tags\": [\n    \"kubernetes\",\n    \"kubernetes-app\"\
+    \n  ],\n  \"templating\": {\n    \"list\": [\n      {\n        \"current\": {\n\
+    \          \"text\": \"No data sources found\",\n          \"value\": \"\"\n \
+    \       },\n        \"hide\": 2,\n        \"label\": \"\",\n        \"name\":\
+    \ \"datasource\",\n        \"options\": [],\n        \"query\": \"prometheus\"\
+    ,\n        \"refresh\": 1,\n        \"regex\": \"/$ds/\",\n        \"type\": \"\
+    datasource\"\n      },\n      {\n        \"current\": {\n          \"text\": \"\
+    .*\",\n          \"value\": \".*\"\n        },\n        \"hide\": 0,\n       \
+    \ \"label\": null,\n        \"name\": \"node\",\n        \"options\": [\n    \
+    \      {\n            \"selected\": true,\n            \"text\": \".*\",\n   \
+    \         \"value\": \".*\"\n          }\n        ],\n        \"query\": \".*\"\
+    ,\n        \"type\": \"constant\"\n      },\n      {\n        \"current\": {\n\
+    \          \"text\": \".*\",\n          \"value\": \".*\"\n        },\n      \
+    \  \"hide\": 0,\n        \"label\": null,\n        \"name\": \"namespace\",\n\
+    \        \"options\": [\n          {\n            \"selected\": true,\n      \
+    \      \"text\": \".*\",\n            \"value\": \".*\"\n          }\n       \
+    \ ],\n        \"query\": \".*\",\n        \"type\": \"constant\"\n      }\n  \
+    \  ]\n  },\n  \"time\": {\n    \"from\": \"now-30m\",\n    \"to\": \"now\"\n \
+    \ },\n  \"timepicker\": {\n    \"refresh_intervals\": [\n      \"5s\",\n     \
+    \ \"10s\",\n      \"30s\",\n      \"1m\",\n      \"5m\",\n      \"15m\",\n   \
+    \   \"30m\",\n      \"1h\",\n      \"2h\",\n      \"1d\"\n    ],\n    \"time_options\"\
+    : [\n      \"5m\",\n      \"15m\",\n      \"1h\",\n      \"6h\",\n      \"12h\"\
+    ,\n      \"24h\",\n      \"2d\",\n      \"7d\",\n      \"30d\"\n    ]\n  },\n\
+    \  \"timezone\": \"browser\",\n  \"title\": \"Kubernetes Cluster (Prometheus)\"\
+    ,\n  \"uid\": \"4XuMd2Iiz\",\n  \"version\": 1\n}"

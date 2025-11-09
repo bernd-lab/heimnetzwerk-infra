@@ -1,0 +1,51 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: infrastructure-alerts
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  groups:
+  - name: infrastructure.rules
+    interval: 30s
+    rules:
+    # Network alerts
+    - alert: HighNetworkErrors
+      expr: rate(node_network_receive_errs_total[5m]) + rate(node_network_transmit_errs_total[5m]) > 10
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High network errors on {{ $labels.instance }}"
+        description: "Network interface {{ $labels.device }} has {{ $value }} errors per second"
+    
+    # Disk I/O alerts
+    - alert: HighDiskIO
+      expr: rate(node_disk_io_time_seconds_total[5m]) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High disk I/O on {{ $labels.instance }}"
+        description: "Disk {{ $labels.device }} I/O utilization is {{ $value }}%"
+    
+    # Container resource alerts
+    - alert: ContainerHighCPU
+      expr: rate(container_cpu_usage_seconds_total[5m]) * 100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Container {{ $labels.namespace }}/{{ $labels.pod }}/{{ $labels.container }} CPU usage is high"
+        description: "CPU usage is {{ $value }}%"
+    
+    - alert: ContainerHighMemory
+      expr: container_memory_working_set_bytes / container_spec_memory_limit_bytes > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Container {{ $labels.namespace }}/{{ $labels.pod }}/{{ $labels.container }} memory usage is high"
+        description: "Memory usage is {{ $value }}%"
+

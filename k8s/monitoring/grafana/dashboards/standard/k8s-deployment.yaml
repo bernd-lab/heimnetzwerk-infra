@@ -1,0 +1,493 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-deployment
+  namespace: monitoring
+  labels:
+    grafana_dashboard: '1'
+data:
+  k8s-deployment.json: "{\n  \"__inputs\": [\n    {\n      \"name\": \"DS_PROMETHEUS\"\
+    ,\n      \"label\": \"prometheus\",\n      \"description\": \"\",\n      \"type\"\
+    : \"datasource\",\n      \"pluginId\": \"prometheus\",\n      \"pluginName\":\
+    \ \"Prometheus\"\n    }\n  ],\n  \"__requires\": [\n    {\n      \"type\": \"\
+    grafana\",\n      \"id\": \"grafana\",\n      \"name\": \"Grafana\",\n      \"\
+    version\": \"5.1.2\"\n    },\n    {\n      \"type\": \"panel\",\n      \"id\"\
+    : \"graph\",\n      \"name\": \"Graph\",\n      \"version\": \"5.0.0\"\n    },\n\
+    \    {\n      \"type\": \"datasource\",\n      \"id\": \"prometheus\",\n     \
+    \ \"name\": \"Prometheus\",\n      \"version\": \"5.0.0\"\n    },\n    {\n   \
+    \   \"type\": \"panel\",\n      \"id\": \"singlestat\",\n      \"name\": \"Singlestat\"\
+    ,\n      \"version\": \"5.0.0\"\n    }\n  ],\n  \"annotations\": {\n    \"list\"\
+    : [\n      {\n        \"builtIn\": 1,\n        \"datasource\": \"-- Grafana --\"\
+    ,\n        \"enable\": true,\n        \"hide\": true,\n        \"iconColor\":\
+    \ \"rgba(0, 211, 255, 1)\",\n        \"name\": \"Annotations & Alerts\",\n   \
+    \     \"type\": \"dashboard\"\n      }\n    ]\n  },\n  \"description\": \"Monitors\
+    \ Kubernetes deployments in cluster using Prometheus. Shows overall cluster CPU\
+    \ / Memory of deployments, replicas in each deployment. Uses Kube state metrics\
+    \ and cAdvisor metrics (741)\",\n  \"editable\": true,\n  \"gnetId\": 8588,\n\
+    \  \"graphTooltip\": 0,\n  \"id\": null,\n  \"iteration\": 1540469214881,\n  \"\
+    links\": [],\n  \"panels\": [\n    {\n      \"cacheTimeout\": null,\n      \"\
+    colorBackground\": false,\n      \"colorValue\": true,\n      \"colors\": [\n\
+    \        \"rgba(50, 172, 45, 0.97)\",\n        \"rgba(237, 129, 40, 0.89)\",\n\
+    \        \"rgba(245, 54, 54, 0.9)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"editable\": true,\n      \"error\": false,\n      \"format\": \"percent\"\
+    ,\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n\
+    \        \"show\": true,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\"\
+    : true\n      },\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\": 8,\n\
+    \        \"x\": 0,\n        \"y\": 0\n      },\n      \"height\": \"180px\",\n\
+    \      \"id\": 1,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"sum (container_memory_working_set_bytes{pod_name=~\\\
+    \"^$Deployment$Statefulset$Daemonset.*$\\\", kubernetes_io_hostname=~\\\"^$Node$\\\
+    \", pod_name!=\\\"\\\"}) / sum (kube_node_status_allocatable_memory_bytes{node=~\\\
+    \"^$Node.*$\\\"}) * 100\",\n          \"format\": \"time_series\",\n         \
+    \ \"interval\": \"10s\",\n          \"intervalFactor\": 1,\n          \"refId\"\
+    : \"A\",\n          \"step\": 900\n        }\n      ],\n      \"thresholds\":\
+    \ \"65, 90\",\n      \"title\": \"Deployment memory usage\",\n      \"transparent\"\
+    : false,\n      \"type\": \"singlestat\",\n      \"valueFontSize\": \"80%\",\n\
+    \      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n          \"text\"\
+    : \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n      \"valueName\"\
+    : \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\"\
+    : false,\n      \"colorValue\": true,\n      \"colors\": [\n        \"rgba(50,\
+    \ 172, 45, 0.97)\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"rgba(245,\
+    \ 54, 54, 0.9)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n    \
+    \  \"decimals\": 2,\n      \"editable\": true,\n      \"error\": false,\n    \
+    \  \"format\": \"percent\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": true,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 5,\n        \"w\": 8,\n        \"x\": 8,\n        \"y\": 0\n \
+    \     },\n      \"height\": \"180px\",\n      \"id\": 2,\n      \"interval\":\
+    \ null,\n      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\"\
+    : [\n        {\n          \"name\": \"value to text\",\n          \"value\": 1\n\
+    \        },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": false\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum (rate (container_cpu_usage_seconds_total{pod_name=~\\\
+    \"^$Deployment$Statefulset$Daemonset.*$\\\", kubernetes_io_hostname=~\\\"^$Node$\\\
+    \"}[2m])) / sum (machine_cpu_cores{kubernetes_io_hostname=~\\\"^$Node$\\\"}) *\
+    \ 100\",\n          \"format\": \"time_series\",\n          \"interval\": \"10s\"\
+    ,\n          \"intervalFactor\": 1,\n          \"refId\": \"A\",\n          \"\
+    step\": 900\n        }\n      ],\n      \"thresholds\": \"65, 90\",\n      \"\
+    title\": \"Deployment CPU usage\",\n      \"type\": \"singlestat\",\n      \"\
+    valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n          \"op\"\
+    : \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\n      \
+    \  }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\"\
+    : null,\n      \"colorBackground\": false,\n      \"colorValue\": true,\n    \
+    \  \"colors\": [\n        \"rgba(50, 172, 45, 0.97)\",\n        \"rgba(237, 129,\
+    \ 40, 0.89)\",\n        \"rgba(245, 54, 54, 0.9)\"\n      ],\n      \"datasource\"\
+    : \"${DS_PROMETHEUS}\",\n      \"editable\": true,\n      \"error\": false,\n\
+    \      \"format\": \"percent\",\n      \"gauge\": {\n        \"maxValue\": 100,\n\
+    \        \"minValue\": 0,\n        \"show\": true,\n        \"thresholdLabels\"\
+    : false,\n        \"thresholdMarkers\": true\n      },\n      \"gridPos\": {\n\
+    \        \"h\": 5,\n        \"w\": 8,\n        \"x\": 16,\n        \"y\": 0\n\
+    \      },\n      \"height\": \"180px\",\n      \"id\": 3,\n      \"interval\"\
+    : null,\n      \"links\": [],\n      \"mappingType\": 1,\n      \"mappingTypes\"\
+    : [\n        {\n          \"name\": \"value to text\",\n          \"value\": 1\n\
+    \        },\n        {\n          \"name\": \"range to text\",\n          \"value\"\
+    : 2\n        }\n      ],\n      \"maxDataPoints\": 100,\n      \"nullPointMode\"\
+    : \"connected\",\n      \"nullText\": null,\n      \"postfix\": \"\",\n      \"\
+    postfixFontSize\": \"50%\",\n      \"prefix\": \"\",\n      \"prefixFontSize\"\
+    : \"50%\",\n      \"rangeMaps\": [\n        {\n          \"from\": \"null\",\n\
+    \          \"text\": \"N/A\",\n          \"to\": \"null\"\n        }\n      ],\n\
+    \      \"sparkline\": {\n        \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n\
+    \        \"full\": false,\n        \"lineColor\": \"rgb(31, 120, 193)\",\n   \
+    \     \"show\": false\n      },\n      \"tableColumn\": \"\",\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"(((sum(kube_deployment_status_replicas{deployment=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_statefulset_replicas{statefulset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_daemonset_status_desired_number_scheduled{daemonset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0))) - ((sum(kube_deployment_status_replicas_available{deployment=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_statefulset_status_replicas{statefulset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_daemonset_status_number_ready{daemonset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)))) / ((sum(kube_deployment_status_replicas{deployment=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_statefulset_replicas{statefulset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_daemonset_status_desired_number_scheduled{daemonset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0))) * 100\",\n        \
+    \  \"format\": \"time_series\",\n          \"intervalFactor\": 2,\n          \"\
+    refId\": \"A\",\n          \"step\": 1800\n        }\n      ],\n      \"thresholds\"\
+    : \"1,30\",\n      \"title\": \"Unavailable Replicas\",\n      \"type\": \"singlestat\"\
+    ,\n      \"valueFontSize\": \"80%\",\n      \"valueMaps\": [\n        {\n    \
+    \      \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"rgba(245, 54, 54, 0.9)\",\n        \"\
+    rgba(237, 129, 40, 0.89)\",\n        \"rgba(50, 172, 45, 0.97)\"\n      ],\n \
+    \     \"datasource\": \"${DS_PROMETHEUS}\",\n      \"editable\": true,\n     \
+    \ \"error\": false,\n      \"format\": \"bytes\",\n      \"gauge\": {\n      \
+    \  \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n  \
+    \      \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n     \
+    \ },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n        \"x\"\
+    : 0,\n        \"y\": 5\n      },\n      \"height\": \"100px\",\n      \"id\":\
+    \ 4,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\":\
+    \ 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"sum (container_memory_working_set_bytes{pod_name=~\\\
+    \"^$Deployment$Statefulset$Daemonset.*$\\\", kubernetes_io_hostname=~\\\"^$Node$\\\
+    \", pod_name!=\\\"\\\"})\",\n          \"format\": \"time_series\",\n        \
+    \  \"intervalFactor\": 2,\n          \"refId\": \"A\",\n          \"step\": 1800\n\
+    \        }\n      ],\n      \"thresholds\": \"\",\n      \"title\": \"Used\",\n\
+    \      \"type\": \"singlestat\",\n      \"valueFontSize\": \"50%\",\n      \"\
+    valueMaps\": [\n        {\n          \"op\": \"=\",\n          \"text\": \"N/A\"\
+    ,\n          \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"\
+    current\"\n    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\"\
+    : false,\n      \"colorValue\": false,\n      \"colors\": [\n        \"rgba(245,\
+    \ 54, 54, 0.9)\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"rgba(50, 172,\
+    \ 45, 0.97)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"\
+    editable\": true,\n      \"error\": false,\n      \"format\": \"bytes\",\n   \
+    \   \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n     \
+    \   \"show\": false,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\"\
+    : true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n\
+    \        \"x\": 4,\n        \"y\": 5\n      },\n      \"height\": \"100px\",\n\
+    \      \"id\": 5,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"sum (kube_node_status_allocatable_memory_bytes{node=~\\\
+    \"^$Node.*$\\\"})\",\n          \"format\": \"time_series\",\n          \"intervalFactor\"\
+    : 2,\n          \"refId\": \"A\",\n          \"step\": 1800\n        }\n     \
+    \ ],\n      \"thresholds\": \"\",\n      \"title\": \"Total\",\n      \"type\"\
+    : \"singlestat\",\n      \"valueFontSize\": \"50%\",\n      \"valueMaps\": [\n\
+    \        {\n          \"op\": \"=\",\n          \"text\": \"N/A\",\n         \
+    \ \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"current\"\n\
+    \    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\": false,\n\
+    \      \"colorValue\": false,\n      \"colors\": [\n        \"rgba(245, 54, 54,\
+    \ 0.9)\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"rgba(50, 172, 45,\
+    \ 0.97)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"editable\"\
+    : true,\n      \"error\": false,\n      \"format\": \"none\",\n      \"gauge\"\
+    : {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n\
+    \        \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n   \
+    \   },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n        \"\
+    x\": 8,\n        \"y\": 5\n      },\n      \"height\": \"100px\",\n      \"id\"\
+    : 6,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\":\
+    \ 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \" cores\",\n      \"postfixFontSize\": \"50%\",\n      \"\
+    prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n\
+    \        {\n          \"from\": \"null\",\n          \"text\": \"N/A\",\n    \
+    \      \"to\": \"null\"\n        }\n      ],\n      \"sparkline\": {\n       \
+    \ \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n   \
+    \     \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n\
+    \      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n          \"expr\"\
+    : \"sum (rate (container_cpu_usage_seconds_total{pod_name=~\\\"^$Deployment$Statefulset$Daemonset.*$\\\
+    \", kubernetes_io_hostname=~\\\"^$Node$\\\"}[1m]))\",\n          \"format\": \"\
+    time_series\",\n          \"intervalFactor\": 2,\n          \"refId\": \"A\",\n\
+    \          \"step\": 1800\n        }\n      ],\n      \"thresholds\": \"\",\n\
+    \      \"title\": \"Used\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\"\
+    : \"50%\",\n      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n    \
+    \      \"text\": \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n\
+    \      \"valueName\": \"current\"\n    },\n    {\n      \"cacheTimeout\": null,\n\
+    \      \"colorBackground\": false,\n      \"colorValue\": false,\n      \"colors\"\
+    : [\n        \"rgba(245, 54, 54, 0.9)\",\n        \"rgba(237, 129, 40, 0.89)\"\
+    ,\n        \"rgba(50, 172, 45, 0.97)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n      \"editable\": true,\n      \"error\": false,\n      \"format\": \"none\"\
+    ,\n      \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n\
+    \        \"show\": false,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\"\
+    : true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n\
+    \        \"x\": 12,\n        \"y\": 5\n      },\n      \"height\": \"100px\",\n\
+    \      \"id\": 7,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \" cores\",\n      \"postfixFontSize\": \"50%\",\n      \"\
+    prefix\": \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n\
+    \        {\n          \"from\": \"null\",\n          \"text\": \"N/A\",\n    \
+    \      \"to\": \"null\"\n        }\n      ],\n      \"sparkline\": {\n       \
+    \ \"fillColor\": \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n   \
+    \     \"lineColor\": \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n\
+    \      \"tableColumn\": \"\",\n      \"targets\": [\n        {\n          \"expr\"\
+    : \"sum (machine_cpu_cores{kubernetes_io_hostname=~\\\"^$Node$\\\"})\",\n    \
+    \      \"intervalFactor\": 2,\n          \"refId\": \"A\",\n          \"step\"\
+    : 1800\n        }\n      ],\n      \"thresholds\": \"\",\n      \"title\": \"\
+    Total\",\n      \"type\": \"singlestat\",\n      \"valueFontSize\": \"50%\",\n\
+    \      \"valueMaps\": [\n        {\n          \"op\": \"=\",\n          \"text\"\
+    : \"N/A\",\n          \"value\": \"null\"\n        }\n      ],\n      \"valueName\"\
+    : \"avg\"\n    },\n    {\n      \"cacheTimeout\": null,\n      \"colorBackground\"\
+    : false,\n      \"colorValue\": false,\n      \"colors\": [\n        \"rgba(245,\
+    \ 54, 54, 0.9)\",\n        \"rgba(237, 129, 40, 0.89)\",\n        \"rgba(50, 172,\
+    \ 45, 0.97)\"\n      ],\n      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"\
+    editable\": true,\n      \"error\": false,\n      \"format\": \"none\",\n    \
+    \  \"gauge\": {\n        \"maxValue\": 100,\n        \"minValue\": 0,\n      \
+    \  \"show\": false,\n        \"thresholdLabels\": false,\n        \"thresholdMarkers\"\
+    : true\n      },\n      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n\
+    \        \"x\": 16,\n        \"y\": 5\n      },\n      \"height\": \"100px\",\n\
+    \      \"id\": 8,\n      \"interval\": null,\n      \"links\": [],\n      \"mappingType\"\
+    : 1,\n      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\"\
+    ,\n          \"value\": 1\n        },\n        {\n          \"name\": \"range\
+    \ to text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"(sum(kube_deployment_status_replicas_available{deployment=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_statefulset_status_replicas{statefulset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_daemonset_status_number_ready{daemonset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0))\",\n          \"format\"\
+    : \"time_series\",\n          \"intervalFactor\": 2,\n          \"refId\": \"\
+    A\",\n          \"step\": 1800\n        }\n      ],\n      \"thresholds\": \"\"\
+    ,\n      \"title\": \"Available (cluster)\",\n      \"type\": \"singlestat\",\n\
+    \      \"valueFontSize\": \"50%\",\n      \"valueMaps\": [\n        {\n      \
+    \    \"op\": \"=\",\n          \"text\": \"N/A\",\n          \"value\": \"null\"\
+    \n        }\n      ],\n      \"valueName\": \"current\"\n    },\n    {\n     \
+    \ \"cacheTimeout\": null,\n      \"colorBackground\": false,\n      \"colorValue\"\
+    : false,\n      \"colors\": [\n        \"rgba(245, 54, 54, 0.9)\",\n        \"\
+    rgba(237, 129, 40, 0.89)\",\n        \"rgba(50, 172, 45, 0.97)\"\n      ],\n \
+    \     \"datasource\": \"${DS_PROMETHEUS}\",\n      \"editable\": true,\n     \
+    \ \"error\": false,\n      \"format\": \"none\",\n      \"gauge\": {\n       \
+    \ \"maxValue\": 100,\n        \"minValue\": 0,\n        \"show\": false,\n   \
+    \     \"thresholdLabels\": false,\n        \"thresholdMarkers\": true\n      },\n\
+    \      \"gridPos\": {\n        \"h\": 3,\n        \"w\": 4,\n        \"x\": 20,\n\
+    \        \"y\": 5\n      },\n      \"height\": \"100px\",\n      \"id\": 9,\n\
+    \      \"interval\": null,\n      \"links\": [],\n      \"mappingType\": 1,\n\
+    \      \"mappingTypes\": [\n        {\n          \"name\": \"value to text\",\n\
+    \          \"value\": 1\n        },\n        {\n          \"name\": \"range to\
+    \ text\",\n          \"value\": 2\n        }\n      ],\n      \"maxDataPoints\"\
+    : 100,\n      \"nullPointMode\": \"connected\",\n      \"nullText\": null,\n \
+    \     \"postfix\": \"\",\n      \"postfixFontSize\": \"50%\",\n      \"prefix\"\
+    : \"\",\n      \"prefixFontSize\": \"50%\",\n      \"rangeMaps\": [\n        {\n\
+    \          \"from\": \"null\",\n          \"text\": \"N/A\",\n          \"to\"\
+    : \"null\"\n        }\n      ],\n      \"sparkline\": {\n        \"fillColor\"\
+    : \"rgba(31, 118, 189, 0.18)\",\n        \"full\": false,\n        \"lineColor\"\
+    : \"rgb(31, 120, 193)\",\n        \"show\": false\n      },\n      \"tableColumn\"\
+    : \"\",\n      \"targets\": [\n        {\n          \"expr\": \"(sum(kube_deployment_status_replicas{deployment=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_statefulset_replicas{statefulset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0)) + (sum(kube_daemonset_status_desired_number_scheduled{daemonset=~\\\
+    \".*$Deployment$Statefulset$Daemonset\\\"}) or vector(0))\",\n          \"format\"\
+    : \"time_series\",\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
+    : \"{{ $Daemonset }}\",\n          \"refId\": \"A\",\n          \"step\": 1800\n\
+    \        }\n      ],\n      \"thresholds\": \"\",\n      \"title\": \"Total (cluster)\"\
+    ,\n      \"type\": \"singlestat\",\n      \"valueFontSize\": \"50%\",\n      \"\
+    valueMaps\": [\n        {\n          \"op\": \"=\",\n          \"text\": \"N/A\"\
+    ,\n          \"value\": \"null\"\n        }\n      ],\n      \"valueName\": \"\
+    current\"\n    },\n    {\n      \"aliasColors\": {},\n      \"bars\": false,\n\
+    \      \"dashLength\": 10,\n      \"dashes\": false,\n      \"datasource\": \"\
+    ${DS_PROMETHEUS}\",\n      \"decimals\": 3,\n      \"editable\": true,\n     \
+    \ \"error\": false,\n      \"fill\": 0,\n      \"grid\": {},\n      \"gridPos\"\
+    : {\n        \"h\": 11,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\"\
+    : 8\n      },\n      \"height\": \"\",\n      \"id\": 10,\n      \"legend\": {\n\
+    \        \"alignAsTable\": true,\n        \"avg\": false,\n        \"current\"\
+    : true,\n        \"hideEmpty\": false,\n        \"hideZero\": false,\n       \
+    \ \"max\": true,\n        \"min\": false,\n        \"rightSide\": true,\n    \
+    \    \"show\": true,\n        \"sideWidth\": null,\n        \"sort\": \"current\"\
+    ,\n        \"sortDesc\": true,\n        \"total\": false,\n        \"values\"\
+    : true\n      },\n      \"lines\": true,\n      \"linewidth\": 2,\n      \"links\"\
+    : [],\n      \"nullPointMode\": \"connected\",\n      \"percentage\": false,\n\
+    \      \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\": \"flot\"\
+    ,\n      \"seriesOverrides\": [\n        {\n          \"alias\": \"/avlbl.*/\"\
+    ,\n          \"yaxis\": 2\n        }\n      ],\n      \"spaceLength\": 10,\n \
+    \     \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\": [\n\
+    \        {\n          \"expr\": \"sum (rate (container_cpu_usage_seconds_total{image!=\\\
+    \"\\\",name=~\\\"^k8s_.*\\\",io_kubernetes_container_name!=\\\"POD\\\",pod_name=~\\\
+    \"^$Deployment$Statefulset$Daemonset.*$\\\",kubernetes_io_hostname=~\\\"^$Node$\\\
+    \"}[1m])) by (pod_name,kubernetes_io_hostname)\",\n          \"format\": \"time_series\"\
+    ,\n          \"hide\": false,\n          \"interval\": \"10s\",\n          \"\
+    intervalFactor\": 1,\n          \"legendFormat\": \"real: {{ kubernetes_io_hostname\
+    \ }} | {{ pod_name }} \",\n          \"metric\": \"container_cpu\",\n        \
+    \  \"refId\": \"A\",\n          \"step\": 60\n        },\n        {\n        \
+    \  \"expr\": \"sum (kube_pod_container_resource_requests_cpu_cores{pod=~\\\"^$Deployment$Statefulset$Daemonset.*$\\\
+    \",node=~\\\"^$Node$\\\"}) by (pod,node)\",\n          \"format\": \"time_series\"\
+    ,\n          \"hide\": false,\n          \"intervalFactor\": 2,\n          \"\
+    legendFormat\": \"rqst: {{ node }} | {{ pod }}\",\n          \"refId\": \"B\"\
+    ,\n          \"step\": 120\n        },\n        {\n          \"expr\": \"sum ((kube_node_status_allocatable_cpu_cores{node=~\\\
+    \"^$Node$\\\"})) by (node)\",\n          \"format\": \"time_series\",\n      \
+    \    \"hide\": true,\n          \"intervalFactor\": 2,\n          \"legendFormat\"\
+    : \"avlbl: {{ node }}\",\n          \"refId\": \"C\",\n          \"step\": 30\n\
+    \        }\n      ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n \
+    \     \"timeShift\": null,\n      \"title\": \"CPU usage\",\n      \"tooltip\"\
+    : {\n        \"msResolution\": true,\n        \"shared\": true,\n        \"sort\"\
+    : 2,\n        \"value_type\": \"cumulative\"\n      },\n      \"type\": \"graph\"\
+    ,\n      \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\"\
+    ,\n        \"name\": null,\n        \"show\": true,\n        \"values\": []\n\
+    \      },\n      \"yaxes\": [\n        {\n          \"format\": \"none\",\n  \
+    \        \"label\": \"cores\",\n          \"logBase\": 1,\n          \"max\":\
+    \ null,\n          \"min\": null,\n          \"show\": true\n        },\n    \
+    \    {\n          \"format\": \"short\",\n          \"label\": null,\n       \
+    \   \"logBase\": 1,\n          \"max\": null,\n          \"min\": null,\n    \
+    \      \"show\": true\n        }\n      ],\n      \"yaxis\": {\n        \"align\"\
+    : false,\n        \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\"\
+    : {},\n      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n\
+    \      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"decimals\": 2,\n      \"\
+    editable\": true,\n      \"error\": false,\n      \"fill\": 0,\n      \"grid\"\
+    : {},\n      \"gridPos\": {\n        \"h\": 13,\n        \"w\": 24,\n        \"\
+    x\": 0,\n        \"y\": 19\n      },\n      \"id\": 11,\n      \"legend\": {\n\
+    \        \"alignAsTable\": true,\n        \"avg\": false,\n        \"current\"\
+    : true,\n        \"max\": true,\n        \"min\": false,\n        \"rightSide\"\
+    : true,\n        \"show\": true,\n        \"sideWidth\": null,\n        \"sort\"\
+    : \"current\",\n        \"sortDesc\": true,\n        \"total\": false,\n     \
+    \   \"values\": true\n      },\n      \"lines\": true,\n      \"linewidth\": 2,\n\
+    \      \"links\": [],\n      \"nullPointMode\": \"connected\",\n      \"percentage\"\
+    : false,\n      \"pointradius\": 5,\n      \"points\": false,\n      \"renderer\"\
+    : \"flot\",\n      \"seriesOverrides\": [\n        {\n          \"alias\": \"\
+    /^avlbl.*$/\",\n          \"yaxis\": 2\n        }\n      ],\n      \"spaceLength\"\
+    : 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n      \"targets\"\
+    : [\n        {\n          \"expr\": \"sum (container_memory_working_set_bytes{id!=\\\
+    \"/\\\",pod_name=~\\\"^$Deployment$Statefulset$Daemonset.*$\\\",kubernetes_io_hostname=~\\\
+    \"^$Node$\\\"}) by (pod_name,kubernetes_io_hostname)\",\n          \"format\"\
+    : \"time_series\",\n          \"hide\": false,\n          \"interval\": \"10s\"\
+    ,\n          \"intervalFactor\": 1,\n          \"legendFormat\": \"real: {{kubernetes_io_hostname\
+    \ }} | {{ pod_name }}\",\n          \"metric\": \"container_memory_usage:sort_desc\"\
+    ,\n          \"refId\": \"A\",\n          \"step\": 60\n        },\n        {\n\
+    \          \"expr\": \"sum ((kube_pod_container_resource_requests_memory_bytes{pod=~\\\
+    \"^$Deployment$Statefulset$Daemonset.*$\\\",node=~\\\"^$Node$\\\"})) by (pod,node)\"\
+    ,\n          \"format\": \"time_series\",\n          \"intervalFactor\": 2,\n\
+    \          \"legendFormat\": \"rqst: {{ node }} | {{ pod }}\",\n          \"refId\"\
+    : \"B\",\n          \"step\": 120\n        },\n        {\n          \"expr\":\
+    \ \"sum ((kube_node_status_allocatable_memory_bytes{node=~\\\"^$Node$\\\"})) by\
+    \ (node)\",\n          \"format\": \"time_series\",\n          \"hide\": true,\n\
+    \          \"intervalFactor\": 2,\n          \"legendFormat\": \"avlbl: {{ node\
+    \ }}\",\n          \"refId\": \"C\",\n          \"step\": 30\n        }\n    \
+    \  ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeShift\"\
+    : null,\n      \"title\": \"Memory usage\",\n      \"tooltip\": {\n        \"\
+    msResolution\": false,\n        \"shared\": true,\n        \"sort\": 2,\n    \
+    \    \"value_type\": \"cumulative\"\n      },\n      \"type\": \"graph\",\n  \
+    \    \"xaxis\": {\n        \"buckets\": null,\n        \"mode\": \"time\",\n \
+    \       \"name\": null,\n        \"show\": true,\n        \"values\": []\n   \
+    \   },\n      \"yaxes\": [\n        {\n          \"format\": \"bytes\",\n    \
+    \      \"label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n\
+    \          \"min\": null,\n          \"show\": true\n        },\n        {\n \
+    \         \"format\": \"bytes\",\n          \"label\": null,\n          \"logBase\"\
+    : 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\":\
+    \ true\n        }\n      ],\n      \"yaxis\": {\n        \"align\": false,\n \
+    \       \"alignLevel\": null\n      }\n    },\n    {\n      \"aliasColors\": {},\n\
+    \      \"bars\": false,\n      \"dashLength\": 10,\n      \"dashes\": false,\n\
+    \      \"datasource\": \"${DS_PROMETHEUS}\",\n      \"fill\": 1,\n      \"gridPos\"\
+    : {\n        \"h\": 9,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\":\
+    \ 32\n      },\n      \"id\": 12,\n      \"legend\": {\n        \"alignAsTable\"\
+    : true,\n        \"avg\": false,\n        \"current\": true,\n        \"max\"\
+    : false,\n        \"min\": false,\n        \"rightSide\": true,\n        \"show\"\
+    : true,\n        \"sort\": \"current\",\n        \"sortDesc\": true,\n       \
+    \ \"total\": false,\n        \"values\": true\n      },\n      \"lines\": true,\n\
+    \      \"linewidth\": 1,\n      \"links\": [],\n      \"nullPointMode\": \"null\"\
+    ,\n      \"percentage\": false,\n      \"pointradius\": 5,\n      \"points\":\
+    \ false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\": [],\n    \
+    \  \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\": false,\n\
+    \      \"targets\": [\n        {\n          \"expr\": \"100 * (kubelet_volume_stats_used_bytes{kubernetes_io_hostname=~\\\
+    \"^$Node$\\\", persistentvolumeclaim=~\\\".*$Deployment$Statefulset$Daemonset.*$\\\
+    \"} / kubelet_volume_stats_capacity_bytes{kubernetes_io_hostname=~\\\"^$Node$\\\
+    \", persistentvolumeclaim=~\\\".*$Deployment$Statefulset$Daemonset.*$\\\"})\"\
+    ,\n          \"format\": \"time_series\",\n          \"intervalFactor\": 2,\n\
+    \          \"legendFormat\": \"{{ persistentvolumeclaim }} | {{ kubernetes_io_hostname\
+    \ }}\",\n          \"refId\": \"A\",\n          \"step\": 120\n        }\n   \
+    \   ],\n      \"thresholds\": [],\n      \"timeFrom\": null,\n      \"timeShift\"\
+    : null,\n      \"title\": \"Disk Usage\",\n      \"tooltip\": {\n        \"shared\"\
+    : true,\n        \"sort\": 2,\n        \"value_type\": \"individual\"\n      },\n\
+    \      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\": null,\n\
+    \        \"mode\": \"time\",\n        \"name\": null,\n        \"show\": true,\n\
+    \        \"values\": []\n      },\n      \"yaxes\": [\n        {\n          \"\
+    format\": \"percent\",\n          \"label\": null,\n          \"logBase\": 1,\n\
+    \          \"max\": null,\n          \"min\": null,\n          \"show\": true\n\
+    \        },\n        {\n          \"format\": \"short\",\n          \"label\"\
+    : null,\n          \"logBase\": 1,\n          \"max\": null,\n          \"min\"\
+    : null,\n          \"show\": false\n        }\n      ],\n      \"yaxis\": {\n\
+    \        \"align\": false,\n        \"alignLevel\": null\n      }\n    },\n  \
+    \  {\n      \"aliasColors\": {},\n      \"bars\": false,\n      \"dashLength\"\
+    : 10,\n      \"dashes\": false,\n      \"datasource\": \"${DS_PROMETHEUS}\",\n\
+    \      \"decimals\": 2,\n      \"editable\": true,\n      \"error\": false,\n\
+    \      \"fill\": 1,\n      \"grid\": {},\n      \"gridPos\": {\n        \"h\"\
+    : 13,\n        \"w\": 24,\n        \"x\": 0,\n        \"y\": 41\n      },\n  \
+    \    \"id\": 13,\n      \"legend\": {\n        \"alignAsTable\": true,\n     \
+    \   \"avg\": true,\n        \"current\": true,\n        \"max\": true,\n     \
+    \   \"min\": false,\n        \"rightSide\": true,\n        \"show\": true,\n \
+    \       \"sideWidth\": null,\n        \"sort\": \"current\",\n        \"sortDesc\"\
+    : true,\n        \"total\": false,\n        \"values\": true\n      },\n     \
+    \ \"lines\": true,\n      \"linewidth\": 2,\n      \"links\": [],\n      \"nullPointMode\"\
+    : \"connected\",\n      \"percentage\": false,\n      \"pointradius\": 5,\n  \
+    \    \"points\": false,\n      \"renderer\": \"flot\",\n      \"seriesOverrides\"\
+    : [],\n      \"spaceLength\": 10,\n      \"stack\": false,\n      \"steppedLine\"\
+    : false,\n      \"targets\": [\n        {\n          \"expr\": \"sum (rate (container_network_receive_bytes_total{id!=\\\
+    \"/\\\",pod_name=~\\\"^$Deployment$Statefulset$Daemonset.*$\\\",kubernetes_io_hostname=~\\\
+    \"^$Node$\\\"}[1m])) by (pod_name, kubernetes_io_hostname)\",\n          \"format\"\
+    : \"time_series\",\n          \"interval\": \"10s\",\n          \"intervalFactor\"\
+    : 1,\n          \"legendFormat\": \"-> {{ kubernetes_io_hostname }} | {{ pod_name\
+    \ }}\",\n          \"metric\": \"network\",\n          \"refId\": \"A\",\n   \
+    \       \"step\": 60\n        },\n        {\n          \"expr\": \"- sum( rate\
+    \ (container_network_transmit_bytes_total{id!=\\\"/\\\",pod_name=~\\\"^$Deployment$Statefulset$Daemonset.*$\\\
+    \",kubernetes_io_hostname=~\\\"^$Node$\\\"}[1m])) by (pod_name, kubernetes_io_hostname)\"\
+    ,\n          \"format\": \"time_series\",\n          \"interval\": \"10s\",\n\
+    \          \"intervalFactor\": 1,\n          \"legendFormat\": \"<- {{ kubernetes_io_hostname\
+    \ }} | {{ pod_name }}\",\n          \"metric\": \"network\",\n          \"refId\"\
+    : \"B\",\n          \"step\": 60\n        }\n      ],\n      \"thresholds\": [],\n\
+    \      \"timeFrom\": null,\n      \"timeShift\": null,\n      \"title\": \"All\
+    \ processes network I/O\",\n      \"tooltip\": {\n        \"msResolution\": false,\n\
+    \        \"shared\": true,\n        \"sort\": 2,\n        \"value_type\": \"cumulative\"\
+    \n      },\n      \"type\": \"graph\",\n      \"xaxis\": {\n        \"buckets\"\
+    : null,\n        \"mode\": \"time\",\n        \"name\": null,\n        \"show\"\
+    : true,\n        \"values\": []\n      },\n      \"yaxes\": [\n        {\n   \
+    \       \"format\": \"Bps\",\n          \"label\": null,\n          \"logBase\"\
+    : 1,\n          \"max\": null,\n          \"min\": null,\n          \"show\":\
+    \ true\n        },\n        {\n          \"format\": \"short\",\n          \"\
+    label\": null,\n          \"logBase\": 1,\n          \"max\": null,\n        \
+    \  \"min\": null,\n          \"show\": false\n        }\n      ],\n      \"yaxis\"\
+    : {\n        \"align\": false,\n        \"alignLevel\": null\n      }\n    }\n\
+    \  ],\n  \"refresh\": \"30s\",\n  \"schemaVersion\": 16,\n  \"style\": \"dark\"\
+    ,\n  \"tags\": [\n    \"kubernetes\",\n    \"deployment\"\n  ],\n  \"templating\"\
+    : {\n    \"list\": [\n      {\n        \"allValue\": \"()\",\n        \"current\"\
+    : {},\n        \"datasource\": \"${DS_PROMETHEUS}\",\n        \"hide\": 0,\n \
+    \       \"includeAll\": true,\n        \"label\": null,\n        \"multi\": false,\n\
+    \        \"name\": \"Deployment\",\n        \"options\": [],\n        \"query\"\
+    : \"label_values(deployment)\",\n        \"refresh\": 1,\n        \"regex\": \"\
+    \",\n        \"sort\": 0,\n        \"tagValuesQuery\": \"\",\n        \"tags\"\
+    : [],\n        \"tagsQuery\": \"\",\n        \"type\": \"query\",\n        \"\
+    useTags\": false\n      },\n      {\n        \"allValue\": \"()\",\n        \"\
+    current\": {},\n        \"datasource\": \"${DS_PROMETHEUS}\",\n        \"hide\"\
+    : 0,\n        \"includeAll\": true,\n        \"label\": null,\n        \"multi\"\
+    : false,\n        \"name\": \"Statefulset\",\n        \"options\": [],\n     \
+    \   \"query\": \"label_values(statefulset)\",\n        \"refresh\": 1,\n     \
+    \   \"regex\": \"\",\n        \"sort\": 0,\n        \"tagValuesQuery\": \"\",\n\
+    \        \"tags\": [],\n        \"tagsQuery\": \"\",\n        \"type\": \"query\"\
+    ,\n        \"useTags\": false\n      },\n      {\n        \"allValue\": \"()\"\
+    ,\n        \"current\": {},\n        \"datasource\": \"${DS_PROMETHEUS}\",\n \
+    \       \"hide\": 0,\n        \"includeAll\": true,\n        \"label\": null,\n\
+    \        \"multi\": false,\n        \"name\": \"Daemonset\",\n        \"options\"\
+    : [],\n        \"query\": \"label_values(daemonset)\",\n        \"refresh\": 1,\n\
+    \        \"regex\": \"\",\n        \"sort\": 0,\n        \"tagValuesQuery\": \"\
+    \",\n        \"tags\": [],\n        \"tagsQuery\": \"\",\n        \"type\": \"\
+    query\",\n        \"useTags\": false\n      },\n      {\n        \"allValue\"\
+    : \".*\",\n        \"current\": {},\n        \"datasource\": \"${DS_PROMETHEUS}\"\
+    ,\n        \"hide\": 0,\n        \"includeAll\": true,\n        \"label\": null,\n\
+    \        \"multi\": false,\n        \"name\": \"Node\",\n        \"options\":\
+    \ [],\n        \"query\": \"label_values(kubernetes_io_hostname)\",\n        \"\
+    refresh\": 1,\n        \"regex\": \"\",\n        \"sort\": 0,\n        \"tagValuesQuery\"\
+    : \"\",\n        \"tags\": [],\n        \"tagsQuery\": \"\",\n        \"type\"\
+    : \"query\",\n        \"useTags\": false\n      }\n    ]\n  },\n  \"time\": {\n\
+    \    \"from\": \"now-3h\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {\n \
+    \   \"refresh_intervals\": [\n      \"5s\",\n      \"10s\",\n      \"30s\",\n\
+    \      \"1m\",\n      \"5m\",\n      \"15m\",\n      \"30m\",\n      \"1h\",\n\
+    \      \"2h\",\n      \"1d\"\n    ],\n    \"time_options\": [\n      \"5m\",\n\
+    \      \"15m\",\n      \"1h\",\n      \"6h\",\n      \"12h\",\n      \"24h\",\n\
+    \      \"2d\",\n      \"7d\",\n      \"30d\"\n    ]\n  },\n  \"timezone\": \"\
+    browser\",\n  \"title\": \"1. Kubernetes Deployment Statefulset Daemonset metrics\"\
+    ,\n  \"uid\": \"oWe9aYxmk\",\n  \"version\": 7\n}"
