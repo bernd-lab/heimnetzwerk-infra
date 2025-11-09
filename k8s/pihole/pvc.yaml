@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 2Gi
-  storageClassName: local-path  # Oder vorhandener StorageClass
+  storageClassName: nfs-data
 
