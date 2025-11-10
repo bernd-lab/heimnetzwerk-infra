@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: alertmanager-k8sops-online-tls
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-prod-dns01
     kind: ClusterIssuer
   dnsNames:
   - alertmanager.k8sops.online
