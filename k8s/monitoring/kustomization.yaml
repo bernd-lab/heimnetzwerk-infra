@@ -24,7 +24,6 @@ resources:
 - prometheus/prometheusrules/kubernetes.yaml
 - prometheus/prometheusrules/services.yaml
 - prometheus/prometheusrules/infrastructure.yaml
-- grafana/serviceaccount.yaml
 - grafana/deployment.yaml
 - grafana/service.yaml
 - grafana/dashboard-provisioning.yaml
