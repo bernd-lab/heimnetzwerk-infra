@@ -39,6 +39,16 @@ spec:
           value: "https://n8n.k8sops.online/"
         - name: TZ
           value: "Europe/Berlin"
+        - name: N8N_PROXY
+          value: "true"
+        - name: N8N_BLOCK_ENV_ACCESS_IN_NODE
+          value: "true"
+        - name: N8N_GIT_NODE_DISABLE_BARE_REPOS
+          value: "true"
+        - name: DB_SQLITE_POOL_SIZE
+          value: "5"
+        - name: N8N_RUNNERS_ENABLED
+          value: "true"
         resources:
           requests:
             cpu: 100m
